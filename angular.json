@@ -1,0 +1,8 @@
+{
+  "$schema": "./node_modules/nx/schemas/workspace-schema.json",
+  "version": 2,
+  "projects": {
+    "tree-editor": "apps/tree-editor",
+    "tree-editor-e2e": "apps/tree-editor-e2e"
+  }
+}
