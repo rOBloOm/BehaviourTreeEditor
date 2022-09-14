@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import Two from 'two.js';
-import { Path } from 'two.js/src/path';
 
 @Injectable()
 export class DragService {
+  shiftPresed = false;
+
   attach(two: Two): void {
     two.renderer.domElement.addEventListener('mousedown', mousedown, false);
+    two.renderer.domElement.addEventListener('keydown', keydown, false);
+    two.renderer.domElement.addEventListener('keyup', keyup, false);
+
     var mouse = new Two.Vector();
+
+    function keydown(e) {
+      console.log(e);
+    }
+
+    function keyup(e) {
+      console.log(e);
+    }
 
     function mousedown(e) {
       mouse.x = e.clientX;

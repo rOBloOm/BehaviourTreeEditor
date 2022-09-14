@@ -1,27 +1,39 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
+import { Subject } from 'rxjs';
 import Two from 'two.js';
+import { Destroy } from '../../../shared/components/destory';
 import { makeRect2 } from '../../drawing/shapes';
 import { CameraService } from '../../services/camera.service';
 import { DragService } from '../../services/drag.service';
 
 @Component({
-  selector: 'sweet-potato-node-panel-two',
+  selector: 'sp-nodes-panel',
   templateUrl: './nodes-panel.component.html',
   styleUrls: ['./nodes-panel.component.scss'],
 })
-export class NodesPanelComponent implements OnInit {
-  constructor(
-    camera: CameraService,
-    drag: DragService,
-    domElement: ElementRef
-  ) {
+export class NodesPanelComponent implements AfterViewInit {
+  @ViewChild('canvas') canvas: ElementRef;
+
+  destorySubject = Subject;
+
+  constructor(private camera: CameraService, private drag: DragService) {}
+
+  ngAfterViewInit(): void {
     const two = new Two({
       type: Two.Types.canvas,
       fullscreen: true,
+      overdraw: false,
+      fitted: true,
       autostart: true,
-    }).appendTo(domElement.nativeElement);
+    }).appendTo(this.canvas.nativeElement);
 
-    camera.attach(two);
+    this.camera.attach(two);
 
     const x = two.width * 0.5;
     const y = two.height * 0.5;
@@ -46,7 +58,7 @@ export class NodesPanelComponent implements OnInit {
 
     //two.makeGroup(two.makeCircle(100, 200, 10));
 
-    drag.attach(two);
+    this.drag.attach(two);
 
     // const rect = two.makeRectangle(x, y, width, height);
 
@@ -56,6 +68,4 @@ export class NodesPanelComponent implements OnInit {
     //   rect.rotation += 0.1;
     // }
   }
-
-  ngOnInit(): void {}
 }

@@ -1,11 +1,24 @@
-import { createInjectableType } from '@angular/compiler';
 import { Injectable } from '@angular/core';
+import {
+  combineLatest,
+  filter,
+  map,
+  skip,
+  skipUntil,
+  startWith,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
+import { Destroy } from '../../shared/components/destory';
+import { InputService } from './input.service';
 
 @Injectable()
-export class CameraService {
-  constructor() {}
+export class CameraService extends Destroy {
+  constructor(private inputService: InputService) {
+    super();
+  }
 
   attach(two: Two): void {
     const zui = new ZUI(two.scene);
@@ -29,6 +42,40 @@ export class CameraService {
   }
 
   private attachPanBehaviour(two: Two, zui: ZUI): void {
+    let panning = false;
+    var mouse = new Two.Vector();
+
+    this.inputService.mouseDown$
+      .pipe(
+        filter((event) => event.shiftKey && event.button === 0),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((event) => {
+        mouse.x = event.clientX;
+        mouse.y = event.clientY;
+        panning = true;
+      });
+
+    this.inputService.mouseUp$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      if (panning) {
+        panning = false;
+      }
+    });
+
+    this.inputService.mouseMove$
+      .pipe(
+        filter((_) => panning),
+        takeUntil(this.destroy$)
+      )
+      .subscribe((mouseMove) => {
+        var dx = mouseMove.clientX - mouse.x;
+        var dy = mouseMove.clientY - mouse.y;
+        zui.translateSurface(dx, dy);
+        mouse.set(mouseMove.clientX, mouseMove.clientY);
+      });
+  }
+
+  private attachOldPanBehaviour(two: Two, zui: ZUI): void {
     two.renderer.domElement.addEventListener('mousedown', mousedown, false);
     var mouse = new Two.Vector();
 
