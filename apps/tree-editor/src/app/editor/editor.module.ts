@@ -9,10 +9,12 @@ import { CameraService } from './services/camera.service';
 import { DragService } from './services/drag.service';
 import { EditorComponent } from './components/editor/editor.component';
 import { InputService } from './services/input.service';
+import { SandboxService } from './services/sandbox.service';
+import { LeftPanelComponent } from './components/left-panel/left-panel.component';
 
 @NgModule({
-  declarations: [NodesPanelComponent, EditorComponent],
+  declarations: [NodesPanelComponent, EditorComponent, LeftPanelComponent],
   imports: [CommonModule, EditorRoutingModule, SharedModule],
-  providers: [CameraService, DragService, InputService],
+  providers: [CameraService, DragService, InputService, SandboxService],
 })
 export class EditorModule {}

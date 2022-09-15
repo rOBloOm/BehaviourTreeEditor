@@ -7,10 +7,11 @@ import {
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import Two from 'two.js';
-import { Destroy } from '../../../shared/components/destory';
+import { ZUI } from 'two.js/extras/jsm/zui';
 import { makeRect2 } from '../../drawing/shapes';
 import { CameraService } from '../../services/camera.service';
 import { DragService } from '../../services/drag.service';
+import { SandboxService } from '../../services/sandbox.service';
 
 @Component({
   selector: 'sp-nodes-panel',
@@ -22,7 +23,11 @@ export class NodesPanelComponent implements AfterViewInit {
 
   destorySubject = Subject;
 
-  constructor(private camera: CameraService, private drag: DragService) {}
+  constructor(
+    private camera: CameraService,
+    private drag: DragService,
+    private sandboxService: SandboxService
+  ) {}
 
   ngAfterViewInit(): void {
     const two = new Two({
@@ -33,39 +38,11 @@ export class NodesPanelComponent implements AfterViewInit {
       autostart: true,
     }).appendTo(this.canvas.nativeElement);
 
-    this.camera.attach(two);
+    const zui = new ZUI(two.scene);
+    zui.addLimits(0.06, 8);
 
-    const x = two.width * 0.5;
-    const y = two.height * 0.5;
-    const width = 50;
-    const height = 50;
-
-    var rect1 = makeRect2(two, x, y, width, height, 10);
-    rect1.on('mousedown', mouseDownR1);
-
-    var rect2 = makeRect2(two, x + 100, y, width, height, 10);
-    rect2.on('mousedown', mouseDownR2);
-
-    function mouseDownR1(e) {
-      console.log('r1');
-    }
-
-    function mouseDownR2(e) {
-      console.log('r2');
-    }
-
-    two.makeCircle(100, 40, 10);
-
-    //two.makeGroup(two.makeCircle(100, 200, 10));
-
-    this.drag.attach(two);
-
-    // const rect = two.makeRectangle(x, y, width, height);
-
-    // two.bind('update', rotate);
-
-    // function rotate() {
-    //   rect.rotation += 0.1;
-    // }
+    this.camera.attach(two, zui);
+    this.drag.attach(two, zui);
+    this.sandboxService.attach(two, zui);
   }
 }

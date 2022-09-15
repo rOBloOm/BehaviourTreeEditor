@@ -1,8 +1,10 @@
 import { Injectable } from '@angular/core';
 import {
+  BehaviorSubject,
   combineLatest,
   filter,
   map,
+  Observable,
   skip,
   skipUntil,
   startWith,
@@ -16,14 +18,22 @@ import { InputService } from './input.service';
 
 @Injectable()
 export class CameraService extends Destroy {
+  private panningSubject = new BehaviorSubject<boolean>(false);
+
+  two: Two;
+  zui: ZUI;
+
+  get pannig$(): Observable<boolean> {
+    return this.panningSubject.asObservable();
+  }
+
   constructor(private inputService: InputService) {
     super();
   }
 
-  attach(two: Two): void {
-    const zui = new ZUI(two.scene);
-    zui.addLimits(0.06, 8);
-
+  attach(two: Two, zui: ZUI): void {
+    this.two = two;
+    this.zui = zui;
     this.attachZoomBehavior(two, zui);
     this.attachPanBehaviour(two, zui);
   }
@@ -54,20 +64,22 @@ export class CameraService extends Destroy {
         mouse.x = event.clientX;
         mouse.y = event.clientY;
         panning = true;
+        this.panningSubject.next(true);
       });
 
     this.inputService.mouseUp$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (panning) {
         panning = false;
+        this.panningSubject.next(false);
       }
     });
 
-    this.inputService.mouseMove$
+    combineLatest([this.inputService.mouseMove$, this.pannig$])
       .pipe(
-        filter((_) => panning),
+        filter(([, panning]) => panning),
         takeUntil(this.destroy$)
       )
-      .subscribe((mouseMove) => {
+      .subscribe(([mouseMove]) => {
         var dx = mouseMove.clientX - mouse.x;
         var dy = mouseMove.clientY - mouse.y;
         zui.translateSurface(dx, dy);
