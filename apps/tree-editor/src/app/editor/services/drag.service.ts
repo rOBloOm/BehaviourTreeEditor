@@ -4,14 +4,14 @@ import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
 import { Shape } from 'two.js/src/shape';
 import { Destroy } from '../../shared/components/destory';
-import { CameraService } from './camera.service';
+import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
 
 @Injectable()
 export class DragService extends Destroy {
   constructor(
     private inputService: InputService,
-    private cameraService: CameraService
+    private canvasService: CanvasService
   ) {
     super();
   }
@@ -21,7 +21,7 @@ export class DragService extends Destroy {
     var mouse = new Two.Vector();
 
     //Detect if left click on a shape
-    combineLatest([this.inputService.mouseDown$, this.cameraService.pannig$])
+    combineLatest([this.inputService.mouseDown$, this.canvasService.pannig$])
       .pipe(
         takeUntil(this.destroy$),
         filter(([mouseDown, panning]) => !panning && mouseDown.button === 0)

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { ElementRef, Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
@@ -17,7 +17,7 @@ import { Destroy } from '../../shared/components/destory';
 import { InputService } from './input.service';
 
 @Injectable()
-export class CameraService extends Destroy {
+export class CanvasService extends Destroy {
   private panningSubject = new BehaviorSubject<boolean>(false);
 
   two: Two;
@@ -31,27 +31,36 @@ export class CameraService extends Destroy {
     super();
   }
 
-  attach(two: Two, zui: ZUI): void {
-    this.two = two;
-    this.zui = zui;
-    this.attachZoomBehavior(two, zui);
-    this.attachPanBehaviour(two, zui);
+  attach(element: HTMLElement): void {
+
+    this.two = new Two({
+      type: Two.Types.canvas,
+      fullscreen: true,
+      overdraw: false,
+      fitted: true,
+      autostart: true,
+    }).appendTo(element);
+
+    this.zui = new ZUI(this.two.scene);
+    this.zui.addLimits(0.06, 8);
+
+    this.initZoomBehavior();
+    this.initPanBehaviour();
   }
 
-  private attachZoomBehavior(two: Two, zui: ZUI): void {
-    two.renderer.domElement.addEventListener('mousewheel', mousewheel, false);
+  private initZoomBehavior(): void {
 
-    function mousewheel(e) {
-      e.stopPropagation();
-      e.preventDefault();
+    this.inputService.wheel$.subscribe((event => {
+      event.stopPropagation();
+      event.preventDefault();
 
-      var dy = (e.wheelDeltaY || -e.deltaY) / 1000;
+      var dy = (-event.deltaY) / 100;
 
-      zui.zoomBy(dy, e.clientX, e.clientY);
-    }
+      this.zui.zoomBy(dy, event.clientX, event.clientY);
+    }));
   }
 
-  private attachPanBehaviour(two: Two, zui: ZUI): void {
+  private initPanBehaviour(): void {
     let panning = false;
     var mouse = new Two.Vector();
 
@@ -82,35 +91,8 @@ export class CameraService extends Destroy {
       .subscribe(([mouseMove]) => {
         var dx = mouseMove.clientX - mouse.x;
         var dy = mouseMove.clientY - mouse.y;
-        zui.translateSurface(dx, dy);
+        this.zui.translateSurface(dx, dy);
         mouse.set(mouseMove.clientX, mouseMove.clientY);
       });
-  }
-
-  private attachOldPanBehaviour(two: Two, zui: ZUI): void {
-    two.renderer.domElement.addEventListener('mousedown', mousedown, false);
-    var mouse = new Two.Vector();
-
-    function mousedown(e) {
-      if (e.button === 1) {
-        //Canvas Drag with middle mouse button
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
-        window.addEventListener('mousemove', mousemove, false);
-        window.addEventListener('mouseup', mouseup, false);
-      }
-    }
-
-    function mouseup(e) {
-      window.removeEventListener('mousemove', mousemove, false);
-      window.removeEventListener('mouseup', mouseup, false);
-    }
-
-    function mousemove(e) {
-      var dx = e.clientX - mouse.x;
-      var dy = e.clientY - mouse.y;
-      zui.translateSurface(dx, dy);
-      mouse.set(e.clientX, e.clientY);
-    }
   }
 }

@@ -38,4 +38,9 @@ export class EditorComponent {
   mouseDown(event: MouseEvent) {
     this.inputService.mouseDown(event);
   }
+
+  @HostListener('wheel', ['$event'])
+  wheel(event: WheelEvent) {
+    this.inputService.wheel(event);
+  }
 }

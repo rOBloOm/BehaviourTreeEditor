@@ -21,6 +21,9 @@ export class InputService {
   private mouseMoveSubject = new Subject<MouseEvent>();
   mouseMove$ = this.mouseMoveSubject.asObservable();
 
+  private wheelSubject = new Subject<WheelEvent>();
+  wheel$ = this.wheelSubject.asObservable();
+
   constructor() {}
 
   keyPressed(event: KeyboardEvent): void {
@@ -45,5 +48,9 @@ export class InputService {
 
   mouseMove(event: MouseEvent): void {
     this.mouseMoveSubject.next(event);
+  }
+
+  wheel(event: WheelEvent): void {
+    this.wheelSubject.next(event);
   }
 }

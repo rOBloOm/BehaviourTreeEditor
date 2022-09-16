@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { CameraService } from '../../services/camera.service';
+import { CanvasService } from '../../services/canvas.service';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -8,11 +8,11 @@ import { CameraService } from '../../services/camera.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeftPanelComponent implements OnInit {
-  constructor(private cameraService: CameraService) {}
+  constructor(private canvasService: CanvasService) {}
 
   ngOnInit(): void {}
 
   printTree(): void {
-    console.log(this.cameraService.two.scene.children);
+    console.log(this.canvasService.two.scene.children);
   }
 }
