@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
+import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
-import { SPGroup } from '../../shared/models/sp-group.model';
+import { Rectangle } from 'two.js/src/shapes/rectangle';
 import { SettingsProviderService } from '../../shared/services/settings-provider.service';
 import { CanvasService } from './canvas.service';
 
@@ -11,7 +12,7 @@ export class ShapeService {
     private canvas: CanvasService
   ) {}
 
-  createActionShape(x: number, y: number, text: string): Path {
+  createActionShape(x: number, y: number, text: string): Group {
     var defaultStyles = {
       size: 18,
       weight: 400,
@@ -28,21 +29,35 @@ export class ShapeService {
     };
 
     const actionText = this.canvas.two.makeText(text, x, y, defaultStyles);
-    const width = actionText.getBoundingClientRect().width;
-
+    const textBoundsWidth = actionText.getBoundingClientRect().width;
     const actionShape = this.canvas.two.makeRoundedRectangle(
       x,
       y,
-      width,
+      this.getRectWidth(textBoundsWidth),
       50,
       20
     );
     actionShape.stroke = this.settings.nodeBorderColor;
     actionShape.fill = this.settings.nodeActionFillColor;
 
-    var group = this.canvas.two.makeGroup([actionShape, actionText]) as SPGroup;
-    group.myid = 'some my id';
+    let shadow = this.canvas.two.makeRoundedRectangle(
+      actionShape.position.x,
+      actionShape.position.y,
+      actionShape.width + 7,
+      actionShape.height + 7,
+      20
+    ) as Rectangle;
 
-    return actionShape;
+    shadow.noStroke();
+    shadow.fill = '#34c9fa';
+    shadow.opacity = 0.5;
+
+    return this.canvas.two.makeGroup([shadow, actionShape, actionText]);
+  }
+
+  private getRectWidth(textBoundsWidth: number): number {
+    if (textBoundsWidth < 40) return 40;
+    if (textBoundsWidth < 700) return textBoundsWidth;
+    return textBoundsWidth * 0.7;
   }
 }

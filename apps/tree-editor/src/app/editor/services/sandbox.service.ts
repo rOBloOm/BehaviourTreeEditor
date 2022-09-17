@@ -17,6 +17,12 @@ export class SandboxService {
     const width = 50;
     const height = 50;
 
+    const action = this.shapeService.createActionShape(
+      x,
+      y - 100,
+      'DoYourWorkOnPushingButtons'
+    );
+
     // var rect1 = makeRect2(two, x, y, width, height, 10);
     // rect1.fill = this.settings.bgBaseColor;
 
@@ -24,19 +30,33 @@ export class SandboxService {
 
     // two.makeGroup(rect1, rect2);
 
-    this.shapeService.createActionShape(x, y, 'some action');
+    // this.shapeService.createActionShape(x, y, 'some action');
 
-    this.shapeService.createActionShape(
-      x,
-      y - 200,
-      'some really long ass action'
-    );
+    // this.shapeService.createActionShape(x, y, 's');
 
-    this.shapeService.createActionShape(
-      x,
-      y + 100,
-      'some really long actionklasdjflkjas dfjasldkjflkasjdfl kjasd'
-    );
+    // this.shapeService.createActionShape(x, y - 200, 'smoll');
+
+    // this.shapeService.createActionShape(x, y - 100, 'somethingbigger');
+
+    // this.shapeService.createActionShape(
+    //   x,
+    //   y + 100,
+    //   'fsdfkasdlkfjaslkdjflkajsdlfkjsdlfk'
+    // );
+
+    // this.shapeService.createActionShape(x, y + 400, 'terrible');
+
+    // this.shapeService.createActionShape(
+    //   x,
+    //   y + 300,
+    //   '203948509384509834095830948509809809809809238409328409832423423'
+    // );
+
+    // this.shapeService.createActionShape(
+    //   x,
+    //   y + 200,
+    //   'alskdjflkasjdlfökjaslkdjflkajsdölkfjöalskdjfölkajsdölfkjaslödkj'
+    // );
 
     //two.makeCircle(100, 40, 10);
   }

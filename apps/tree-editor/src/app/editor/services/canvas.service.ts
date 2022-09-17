@@ -32,7 +32,6 @@ export class CanvasService extends Destroy {
   }
 
   attach(element: HTMLElement): void {
-
     this.two = new Two({
       type: Two.Types.canvas,
       fullscreen: true,
@@ -49,15 +48,14 @@ export class CanvasService extends Destroy {
   }
 
   private initZoomBehavior(): void {
-
-    this.inputService.wheel$.subscribe((event => {
+    this.inputService.wheel$.subscribe((event) => {
       event.stopPropagation();
       event.preventDefault();
 
-      var dy = (-event.deltaY) / 100;
+      var dy = -event.deltaY / 500;
 
       this.zui.zoomBy(dy, event.clientX, event.clientY);
-    }));
+    });
   }
 
   private initPanBehaviour(): void {
