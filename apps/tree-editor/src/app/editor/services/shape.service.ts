@@ -2,18 +2,14 @@ import { Injectable } from '@angular/core';
 import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
 import { Rectangle } from 'two.js/src/shapes/rectangle';
-import { SettingsProviderService } from '../../shared/services/settings-provider.service';
+import { NodeGroup } from '../drawing/node.group';
+import { EditorSettings } from '../drawing/settings';
 import { CanvasService } from './canvas.service';
 
 @Injectable()
 export class ShapeService {
-  constructor(
-    private settings: SettingsProviderService,
-    private canvas: CanvasService
-  ) {}
-
-  createActionShape(x: number, y: number, text: string): Group {
-    var defaultStyles = {
+  private get textStyle(): any {
+    return {
       size: 18,
       weight: 400,
       leading: this.canvas.two.width * 0.08 * 0.8,
@@ -25,10 +21,14 @@ export class ShapeService {
         right: 0,
         bottom: 0,
       },
-      fill: this.settings.nodeSymbolColor,
+      fill: EditorSettings.nodeSymbolColor,
     };
+  }
 
-    const actionText = this.canvas.two.makeText(text, x, y, defaultStyles);
+  constructor(private canvas: CanvasService) {}
+
+  createActionNode(x: number, y: number, text: string): NodeGroup {
+    const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
     const textBoundsWidth = actionText.getBoundingClientRect().width;
     const actionShape = this.canvas.two.makeRoundedRectangle(
       x,
@@ -37,22 +37,35 @@ export class ShapeService {
       50,
       20
     );
-    actionShape.stroke = this.settings.nodeBorderColor;
-    actionShape.fill = this.settings.nodeActionFillColor;
+    actionShape.fill = EditorSettings.nodeActionFillColor;
+    actionShape.stroke = EditorSettings.nodeBorderColor;
+    actionShape.linewidth = EditorSettings.nodeLineWith;
+    const nodeGroup = this.canvas.two.makeGroup([actionShape, actionText]);
+    return new NodeGroup(nodeGroup, actionShape, actionText);
+  }
 
-    let shadow = this.canvas.two.makeRoundedRectangle(
-      actionShape.position.x,
-      actionShape.position.y,
-      actionShape.width + 7,
-      actionShape.height + 7,
+  createCompositeNode(x: number, y: number, text: string): NodeGroup {
+    const actionText = this.canvas.two.makeText(
+      '=> ' + text + ' =>',
+      x,
+      y,
+      this.textStyle
+    );
+    const textBoundsWidth = actionText.getBoundingClientRect().width;
+    const actionShape = this.canvas.two.makeRoundedRectangle(
+      x,
+      y,
+      this.getRectWidth(textBoundsWidth),
+      50,
       20
-    ) as Rectangle;
+    );
+    actionShape.fill = EditorSettings.nodeCompositeFillColor;
+    actionShape.stroke = EditorSettings.nodeBorderColor;
+    actionShape.linewidth = EditorSettings.nodeLineWith;
 
-    shadow.noStroke();
-    shadow.fill = '#34c9fa';
-    shadow.opacity = 0.5;
+    const nodeGroup = this.canvas.two.makeGroup([actionShape, actionText]);
 
-    return this.canvas.two.makeGroup([shadow, actionShape, actionText]);
+    return new NodeGroup(nodeGroup, actionShape, actionText);
   }
 
   private getRectWidth(textBoundsWidth: number): number {

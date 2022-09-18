@@ -1,33 +1,33 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest, filter, takeUntil } from 'rxjs';
 import Two from 'two.js';
-import { ZUI } from 'two.js/extras/jsm/zui';
 import { Shape } from 'two.js/src/shape';
 import { Destroy } from '../../shared/components/destory';
+import { getHitElement } from '../drawing/utils';
 import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
 
 @Injectable()
 export class DragService extends Destroy {
-  constructor(
-    private inputService: InputService,
-    private canvasService: CanvasService
-  ) {
+  constructor(private input: InputService, private canvas: CanvasService) {
     super();
   }
 
-  attach(two: Two, zui: ZUI): void {
+  init(): void {
     const draggingShape = new BehaviorSubject<Shape | undefined>(undefined);
     var mouse = new Two.Vector();
 
     //Detect if left click on a shape
-    combineLatest([this.inputService.mouseDown$, this.canvasService.pannig$])
+    combineLatest([this.input.mouseDown$, this.canvas.pannig$])
       .pipe(
         takeUntil(this.destroy$),
-        filter(([mouseDown, panning]) => !panning && mouseDown.button === 0)
+        filter(
+          ([mouseDown, panning]) =>
+            !panning && mouseDown.button === 0 && !mouseDown.ctrlKey
+        )
       )
       .subscribe(([mouseDown]) => {
-        var shape = this.getHitElement(two, mouseDown);
+        var shape = getHitElement(this.canvas.two, mouseDown);
         if (shape) {
           mouse.x = mouseDown.clientX;
           mouse.y = mouseDown.clientY;
@@ -36,12 +36,12 @@ export class DragService extends Destroy {
       });
 
     //Release the shape on mouseup
-    this.inputService.mouseUp$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.input.mouseUp$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       draggingShape.next(undefined);
     });
 
     //Move the shape on mousemove if one is picked up
-    combineLatest([this.inputService.mouseMove$, draggingShape])
+    combineLatest([this.input.mouseMove$, draggingShape])
       .pipe(
         takeUntil(this.destroy$),
         filter(([, shape]) => shape !== undefined)
@@ -49,30 +49,9 @@ export class DragService extends Destroy {
       .subscribe(([mouseMove, shape]) => {
         var dx = mouseMove.clientX - mouse.x;
         var dy = mouseMove.clientY - mouse.y;
-        shape.position.x += dx / zui.scale;
-        shape.position.y += dy / zui.scale;
+        shape.position.x += dx / this.canvas.zui.scale;
+        shape.position.y += dy / this.canvas.zui.scale;
         mouse.set(mouseMove.clientX, mouseMove.clientY);
       });
-  }
-
-  getHitElement(two: Two, e: MouseEvent): Shape | undefined {
-    var mouse = new Two.Vector();
-    mouse.x = e.clientX;
-    mouse.y = e.clientY;
-
-    let result = two.scene.children.find((child: any) => {
-      if (child.isShape) {
-        let bounds = child.getBoundingClientRect();
-        if (
-          mouse.x > bounds.left &&
-          mouse.x < bounds.right &&
-          mouse.y > bounds.top &&
-          mouse.y < bounds.bottom
-        ) {
-          return child;
-        }
-      }
-    });
-    return result;
   }
 }

@@ -1,0 +1,13 @@
+export class EditorSettings {
+  static nodeDecoratorGillColor = '#A4CCFB';
+  static nodeConditionFillColor = '#cfc511';
+  static nodeCompositeFillColor = '#A4CCFB';
+  static nodeActionFillColor = '#A3C83F';
+
+  static nodeBorderColor = '#6D6D6D';
+  static nodeBorderSelectedColor = '#007bbe';
+  static nodeSymbolColor = '#333333';
+
+  static nodeLineWith = 3;
+  static nodeLineWithSelected = 5;
+}

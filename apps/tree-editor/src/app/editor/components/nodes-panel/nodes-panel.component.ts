@@ -11,6 +11,7 @@ import { ZUI } from 'two.js/extras/jsm/zui';
 import { CanvasService } from '../../services/canvas.service';
 import { DragService } from '../../services/drag.service';
 import { SandboxService } from '../../services/sandbox.service';
+import { SelectionService } from '../../services/selection.service';
 
 @Component({
   selector: 'sp-nodes-panel',
@@ -25,12 +26,14 @@ export class NodesPanelComponent implements AfterViewInit {
   constructor(
     private canvas: CanvasService,
     private drag: DragService,
-    private sandboxService: SandboxService
+    private sandbox: SandboxService,
+    private selection: SelectionService
   ) {}
 
   ngAfterViewInit(): void {
     this.canvas.attach(this.domElement.nativeElement);
-    this.drag.attach(this.canvas.two, this.canvas.zui);
-    this.sandboxService.attach(this.canvas.two, this.canvas.zui);
+    this.drag.init();
+    this.sandbox.init();
+    this.selection.init();
   }
 }

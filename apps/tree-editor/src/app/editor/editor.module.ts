@@ -11,8 +11,9 @@ import { EditorComponent } from './components/editor/editor.component';
 import { InputService } from './services/input.service';
 import { SandboxService } from './services/sandbox.service';
 import { LeftPanelComponent } from './components/left-panel/left-panel.component';
-import { SettingsProviderService } from '../shared/services/settings-provider.service';
 import { ShapeService } from './services/shape.service';
+import { SelectionService } from './services/selection.service';
+import { NodeManagerService } from './services/node-manager.service';
 
 @NgModule({
   declarations: [NodesPanelComponent, EditorComponent, LeftPanelComponent],
@@ -22,8 +23,9 @@ import { ShapeService } from './services/shape.service';
     DragService,
     InputService,
     SandboxService,
-    SettingsProviderService,
     ShapeService,
+    SelectionService,
+    NodeManagerService,
   ],
 })
 export class EditorModule {}
