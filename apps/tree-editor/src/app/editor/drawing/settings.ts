@@ -10,4 +10,8 @@ export class EditorSettings {
 
   static nodeLineWith = 3;
   static nodeLineWithSelected = 5;
+
+  static connectionLineColor = '#2F2F2F';
+  static connectionArrowSize = 5;
+  static connectionArrowLineWidth = 5;
 }

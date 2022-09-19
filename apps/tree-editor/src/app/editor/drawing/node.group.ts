@@ -3,12 +3,12 @@ import { Path } from 'two.js/src/path';
 import { Shape } from 'two.js/src/shape';
 import { Rectangle } from 'two.js/src/shapes/rectangle';
 import { Text } from 'two.js/src/text';
+import { NodeConnection } from './node.connection';
 import { EditorSettings } from './settings';
 
 export class NodeGroup {
-  text: Text;
-  group: Group;
-  shape: Path;
+  connectionIn: NodeConnection;
+  connectionsOut: NodeConnection[] = [];
 
   get id(): string {
     return this.group.id;
@@ -16,11 +16,12 @@ export class NodeGroup {
 
   selected = false;
 
-  constructor(group: Group, shape: Path, text: Text) {
-    this.group = group;
-    this.shape = shape;
-    this.text = text;
-  }
+  constructor(
+    public group: Group,
+    public shape: Path,
+    public text: Text,
+    public type: NodeGroupType
+  ) {}
   select() {
     this.shape.linewidth = EditorSettings.nodeLineWithSelected;
     this.shape.stroke = EditorSettings.nodeBorderSelectedColor;
@@ -36,4 +37,35 @@ export class NodeGroup {
   setText(text: string): void {
     this.text.value = text;
   }
+
+  acceptIncoming(sourceType: NodeGroupType): boolean {
+    switch (this.type) {
+      case NodeGroupType.Root:
+        return false;
+      case NodeGroupType.Composite:
+        return (
+          sourceType === NodeGroupType.Root ||
+          sourceType == NodeGroupType.Composite
+        );
+      case NodeGroupType.Decorator:
+        return (
+          sourceType === NodeGroupType.Root ||
+          sourceType == NodeGroupType.Composite
+        );
+      case NodeGroupType.Action:
+      case NodeGroupType.Condition:
+        return (
+          sourceType == NodeGroupType.Composite ||
+          sourceType == NodeGroupType.Decorator
+        );
+    }
+  }
+}
+
+export enum NodeGroupType {
+  Root = 0,
+  Composite = 1,
+  Decorator = 2,
+  Action = 3,
+  Condition = 4,
 }

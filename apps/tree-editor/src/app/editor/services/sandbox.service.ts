@@ -19,6 +19,8 @@ export class SandboxService {
 
     this.manager.addActionNode(x, y + 100, 'DoYourWorkOnPushingButtons');
 
-    this.manager.addCompositeNode(x, y, 'PrioritySelector');
+    this.manager.addCompositeNode(x - 200, y - 100, 'PrioritySelector');
+
+    this.manager.addCompositeNode(x + 100, y - 100, 'Selector');
   }
 }

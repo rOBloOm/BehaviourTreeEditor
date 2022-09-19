@@ -1,21 +1,25 @@
 import Two from 'two.js';
 import { Shape } from 'two.js/src/shape';
+import { NodeGroup } from './node.group';
 
-export function getHitElement(two: Two, e: MouseEvent): Shape | undefined {
-  const hitSizeFactor = 30;
-
+export function getHitNodeGroup(
+  two: Two,
+  e: MouseEvent,
+  nodes: { [name: string]: NodeGroup },
+  exclude: NodeGroup[] = []
+): Shape | undefined {
   var mouse = new Two.Vector();
   mouse.x = e.clientX;
   mouse.y = e.clientY;
 
   let result = two.scene.children.find((child: any) => {
-    if (child.isShape) {
+    if (nodes[child.id] && exclude.every((node) => node.id != child.id)) {
       let bounds = child.getBoundingClientRect();
       if (
-        mouse.x > bounds.left + hitSizeFactor &&
-        mouse.x < bounds.right - hitSizeFactor &&
-        mouse.y > bounds.top + hitSizeFactor &&
-        mouse.y < bounds.bottom - hitSizeFactor
+        mouse.x > bounds.left &&
+        mouse.x < bounds.right &&
+        mouse.y > bounds.top &&
+        mouse.y < bounds.bottom
       ) {
         return child;
       }

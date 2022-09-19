@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
 import { Rectangle } from 'two.js/src/shapes/rectangle';
-import { NodeGroup } from '../drawing/node.group';
+import { NodeGroup, NodeGroupType } from '../drawing/node.group';
 import { EditorSettings } from '../drawing/settings';
 import { CanvasService } from './canvas.service';
 
 @Injectable()
-export class ShapeService {
+export class DrawingService {
   private get textStyle(): any {
     return {
       size: 18,
@@ -41,7 +41,12 @@ export class ShapeService {
     actionShape.stroke = EditorSettings.nodeBorderColor;
     actionShape.linewidth = EditorSettings.nodeLineWith;
     const nodeGroup = this.canvas.two.makeGroup([actionShape, actionText]);
-    return new NodeGroup(nodeGroup, actionShape, actionText);
+    return new NodeGroup(
+      nodeGroup,
+      actionShape,
+      actionText,
+      NodeGroupType.Action
+    );
   }
 
   createCompositeNode(x: number, y: number, text: string): NodeGroup {
@@ -65,7 +70,38 @@ export class ShapeService {
 
     const nodeGroup = this.canvas.two.makeGroup([actionShape, actionText]);
 
-    return new NodeGroup(nodeGroup, actionShape, actionText);
+    return new NodeGroup(
+      nodeGroup,
+      actionShape,
+      actionText,
+      NodeGroupType.Composite
+    );
+  }
+
+  createConnection(source: NodeGroup, target: NodeGroup): Path {
+    const xs = source.group.position.x + source.shape.position.x;
+    const ys = source.group.position.y + source.shape.position.y;
+    const xt = target.group.position.x + target.shape.position.x;
+    const yt = target.group.position.y + target.shape.position.y;
+
+    const arrowPath = this.canvas.two.makeArrow(
+      xs,
+      ys,
+      xt,
+      yt,
+      EditorSettings.connectionArrowSize
+    );
+
+    arrowPath.stroke = EditorSettings.connectionLineColor;
+    arrowPath.linewidth = EditorSettings.connectionArrowLineWidth;
+
+    return arrowPath;
+  }
+
+  updateConnections(node: NodeGroup): void {
+    if (node.connectionIn) {
+      //node.connectionIn.v
+    }
   }
 
   private getRectWidth(textBoundsWidth: number): number {

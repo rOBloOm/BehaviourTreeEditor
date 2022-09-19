@@ -11,21 +11,31 @@ import { EditorComponent } from './components/editor/editor.component';
 import { InputService } from './services/input.service';
 import { SandboxService } from './services/sandbox.service';
 import { LeftPanelComponent } from './components/left-panel/left-panel.component';
-import { ShapeService } from './services/shape.service';
+import { DrawingService } from './services/drawing.service';
 import { SelectionService } from './services/selection.service';
 import { NodeManagerService } from './services/node-manager.service';
+import { ConnectionService } from './services/connection.service';
+import { RightPanelComponent } from './components/right-panel/right-panel.component';
+import { ShortcutService } from './services/shortcut.service';
 
 @NgModule({
-  declarations: [NodesPanelComponent, EditorComponent, LeftPanelComponent],
+  declarations: [
+    NodesPanelComponent,
+    EditorComponent,
+    LeftPanelComponent,
+    RightPanelComponent,
+  ],
   imports: [CommonModule, EditorRoutingModule, SharedModule],
   providers: [
     CanvasService,
     DragService,
     InputService,
+    ShortcutService,
     SandboxService,
-    ShapeService,
+    DrawingService,
     SelectionService,
     NodeManagerService,
+    ConnectionService,
   ],
 })
 export class EditorModule {}

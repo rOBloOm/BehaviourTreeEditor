@@ -1,18 +1,18 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
-import { filter, Subject, takeUntil } from 'rxjs';
+import { BehaviorSubject, filter, Subject, takeUntil } from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
 import { Destroy } from '../../shared/components/destory';
 import { NodeGroup } from '../drawing/node.group';
-import { getHitElement } from '../drawing/utils';
+import { getHitNodeGroup } from '../drawing/utils';
 import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
 import { NodeManagerService } from './node-manager.service';
 
 @Injectable()
 export class SelectionService extends Destroy {
-  selectedSubject = new Subject<NodeGroup>();
+  selectedSubject = new BehaviorSubject<NodeGroup | undefined>(undefined);
   selected$ = this.selectedSubject.asObservable();
 
   constructor(
@@ -34,7 +34,11 @@ export class SelectionService extends Destroy {
         )
       )
       .subscribe((mouseDown) => {
-        const hit = getHitElement(this.canvas.two, mouseDown);
+        const hit = getHitNodeGroup(
+          this.canvas.two,
+          mouseDown,
+          this.manager.nodes
+        );
         if (hit) {
           this.deselectAll();
           //Select hit node
@@ -46,11 +50,13 @@ export class SelectionService extends Destroy {
         } else {
           //if nothing was hit, deselect everything
           this.deselectAll();
+          this.selectedSubject.next(undefined);
         }
       });
   }
 
   deselectAll() {
     forEach(this.manager.nodes, (node) => node.deselect());
+    this.selectedSubject.next(undefined);
   }
 }

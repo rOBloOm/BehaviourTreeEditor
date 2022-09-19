@@ -4,6 +4,7 @@ import {
   HostListener,
 } from '@angular/core';
 import { InputService } from '../../services/input.service';
+import { SelectionService } from '../../services/selection.service';
 
 @Component({
   selector: 'sp-editor',
@@ -12,35 +13,35 @@ import { InputService } from '../../services/input.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EditorComponent {
-  constructor(private inputService: InputService) {}
+  constructor(private input: InputService) {}
 
   @HostListener('window:keydown', ['$event'])
   keyDown(event: KeyboardEvent) {
-    this.inputService.keyDown(event);
+    this.input.keyDown(event);
   }
 
   @HostListener('window:keyup', ['$event'])
   keyUp(event: KeyboardEvent) {
-    this.inputService.keyUp(event);
+    this.input.keyUp(event);
   }
 
   @HostListener('mouseup', ['$event'])
   mouseUp(event: MouseEvent) {
-    this.inputService.mouseUp(event);
+    this.input.mouseUp(event);
   }
 
   @HostListener('mousemove', ['$event'])
   mouseMove(event: MouseEvent) {
-    this.inputService.mouseMove(event);
+    this.input.mouseMove(event);
   }
 
   @HostListener('mousedown', ['$event'])
   mouseDown(event: MouseEvent) {
-    this.inputService.mouseDown(event);
+    this.input.mouseDown(event);
   }
 
   @HostListener('wheel', ['$event'])
   wheel(event: WheelEvent) {
-    this.inputService.wheel(event);
+    this.input.wheel(event);
   }
 }
