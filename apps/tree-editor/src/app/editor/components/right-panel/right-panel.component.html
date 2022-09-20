@@ -4,6 +4,7 @@
   fxFlex="300px"
   fxLayoutAlign="start"
   fxLayoutGap="10"
+  (click)="clicked($event)"
 >
   <h3 fxLayout="row" fxLayoutAlign="center" class="title">
     {{ selectedTitle$ | async }}

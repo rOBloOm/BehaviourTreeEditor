@@ -15,6 +15,10 @@ export class SelectionService extends Destroy {
   selectedSubject = new BehaviorSubject<NodeGroup | undefined>(undefined);
   selected$ = this.selectedSubject.asObservable();
 
+  get currentSelected(): NodeGroup | undefined {
+    return this.selectedSubject.value;
+  }
+
   constructor(
     private input: InputService,
     private manager: CanvasManagerService,

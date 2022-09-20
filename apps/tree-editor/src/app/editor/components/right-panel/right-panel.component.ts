@@ -30,4 +30,8 @@ export class RightPanelComponent extends Destroy {
         this.hideRightPanel = hidePanel;
       });
   }
+
+  clicked(event: MouseEvent) {
+    event.preventDefault();
+  }
 }

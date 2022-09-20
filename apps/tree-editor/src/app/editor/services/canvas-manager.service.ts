@@ -59,7 +59,8 @@ export class CanvasManagerService extends Destroy {
     if (node.connectionIn) {
       this.removeConnection(node.connectionIn);
     }
-    forEach(node.connectionsOut, (conn) => this.removeConnection(conn));
+    const tempConnectionsOut = Array.from(node.connectionsOut);
+    forEach(tempConnectionsOut, (conn) => this.removeConnection(conn));
   }
 
   removeConnection(connection: NodeConnection): void {

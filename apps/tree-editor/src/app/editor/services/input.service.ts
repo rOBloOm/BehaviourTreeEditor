@@ -27,30 +27,37 @@ export class InputService {
   constructor() {}
 
   keyPressed(event: KeyboardEvent): void {
+    event.preventDefault();
     this.keyPressedSubject.next(event);
   }
 
   keyDown(event: KeyboardEvent): void {
+    event.preventDefault();
     this.keyDownSubject.next(event);
   }
 
   keyUp(event: KeyboardEvent): void {
+    event.preventDefault();
     this.keyUpSubject.next(event);
   }
 
   mouseDown(event: MouseEvent): void {
+    event.preventDefault();
     this.mouseDownSubject.next(event);
   }
 
   mouseUp(event: MouseEvent): void {
+    event.preventDefault();
     this.mouseUpSubject.next(event);
   }
 
   mouseMove(event: MouseEvent): void {
+    event.preventDefault();
     this.mouseMoveSubject.next(event);
   }
 
   wheel(event: WheelEvent): void {
+    event.preventDefault();
     this.wheelSubject.next(event);
   }
 }

@@ -33,7 +33,8 @@ export class DrawingService {
     const heigth = 20;
 
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
-    const textBoundsWidth = actionText.getBoundingClientRect().width;
+    const textBoundsWidth =
+      actionText.getBoundingClientRect().width / this.canvas.zui.scale;
     const actionShape = this.canvas.two.makeRoundedRectangle(
       x,
       y,
