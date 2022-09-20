@@ -8,14 +8,15 @@ import { EditorSettings } from '../drawing/settings';
 import { getHitNodeGroup } from '../drawing/utils';
 import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
-import { NodeManagerService } from './node-manager.service';
+import { CanvasManagerService } from './canvas-manager.service';
+import Two from 'two.js';
 
 @Injectable()
 export class ConnectionService extends Destroy {
   constructor(
     private canvas: CanvasService,
     private input: InputService,
-    private manager: NodeManagerService
+    private manager: CanvasManagerService
   ) {
     super();
   }
@@ -38,7 +39,9 @@ export class ConnectionService extends Destroy {
         );
         if (hit) {
           source = this.manager.nodes[hit.id];
-          connecting = true;
+          if (source.acceptOutgoing()) {
+            connecting = true;
+          }
         }
       });
 
@@ -49,14 +52,19 @@ export class ConnectionService extends Destroy {
           if (arrow) {
             arrow.remove();
           }
+          const sx = source.group.position.x + source.outAnchor.position.x;
+          const sy = source.group.position.y + source.outAnchor.position.y;
           const pos = this.canvas.zui.clientToSurface(mouseMove.x, mouseMove.y);
+
+          const direction = new Two.Vector(pos.x - sx, pos.y - sy).normalize();
           arrow = this.canvas.two.makeArrow(
-            source.group.position.x + source.shape.position.x,
-            source.group.position.y + source.shape.position.y,
-            pos.x,
-            pos.y,
+            sx + direction.x * EditorSettings.connectionMargin,
+            sy + direction.y * EditorSettings.connectionMargin,
+            pos.x - direction.x * EditorSettings.connectionMargin,
+            pos.y - direction.y * EditorSettings.connectionMargin,
             EditorSettings.connectionArrowSize
           );
+          arrow.stroke = EditorSettings.connectionLineColor;
           arrow.linewidth = EditorSettings.connectionArrowLineWidth;
         }
       });

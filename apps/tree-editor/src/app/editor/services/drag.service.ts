@@ -9,14 +9,14 @@ import { getHitNodeGroup } from '../drawing/utils';
 import { CanvasService } from './canvas.service';
 import { DrawingService } from './drawing.service';
 import { InputService } from './input.service';
-import { NodeManagerService } from './node-manager.service';
+import { CanvasManagerService } from './canvas-manager.service';
 
 @Injectable()
 export class DragService extends Destroy {
   constructor(
     private input: InputService,
     private canvas: CanvasService,
-    private manager: NodeManagerService,
+    private manager: CanvasManagerService,
     private drawing: DrawingService
   ) {
     super();

@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { filter, switchMap, takeUntil } from 'rxjs';
 import { Destroy } from '../../shared/components/destory';
 import { InputService } from './input.service';
-import { NodeManagerService } from './node-manager.service';
+import { CanvasManagerService } from './canvas-manager.service';
 import { SelectionService } from './selection.service';
 
 @Injectable()
 export class ShortcutService extends Destroy {
   constructor(
     private input: InputService,
-    private manager: NodeManagerService,
+    private manager: CanvasManagerService,
     private selection: SelectionService
   ) {
     super();

@@ -10,6 +10,9 @@ export class NodeGroup {
   connectionIn: NodeConnection;
   connectionsOut: NodeConnection[] = [];
 
+  inAnchor: Shape = undefined;
+  outAnchor: Shape = undefined;
+
   get id(): string {
     return this.group.id;
   }
@@ -59,6 +62,10 @@ export class NodeGroup {
           sourceType == NodeGroupType.Decorator
         );
     }
+  }
+
+  acceptOutgoing(): boolean {
+    return this.outAnchor !== undefined;
   }
 }
 

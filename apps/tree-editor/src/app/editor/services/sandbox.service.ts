@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
 import { CanvasService } from './canvas.service';
-import { NodeManagerService } from './node-manager.service';
+import { CanvasManagerService } from './canvas-manager.service';
 
 @Injectable()
 export class SandboxService {
   constructor(
-    private manager: NodeManagerService,
+    private manager: CanvasManagerService,
     private canvas: CanvasService
   ) {}
 

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import Two from 'two.js';
 import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
 import { Rectangle } from 'two.js/src/shapes/rectangle';
@@ -28,28 +29,49 @@ export class DrawingService {
   constructor(private canvas: CanvasService) {}
 
   createActionNode(x: number, y: number, text: string): NodeGroup {
+    const width = 50;
+    const heigth = 20;
+
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
     const textBoundsWidth = actionText.getBoundingClientRect().width;
     const actionShape = this.canvas.two.makeRoundedRectangle(
       x,
       y,
       this.getRectWidth(textBoundsWidth),
-      50,
-      20
+      width,
+      heigth
     );
+
+    const anchorShape = this.createAnchor(
+      x,
+      y - heigth - EditorSettings.anchorLineWidth - EditorSettings.nodeLineWith
+    );
+
     actionShape.fill = EditorSettings.nodeActionFillColor;
     actionShape.stroke = EditorSettings.nodeBorderColor;
     actionShape.linewidth = EditorSettings.nodeLineWith;
-    const nodeGroup = this.canvas.two.makeGroup([actionShape, actionText]);
-    return new NodeGroup(
+
+    const nodeGroup = this.canvas.two.makeGroup([
+      anchorShape,
+      actionShape,
+      actionText,
+    ]);
+
+    const ng = new NodeGroup(
       nodeGroup,
       actionShape,
       actionText,
       NodeGroupType.Action
     );
+    ng.inAnchor = anchorShape;
+    return ng;
   }
 
   createCompositeNode(x: number, y: number, text: string): NodeGroup {
+    const height = 20;
+    const width = 50;
+
+    //Text Shape
     const actionText = this.canvas.two.makeText(
       '=> ' + text + ' =>',
       x,
@@ -57,38 +79,62 @@ export class DrawingService {
       this.textStyle
     );
     const textBoundsWidth = actionText.getBoundingClientRect().width;
+
+    //Action Shape
     const actionShape = this.canvas.two.makeRoundedRectangle(
       x,
       y,
       this.getRectWidth(textBoundsWidth),
-      50,
-      20
+      width,
+      height
     );
+
     actionShape.fill = EditorSettings.nodeCompositeFillColor;
     actionShape.stroke = EditorSettings.nodeBorderColor;
     actionShape.linewidth = EditorSettings.nodeLineWith;
 
-    const nodeGroup = this.canvas.two.makeGroup([actionShape, actionText]);
+    //Anchor Shapes
+    const inAnchorShape = this.createAnchor(
+      x,
+      y - height - EditorSettings.anchorLineWidth - EditorSettings.nodeLineWith
+    );
 
-    return new NodeGroup(
+    const outAnchorShape = this.createAnchor(
+      x,
+      y + height + EditorSettings.anchorLineWidth + EditorSettings.nodeLineWith
+    );
+
+    const nodeGroup = this.canvas.two.makeGroup([
+      inAnchorShape,
+      outAnchorShape,
+      actionShape,
+      actionText,
+    ]);
+
+    const ng = new NodeGroup(
       nodeGroup,
       actionShape,
       actionText,
       NodeGroupType.Composite
     );
+    ng.inAnchor = inAnchorShape;
+    ng.outAnchor = outAnchorShape;
+    return ng;
   }
 
   createConnection(source: NodeGroup, target: NodeGroup): Path {
-    const xs = source.group.position.x + source.shape.position.x;
-    const ys = source.group.position.y + source.shape.position.y;
-    const xt = target.group.position.x + target.shape.position.x;
-    const yt = target.group.position.y + target.shape.position.y;
+    const xs = source.group.position.x + source.outAnchor.position.x;
+    const ys = source.group.position.y + source.outAnchor.position.y;
+    const xt = target.group.position.x + target.inAnchor.position.x;
+    const yt = target.group.position.y + target.inAnchor.position.y;
+
+    const direction = new Two.Vector(xt - xs, yt - ys).normalize();
 
     const arrowPath = this.canvas.two.makeArrow(
-      xs,
-      ys,
-      xt,
-      yt,
+      xs + direction.x * EditorSettings.connectionMargin,
+      ys + direction.y * EditorSettings.connectionMargin,
+      xt - direction.x * EditorSettings.connectionMargin,
+      yt - direction.y * EditorSettings.connectionMargin,
       EditorSettings.connectionArrowSize
     );
 
@@ -98,10 +144,12 @@ export class DrawingService {
     return arrowPath;
   }
 
-  updateConnections(node: NodeGroup): void {
-    if (node.connectionIn) {
-      //node.connectionIn.v
-    }
+  private createAnchor(x: number, y: number): Path {
+    const anchorShape = this.canvas.two.makeCircle(x, y, 10);
+    anchorShape.fill = EditorSettings.anchorFillColor;
+    anchorShape.stroke = EditorSettings.anchorBorderColor;
+    anchorShape.linewidth = EditorSettings.anchorLineWidth;
+    return anchorShape;
   }
 
   private getRectWidth(textBoundsWidth: number): number {

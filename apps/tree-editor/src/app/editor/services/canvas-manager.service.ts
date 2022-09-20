@@ -7,7 +7,7 @@ import { CanvasService } from './canvas.service';
 import { DrawingService } from './drawing.service';
 
 @Injectable()
-export class NodeManagerService extends Destroy {
+export class CanvasManagerService extends Destroy {
   nodes: { [name: string]: NodeGroup } = {};
 
   constructor(private drawing: DrawingService, private canvas: CanvasService) {
@@ -40,6 +40,13 @@ export class NodeManagerService extends Destroy {
     //Check if target is already connected
     if (target.connectionIn) {
       this.removeConnection(target.connectionIn);
+    }
+    //Check for a circular connection
+    const circularConnection = target.connectionsOut.find(
+      (c) => c.target === source
+    );
+    if (circularConnection) {
+      this.removeConnection(circularConnection);
     }
 
     const arrow = this.drawing.createConnection(source, target);

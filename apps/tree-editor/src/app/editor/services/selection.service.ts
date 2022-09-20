@@ -8,7 +8,7 @@ import { NodeGroup } from '../drawing/node.group';
 import { getHitNodeGroup } from '../drawing/utils';
 import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
-import { NodeManagerService } from './node-manager.service';
+import { CanvasManagerService } from './canvas-manager.service';
 
 @Injectable()
 export class SelectionService extends Destroy {
@@ -17,7 +17,7 @@ export class SelectionService extends Destroy {
 
   constructor(
     private input: InputService,
-    private manager: NodeManagerService,
+    private manager: CanvasManagerService,
     private canvas: CanvasService
   ) {
     super();

@@ -13,7 +13,7 @@ import { SandboxService } from './services/sandbox.service';
 import { LeftPanelComponent } from './components/left-panel/left-panel.component';
 import { DrawingService } from './services/drawing.service';
 import { SelectionService } from './services/selection.service';
-import { NodeManagerService } from './services/node-manager.service';
+import { CanvasManagerService } from './services/canvas-manager.service';
 import { ConnectionService } from './services/connection.service';
 import { RightPanelComponent } from './components/right-panel/right-panel.component';
 import { ShortcutService } from './services/shortcut.service';
@@ -34,7 +34,7 @@ import { ShortcutService } from './services/shortcut.service';
     SandboxService,
     DrawingService,
     SelectionService,
-    NodeManagerService,
+    CanvasManagerService,
     ConnectionService,
   ],
 })

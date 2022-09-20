@@ -14,4 +14,10 @@ export class EditorSettings {
   static connectionLineColor = '#2F2F2F';
   static connectionArrowSize = 5;
   static connectionArrowLineWidth = 5;
+  static connectionMargin = 15;
+
+  static anchorFillColor = '#ffffff';
+  static anchorBorderColor = '#6D6D6D';
+  static anchorLineWidth = 3;
+  static anchorSize = 10;
 }

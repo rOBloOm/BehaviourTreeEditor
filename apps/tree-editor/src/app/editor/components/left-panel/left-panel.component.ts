@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { CanvasService } from '../../services/canvas.service';
-import { NodeManagerService } from '../../services/node-manager.service';
+import { CanvasManagerService } from '../../services/canvas-manager.service';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -9,7 +9,7 @@ import { NodeManagerService } from '../../services/node-manager.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LeftPanelComponent implements OnInit {
-  constructor(private manager: NodeManagerService) {}
+  constructor(private manager: CanvasManagerService) {}
 
   ngOnInit(): void {}
 
