@@ -1,7 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { map, Observable, takeUntil } from 'rxjs';
 import { Destroy } from '../../../shared/components/destory';
 import { SelectionService } from '../../services/selection.service';
+import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'sp-editor-right-panel',

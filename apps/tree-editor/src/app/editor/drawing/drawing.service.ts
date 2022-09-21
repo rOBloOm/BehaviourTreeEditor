@@ -3,9 +3,11 @@ import Two from 'two.js';
 import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
 import { Rectangle } from 'two.js/src/shapes/rectangle';
-import { NodeGroup, NodeGroupType } from '../drawing/node.group';
-import { EditorSettings } from '../drawing/settings';
-import { CanvasService } from './canvas.service';
+import { NodeGroup, NodeGroupType } from './node.group';
+import { EditorSettings } from './settings';
+import { CanvasService } from '../services/canvas.service';
+import { throwIfEmpty } from 'rxjs';
+import { root } from 'two.js/src/utils/root';
 
 @Injectable()
 export class DrawingService {
@@ -28,30 +30,70 @@ export class DrawingService {
 
   constructor(private canvas: CanvasService) {}
 
-  createActionNode(x: number, y: number, text: string): NodeGroup {
-    const width = 50;
-    const heigth = 20;
+  createRootNode(x: number, y: number): NodeGroup {
+    //Text Shape
+    const rootText = this.canvas.two.makeText('@', x, y, this.textStyle);
 
+    //Root Shape
+    const rootShape = this.canvas.two.makeRoundedRectangle(
+      x,
+      y,
+      EditorSettings.rootNodeWidth,
+      EditorSettings.nodeHeight,
+      EditorSettings.nodeRadius
+    );
+    rootShape.stroke = EditorSettings.nodeBorderColor;
+    rootShape.fill = EditorSettings.rootFillColor;
+    //Anchor Shape
+    const outAnchorShape = this.createAnchor(
+      x,
+      y + EditorSettings.nodeHeight / 2 + EditorSettings.nodeLineWith
+    );
+
+    //Node Group
+    //NodeGroup
+    const nodeGroup = this.canvas.two.makeGroup([
+      outAnchorShape,
+      rootShape,
+      rootText,
+    ]);
+
+    const ng = new NodeGroup(
+      nodeGroup,
+      rootShape,
+      rootText,
+      NodeGroupType.Root
+    );
+
+    ng.outAnchor = outAnchorShape;
+    return ng;
+  }
+
+  createActionNode(x: number, y: number, text: string): NodeGroup {
+    //Text Shape
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
     const textBoundsWidth =
       actionText.getBoundingClientRect().width / this.canvas.zui.scale;
+    //Action Shape
     const actionShape = this.canvas.two.makeRoundedRectangle(
       x,
       y,
       this.getRectWidth(textBoundsWidth),
-      width,
-      heigth
-    );
-
-    const anchorShape = this.createAnchor(
-      x,
-      y - heigth - EditorSettings.anchorLineWidth - EditorSettings.nodeLineWith
+      EditorSettings.nodeHeight,
+      EditorSettings.nodeRadius
     );
 
     actionShape.fill = EditorSettings.nodeActionFillColor;
     actionShape.stroke = EditorSettings.nodeBorderColor;
     actionShape.linewidth = EditorSettings.nodeLineWith;
 
+    //Anchor Shape
+    const anchorShape = this.createAnchor(
+      x,
+      y - EditorSettings.nodeHeight / 2 - EditorSettings.anchorLineWidth
+    );
+
+    //NodeGroup
     const nodeGroup = this.canvas.two.makeGroup([
       anchorShape,
       actionShape,
@@ -69,9 +111,6 @@ export class DrawingService {
   }
 
   createCompositeNode(x: number, y: number, text: string): NodeGroup {
-    const height = 20;
-    const width = 50;
-
     //Text Shape
     const actionText = this.canvas.two.makeText(
       '=> ' + text + ' =>',
@@ -86,8 +125,8 @@ export class DrawingService {
       x,
       y,
       this.getRectWidth(textBoundsWidth),
-      width,
-      height
+      EditorSettings.nodeHeight,
+      EditorSettings.nodeRadius
     );
 
     actionShape.fill = EditorSettings.nodeCompositeFillColor;
@@ -97,12 +136,12 @@ export class DrawingService {
     //Anchor Shapes
     const inAnchorShape = this.createAnchor(
       x,
-      y - height - EditorSettings.anchorLineWidth - EditorSettings.nodeLineWith
+      y - EditorSettings.nodeHeight / 2 - EditorSettings.nodeLineWith
     );
 
     const outAnchorShape = this.createAnchor(
       x,
-      y + height + EditorSettings.anchorLineWidth + EditorSettings.nodeLineWith
+      y + EditorSettings.nodeHeight / 2 + EditorSettings.nodeLineWith
     );
 
     const nodeGroup = this.canvas.two.makeGroup([

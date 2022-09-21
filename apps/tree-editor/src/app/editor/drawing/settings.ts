@@ -1,4 +1,10 @@
 export class EditorSettings {
+  static nodeHeight = 40;
+  static nodeRadius = 20;
+
+  static rootFillColor = '#AFAFAF';
+  static rootNodeWidth = 70;
+
   static nodeDecoratorGillColor = '#A4CCFB';
   static nodeConditionFillColor = '#cfc511';
   static nodeCompositeFillColor = '#A4CCFB';

@@ -59,13 +59,22 @@ export class NodeGroup {
       case NodeGroupType.Condition:
         return (
           sourceType == NodeGroupType.Composite ||
-          sourceType == NodeGroupType.Decorator
+          sourceType == NodeGroupType.Decorator ||
+          sourceType == NodeGroupType.Root
         );
     }
   }
 
   acceptOutgoing(): boolean {
     return this.outAnchor !== undefined;
+  }
+
+  acceptMultipleOutgoing(): boolean {
+    return (
+      this.outAnchor !== undefined &&
+      this.type !== NodeGroupType.Root &&
+      this.type !== NodeGroupType.Decorator
+    );
   }
 }
 

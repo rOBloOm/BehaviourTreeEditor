@@ -11,12 +11,13 @@ import { EditorComponent } from './components/editor/editor.component';
 import { InputService } from './services/input.service';
 import { SandboxService } from './services/sandbox.service';
 import { LeftPanelComponent } from './components/left-panel/left-panel.component';
-import { DrawingService } from './services/drawing.service';
+import { DrawingService } from './drawing/drawing.service';
 import { SelectionService } from './services/selection.service';
 import { CanvasManagerService } from './services/canvas-manager.service';
 import { ConnectionService } from './services/connection.service';
 import { RightPanelComponent } from './components/right-panel/right-panel.component';
 import { ShortcutService } from './services/shortcut.service';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { ShortcutService } from './services/shortcut.service';
     LeftPanelComponent,
     RightPanelComponent,
   ],
-  imports: [CommonModule, EditorRoutingModule, SharedModule],
+  imports: [CommonModule, EditorRoutingModule, SharedModule, TranslateModule],
   providers: [
     CanvasService,
     DragService,

@@ -4,7 +4,7 @@ import { Destroy } from '../../shared/components/destory';
 import { NodeConnection } from '../drawing/node.connection';
 import { NodeGroup } from '../drawing/node.group';
 import { CanvasService } from './canvas.service';
-import { DrawingService } from './drawing.service';
+import { DrawingService } from '../drawing/drawing.service';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
@@ -24,6 +24,11 @@ export class CanvasManagerService extends Destroy {
     this.clear();
   }
 
+  addRootNode(x: number, y: number) {
+    const node = this.drawing.createRootNode(x, y);
+    this.nodes[node.id] = node;
+  }
+
   addCompositeNode(x: number, y: number, text: string): void {
     const node = this.drawing.createCompositeNode(x, y, text);
     this.nodes[node.id] = node;
@@ -41,6 +46,13 @@ export class CanvasManagerService extends Destroy {
     if (target.connectionIn) {
       this.removeConnection(target.connectionIn);
     }
+    //Check for multiple outgoing connections
+    if (!source.acceptMultipleOutgoing()) {
+      if (source.connectionsOut.length > 0) {
+        this.removeConnection(source.connectionsOut[0]);
+      }
+    }
+
     //Check for a circular connection
     const circularConnection = target.connectionsOut.find(
       (c) => c.target === source

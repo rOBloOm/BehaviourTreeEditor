@@ -7,7 +7,8 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx serve",
     "build": "nx build",
-    "test": "nx test"
+    "test": "nx test",
+    "extract:editor": "ngx-translate-extract --input ./apps/tree-editor/src ./libs --output ./apps/tree-editor/src/assets/i18n/de.json ./apps/tree-editor/src/assets/i18n/en.json ./apps/tree-editor/src/assets/i18n/it.json ./apps/tree-editor/src/assets/i18n/fr.json --clean --sort --f namespaced-json --fi=\"  \" --marker _"
   },
   "private": true,
   "dependencies": {
@@ -21,6 +22,7 @@
     "@angular/platform-browser": "~14.2.0",
     "@angular/platform-browser-dynamic": "~14.2.0",
     "@angular/router": "~14.2.0",
+    "@ngx-translate/core": "^14.0.0",
     "@nrwl/angular": "14.7.3",
     "@types/lodash-es": "^4.17.6",
     "@types/two.js": "^0.7.5",
@@ -40,6 +42,8 @@
     "@angular/cli": "~14.2.0",
     "@angular/compiler-cli": "~14.2.0",
     "@angular/language-service": "~14.2.0",
+    "@bartholomej/ngx-translate-extract": "^8.0.2",
+    "@biesbjerg/ngx-translate-extract-marker": "^1.0.0",
     "@nrwl/cli": "14.7.3",
     "@nrwl/cypress": "14.7.3",
     "@nrwl/eslint-plugin-nx": "14.7.3",

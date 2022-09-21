@@ -22,7 +22,8 @@ export class ShortcutService extends Destroy {
   }
 
   init() {
-    this.registerAdd();
+    this.registerAddAction();
+    this.registerAddSelector();
     this.registerDelete();
     this.trackMouse();
   }
@@ -39,12 +40,21 @@ export class ShortcutService extends Destroy {
       });
   }
 
-  private registerAdd(): void {
+  private registerAddAction(): void {
     this.input.keyDown$
       .pipe(filter((keydown) => keydown.key === 'a'))
       .subscribe((event) => {
         const pos = this.canvas.zui.clientToSurface(this.mouseX, this.mouseY);
         this.manager.addActionNode(pos.x, pos.y, 'AWholeNewNode');
+      });
+  }
+
+  private registerAddSelector(): void {
+    this.input.keyDown$
+      .pipe(filter((keydown) => keydown.key === 's'))
+      .subscribe((event) => {
+        const pos = this.canvas.zui.clientToSurface(this.mouseX, this.mouseY);
+        this.manager.addCompositeNode(pos.x, pos.y, 'Selector');
       });
   }
 
