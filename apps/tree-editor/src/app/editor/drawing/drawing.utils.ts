@@ -1,6 +1,6 @@
 import Two from 'two.js';
 import { Shape } from 'two.js/src/shape';
-import { NodeGroup } from './node.group';
+import { NodeGroup } from './models/node-group.model';
 
 export function getHitNodeGroup(
   two: Two,

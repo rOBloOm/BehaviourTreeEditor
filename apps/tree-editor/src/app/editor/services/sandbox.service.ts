@@ -4,6 +4,7 @@ import { ZUI } from 'two.js/extras/jsm/zui';
 import { CanvasService } from './canvas.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import { DrawingService } from '../drawing/drawing.service';
+import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 
 @Injectable()
 export class SandboxService {

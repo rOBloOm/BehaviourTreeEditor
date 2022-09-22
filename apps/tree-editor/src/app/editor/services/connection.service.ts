@@ -3,9 +3,9 @@ import { filter, takeUntil } from 'rxjs';
 import { ZUI } from 'two.js/extras/jsm/zui';
 import { Path } from 'two.js/src/path';
 import { Destroy } from '../../shared/components/destory';
-import { NodeGroup } from '../drawing/node.group';
-import { EditorSettings } from '../drawing/settings';
-import { getHitNodeGroup } from '../drawing/utils';
+import { NodeGroup } from '../drawing/models/node-group.model';
+import { EditorSettings } from '../drawing/drawing.settings';
+import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
 import { CanvasManagerService } from './canvas-manager.service';
@@ -52,8 +52,8 @@ export class ConnectionService extends Destroy {
           if (arrow) {
             arrow.remove();
           }
-          const sx = source.group.position.x + source.outAnchor.position.x;
-          const sy = source.group.position.y + source.outAnchor.position.y;
+          const sx = source.group.position.x + source.anchorOut.position.x;
+          const sy = source.group.position.y + source.anchorOut.position.y;
           const pos = this.canvas.zui.clientToSurface(mouseMove.x, mouseMove.y);
 
           const direction = new Two.Vector(pos.x - sx, pos.y - sy).normalize();

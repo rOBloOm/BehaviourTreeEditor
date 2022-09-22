@@ -4,7 +4,7 @@ import { BehaviorSubject, combineLatest, filter, takeUntil } from 'rxjs';
 import Two from 'two.js';
 import { Shape } from 'two.js/src/shape';
 import { Destroy } from '../../shared/components/destory';
-import { getHitNodeGroup } from '../drawing/utils';
+import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
 import { DrawingService } from '../drawing/drawing.service';
 import { InputService } from './input.service';

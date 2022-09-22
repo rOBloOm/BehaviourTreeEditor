@@ -1,11 +1,9 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
-import { BehaviorSubject, filter, Subject, takeUntil } from 'rxjs';
-import Two from 'two.js';
-import { ZUI } from 'two.js/extras/jsm/zui';
+import { BehaviorSubject, filter, takeUntil } from 'rxjs';
 import { Destroy } from '../../shared/components/destory';
-import { NodeGroup } from '../drawing/node.group';
-import { getHitNodeGroup } from '../drawing/utils';
+import { NodeGroup } from '../drawing/models/node-group.model';
+import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
 import { InputService } from './input.service';
 import { CanvasManagerService } from './canvas-manager.service';

@@ -1,14 +1,21 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
 import { Destroy } from '../../shared/components/destory';
-import { NodeConnection } from '../drawing/node.connection';
-import { NodeGroup } from '../drawing/node.group';
+import { NodeConnection } from '../drawing/models/node-connection.model';
+import { NodeGroup } from '../drawing/models/node-group.model';
 import { CanvasService } from './canvas.service';
 import { DrawingService } from '../drawing/drawing.service';
+import { SelectionService } from './selection.service';
+import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
   nodes: { [name: string]: NodeGroup } = {};
+
+  private _root: NodeGroup;
+  get root(): NodeGroup {
+    return this._root;
+  }
 
   constructor(private drawing: DrawingService, private canvas: CanvasService) {
     super();
@@ -24,8 +31,9 @@ export class CanvasManagerService extends Destroy {
     this.clear();
   }
 
-  addRootNode(x: number, y: number) {
+  addRootNode(x: number, y: number): void {
     const node = this.drawing.createRootNode(x, y);
+    this._root = node;
     this.nodes[node.id] = node;
   }
 
@@ -39,9 +47,19 @@ export class CanvasManagerService extends Destroy {
     this.nodes[node.id] = node;
   }
 
+  addDecorator(x: number, y: number, type: DecoratorType): void {
+    const node = this.drawing.createDecoratorNode(x, y, type);
+    this.nodes[node.id] = node;
+  }
+
+  addTree(x: number, y: number, text: string): void {
+    const node = this.drawing.createTreeNode(x, y, text);
+    this.nodes[node.id] = node;
+  }
+
   connect(source: NodeGroup, target: NodeGroup) {
     //Check if target accepts incoming type
-    if (!target.acceptIncoming(source.type)) return;
+    if (!target.acceptIncoming(source.nodeType)) return;
     //Check if target is already connected
     if (target.connectionIn) {
       this.removeConnection(target.connectionIn);
@@ -87,10 +105,16 @@ export class CanvasManagerService extends Destroy {
 
   removeNode(id: string) {
     const node = this.nodes[id];
+    if (!node.canDelete()) return;
     if (node) {
       this.removeAllConnections(node);
       node.group.remove();
       delete this.nodes[id];
     }
+  }
+
+  canDelete(id: string) {
+    const node = this.nodes[id];
+    return node && node.canDelete();
   }
 }

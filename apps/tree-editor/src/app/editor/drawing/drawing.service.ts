@@ -1,13 +1,16 @@
 import { Injectable } from '@angular/core';
 import Two from 'two.js';
-import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
-import { Rectangle } from 'two.js/src/shapes/rectangle';
-import { NodeGroup, NodeGroupType } from './node.group';
-import { EditorSettings } from './settings';
+import { NodeGroup } from './models/node-group.model';
+import { EditorSettings } from './drawing.settings';
 import { CanvasService } from '../services/canvas.service';
-import { throwIfEmpty } from 'rxjs';
-import { root } from 'two.js/src/utils/root';
+import { NodeGroupType } from './enums/node-group-type.enum';
+import { RootNodeGroup } from './models/root-node-group.model';
+import { ActionNodeGroup } from './models/action-node-group.model';
+import { CompositeNodeGroup } from './models/composite-node-group.model';
+import { DecoratorNodeGroup } from './models/decorator-node-group.model';
+import { DecoratorType } from './enums/decorator-type.enum';
+import { TreeNodeGroup } from './models/tree-node-group.model';
 
 @Injectable()
 export class DrawingService {
@@ -58,15 +61,7 @@ export class DrawingService {
       rootText,
     ]);
 
-    const ng = new NodeGroup(
-      nodeGroup,
-      rootShape,
-      rootText,
-      NodeGroupType.Root
-    );
-
-    ng.outAnchor = outAnchorShape;
-    return ng;
+    return new RootNodeGroup(nodeGroup, rootShape, rootText, outAnchorShape);
   }
 
   createActionNode(x: number, y: number, text: string): NodeGroup {
@@ -100,14 +95,7 @@ export class DrawingService {
       actionText,
     ]);
 
-    const ng = new NodeGroup(
-      nodeGroup,
-      actionShape,
-      actionText,
-      NodeGroupType.Action
-    );
-    ng.inAnchor = anchorShape;
-    return ng;
+    return new ActionNodeGroup(nodeGroup, actionShape, actionText, anchorShape);
   }
 
   createCompositeNode(x: number, y: number, text: string): NodeGroup {
@@ -118,7 +106,8 @@ export class DrawingService {
       y,
       this.textStyle
     );
-    const textBoundsWidth = actionText.getBoundingClientRect().width;
+    const textBoundsWidth =
+      actionText.getBoundingClientRect().width / this.canvas.zui.scale;
 
     //Action Shape
     const actionShape = this.canvas.two.makeRoundedRectangle(
@@ -151,22 +140,108 @@ export class DrawingService {
       actionText,
     ]);
 
-    const ng = new NodeGroup(
+    return new CompositeNodeGroup(
       nodeGroup,
       actionShape,
       actionText,
-      NodeGroupType.Composite
+      inAnchorShape,
+      outAnchorShape
     );
-    ng.inAnchor = inAnchorShape;
-    ng.outAnchor = outAnchorShape;
-    return ng;
+  }
+
+  createDecoratorNode(x: number, y: number, type: DecoratorType): NodeGroup {
+    const w = EditorSettings.nodeDecoratorWidth;
+    const h = EditorSettings.nodeDecoratorHeight;
+
+    //Decorator Shape
+    const decoratorShape = this.canvas.two.makePath(
+      x,
+      y + h / 2,
+      x + w / 2,
+      y,
+      x,
+      y - h / 2,
+      x - w / 2,
+      y,
+      x,
+      y + h / 2
+    );
+
+    decoratorShape.fill = EditorSettings.nodeDecoratorFillColor;
+    decoratorShape.stroke = EditorSettings.nodeBorderColor;
+
+    //Text Shape
+    const textShape = this.canvas.two.makeText('Failer', x, y, this.textStyle);
+
+    //Anchor Shapes
+    const inAnchorShape = this.createAnchor(x, y - h / 2);
+
+    const outAnchorShape = this.createAnchor(x, y + h / 2);
+
+    //Node Group
+    const nodeGroup = this.canvas.two.makeGroup([
+      inAnchorShape,
+      outAnchorShape,
+      decoratorShape,
+      textShape,
+    ]);
+
+    return new DecoratorNodeGroup(
+      nodeGroup,
+      decoratorShape,
+      textShape,
+      type,
+      inAnchorShape,
+      outAnchorShape
+    );
+  }
+
+  createTreeNode(x: number, y: number, text: string): NodeGroup {
+    //Text Shape
+    const textShape = this.canvas.two.makeText(text, x, y, this.textStyle);
+    const textBoundsWidth =
+      textShape.getBoundingClientRect().width / this.canvas.zui.scale;
+
+    //Tree Shape
+    const w = textBoundsWidth;
+    const h = EditorSettings.nodeHeight;
+
+    const treeShape = this.canvas.two.makePath(
+      x - w / 2,
+      y,
+      x - w / 2 + 10,
+      y - h / 2,
+      x + w / 2 - 10,
+      y - h / 2,
+      x + w / 2,
+      y,
+      x + w / 2 - 10,
+      y + h / 2,
+      x - w / 2 + 10,
+      y + h / 2
+    );
+
+    treeShape.fill = EditorSettings.treeFillColor;
+    treeShape.stroke = EditorSettings.nodeBorderColor;
+
+    //Anchor Shapes
+    const inAnchorShape = this.createAnchor(x, y - h / 2);
+
+    //Node Group
+    const nodeGroup = this.canvas.two.makeGroup([
+      inAnchorShape,
+      treeShape,
+      textShape,
+    ]);
+
+    return new TreeNodeGroup(nodeGroup, treeShape, textShape, inAnchorShape);
   }
 
   createConnection(source: NodeGroup, target: NodeGroup): Path {
-    const xs = source.group.position.x + source.outAnchor.position.x;
-    const ys = source.group.position.y + source.outAnchor.position.y;
-    const xt = target.group.position.x + target.inAnchor.position.x;
-    const yt = target.group.position.y + target.inAnchor.position.y;
+    const xs = source.group.position.x + source.anchorOut.position.x;
+    const ys = source.group.position.y + source.anchorOut.position.y;
+    const xt = target.group.position.x + target.anchorIn.position.x;
+    const yt = target.group.position.y + target.anchorIn.position.y;
 
     const direction = new Two.Vector(xt - xs, yt - ys).normalize();
 
@@ -194,6 +269,7 @@ export class DrawingService {
 
   private getRectWidth(textBoundsWidth: number): number {
     if (textBoundsWidth < 40) return 40;
+    if (textBoundsWidth < 400) return textBoundsWidth + 20;
     if (textBoundsWidth < 700) return textBoundsWidth;
     return textBoundsWidth * 0.7;
   }
