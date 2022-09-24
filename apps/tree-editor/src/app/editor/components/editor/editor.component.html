@@ -1,5 +1,8 @@
-<div #container fxFlexFill fxLayout="row" tabindex="0">
-  <sp-editor-left-panel></sp-editor-left-panel>
-  <sp-editor-nodes-panel fxFlex></sp-editor-nodes-panel>
-  <sp-editor-right-panel></sp-editor-right-panel>
+<div #container fxFlexFill fxLayout="column" tabindex="0">
+  <sp-editor-menu-bar></sp-editor-menu-bar>
+  <div fxLayout="row" fxFlex>
+    <sp-editor-left-panel></sp-editor-left-panel>
+    <sp-editor-nodes-panel fxFlex></sp-editor-nodes-panel>
+    <sp-editor-right-panel></sp-editor-right-panel>
+  </div>
 </div>

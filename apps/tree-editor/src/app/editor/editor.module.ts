@@ -18,6 +18,7 @@ import { ConnectionService } from './services/connection.service';
 import { RightPanelComponent } from './components/right-panel/right-panel.component';
 import { ShortcutService } from './services/shortcut.service';
 import { TranslateModule } from '@ngx-translate/core';
+import { EditorMenuBarComponent } from './components/editor-menu-bar/editor-menu-bar.component';
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { TranslateModule } from '@ngx-translate/core';
     EditorComponent,
     LeftPanelComponent,
     RightPanelComponent,
+    EditorMenuBarComponent,
   ],
   imports: [CommonModule, EditorRoutingModule, SharedModule, TranslateModule],
   providers: [

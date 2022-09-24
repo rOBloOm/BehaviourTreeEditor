@@ -1,6 +1,7 @@
 .RightPanel {
+    z-index: 20;
     background-color: var(--accent-gb-color);
-    z-index: 2;    
+    box-shadow: 0 0 16px 0 #0b0b0b; 
 }
 
 .title {

@@ -1,0 +1,67 @@
+.menubar { 
+    z-index: 30;
+    background-color: var(--menubar-bg-color);
+    height: 35px;    
+    border-bottom: 1px solid var(--color-dark1);
+    box-shadow: 0 0 16px 5px var(--color-dark1);
+    color: #fff;
+    ul { 
+        margin: 0;
+        padding: 0;   
+        overflow: hidden;        
+        li {    
+            cursor: pointer;        
+            list-style: none;              
+            a {   
+                display: inline-block; 
+                i {
+                    margin-top: 9px
+                }
+            }                      
+        }
+        li:hover { 
+            background-color: var(--color-dark1);
+        }
+    }
+}
+
+.fastlink {
+  color: #FFF;
+  padding: 0 6px 0 7px;
+  border-right: 1px solid #333;  
+}
+
+//Main Menu
+.menubar ul li ul {
+  display: none;
+  position: absolute;
+  background-color: var(--color-dark4);  
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 20;
+}
+
+.menubar ul ul {  
+  background: var(--color-dark1);
+  min-width: 235px;
+  border: 1px solid var(--color-dark2);
+}
+
+.menubar ul li a {
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+//Show Submenu on hover
+.menubar ul li:hover ul {
+  display:block;
+}
+
+//Submenu Link Styling
+.menubar ul ul li a {
+  height: 35px;
+  padding: 0 10px;
+  line-height: 35px;
+  color: #fff;
+  text-align: left;
+}
