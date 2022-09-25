@@ -17,6 +17,18 @@ export abstract class NodeGroup {
     return this.group.id;
   }
 
+  get x(): number {
+    return this.group.position.x + this.shape.position.x;
+  }
+
+  get y(): number {
+    return this.group.position.y + this.shape.position.y;
+  }
+
+  get name(): string {
+    return this.text.value;
+  }
+
   selected = false;
 
   abstract get nodeType(): NodeGroupType;

@@ -11,9 +11,9 @@
     <li>
       <a fxFill fxLayoutAlign="center center">Tree</a>
       <ul>
-        <li><a>Save</a></li>
-        <li><a>Export</a></li>
-        <li><a>Import</a></li>
+        <li><a (click)="saveActiveTree()">Save</a></li>
+        <li><a (click)="loadTree()">Load</a></li>
+        <li><a (click)="clearTree()">Clear</a></li>
       </ul>
     </li>
   </ul>

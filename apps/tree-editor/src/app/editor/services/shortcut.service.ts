@@ -7,6 +7,7 @@ import { SelectionService } from './selection.service';
 import { CanvasService } from './canvas.service';
 import Two from 'two.js';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
+import { CompositeType } from '../drawing/enums/composite-type.enum';
 
 @Injectable()
 export class ShortcutService extends Destroy {
@@ -24,6 +25,7 @@ export class ShortcutService extends Destroy {
 
   init() {
     this.registerAddAction();
+    this.registerAddCondition();
     this.registerAddSelector();
     this.registerAddDecorator();
     this.registerDelete();
@@ -33,7 +35,9 @@ export class ShortcutService extends Destroy {
 
   private registerDelete(): void {
     this.input.keyDown$
-      .pipe(filter((keydown) => keydown.key === 'Delete'))
+      .pipe(
+        filter((keydown) => keydown.key === 'Delete' || keydown.key === 'x')
+      )
       .subscribe(() => {
         if (this.selection.currentSelected) {
           const id = this.selection.currentSelected.id;
@@ -49,7 +53,21 @@ export class ShortcutService extends Destroy {
       .pipe(filter((keydown) => keydown.key === 'a'))
       .subscribe((event) => {
         const pos = this.canvas.zui.clientToSurface(this.mouseX, this.mouseY);
-        this.manager.addActionNode(pos.x, pos.y, 'AWholeNewNode');
+        this.manager.addActionNode(pos.x, pos.y, 'GetMeSomeAction', 'action01');
+      });
+  }
+
+  private registerAddCondition(): void {
+    this.input.keyDown$
+      .pipe(filter((keydown) => keydown.key === 'c'))
+      .subscribe((event) => {
+        const pos = this.canvas.zui.clientToSurface(this.mouseX, this.mouseY);
+        this.manager.addConditionNode(
+          pos.x,
+          pos.y,
+          'IsItMoving?',
+          'condition01'
+        );
       });
   }
 
@@ -58,7 +76,7 @@ export class ShortcutService extends Destroy {
       .pipe(filter((keydown) => keydown.key === 's'))
       .subscribe((event) => {
         const pos = this.canvas.zui.clientToSurface(this.mouseX, this.mouseY);
-        this.manager.addCompositeNode(pos.x, pos.y, 'Selector');
+        this.manager.addCompositeNode(pos.x, pos.y, CompositeType.Selector);
       });
   }
 
@@ -67,7 +85,7 @@ export class ShortcutService extends Destroy {
       .pipe(filter((keydown) => keydown.key === 'd'))
       .subscribe((event) => {
         const pos = this.canvas.zui.clientToSurface(this.mouseX, this.mouseY);
-        this.manager.addDecorator(pos.x, pos.y, DecoratorType.Failer);
+        this.manager.addDecorator(pos.x, pos.y, DecoratorType.Inverter);
       });
   }
 

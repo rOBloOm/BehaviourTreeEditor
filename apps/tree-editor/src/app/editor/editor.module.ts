@@ -19,6 +19,9 @@ import { RightPanelComponent } from './components/right-panel/right-panel.compon
 import { ShortcutService } from './services/shortcut.service';
 import { TranslateModule } from '@ngx-translate/core';
 import { EditorMenuBarComponent } from './components/editor-menu-bar/editor-menu-bar.component';
+import { StorageService } from '../data/services/storage.service';
+import { CommandService } from './services/command.service';
+import { ImportService } from '../data/services/import.service';
 
 @NgModule({
   declarations: [
@@ -39,6 +42,9 @@ import { EditorMenuBarComponent } from './components/editor-menu-bar/editor-menu
     SelectionService,
     CanvasManagerService,
     ConnectionService,
+    StorageService,
+    CommandService,
+    ImportService,
   ],
 })
 export class EditorModule {}

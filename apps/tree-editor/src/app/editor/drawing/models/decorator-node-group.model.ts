@@ -15,9 +15,9 @@ export class DecoratorNodeGroup extends NodeGroup {
     group: Group,
     shape: Path,
     text: Text,
-    public decoratorType: DecoratorType,
     anchorIn: Shape,
-    anchorOut: Shape
+    anchorOut: Shape,
+    public decoratorType: DecoratorType
   ) {
     super(group, shape, text);
     this.anchorIn = anchorIn;
@@ -27,7 +27,8 @@ export class DecoratorNodeGroup extends NodeGroup {
   acceptIncoming(sourceType: NodeGroupType) {
     return (
       sourceType === NodeGroupType.Composite ||
-      sourceType === NodeGroupType.Condition
+      sourceType === NodeGroupType.Condition ||
+      sourceType === NodeGroupType.Root
     );
   }
 

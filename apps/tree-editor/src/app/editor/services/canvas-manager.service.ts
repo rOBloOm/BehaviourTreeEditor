@@ -7,6 +7,7 @@ import { CanvasService } from './canvas.service';
 import { DrawingService } from '../drawing/drawing.service';
 import { SelectionService } from './selection.service';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
+import { CompositeType } from '../drawing/enums/composite-type.enum';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
@@ -25,41 +26,56 @@ export class CanvasManagerService extends Destroy {
     this.canvas.two.clear();
   }
 
-  getTree(): void {}
-
-  applyTree(): void {
-    this.clear();
-  }
-
-  addRootNode(x: number, y: number): void {
+  addRootNode(x: number, y: number): NodeGroup {
     const node = this.drawing.createRootNode(x, y);
     this._root = node;
     this.nodes[node.id] = node;
+    return node;
   }
 
-  addCompositeNode(x: number, y: number, text: string): void {
-    const node = this.drawing.createCompositeNode(x, y, text);
+  addCompositeNode(x: number, y: number, type: CompositeType): NodeGroup {
+    const node = this.drawing.createCompositeNode(x, y, type);
     this.nodes[node.id] = node;
+    return node;
   }
 
-  addActionNode(x: number, y: number, text: string): void {
-    const node = this.drawing.createActionNode(x, y, text);
+  addActionNode(
+    x: number,
+    y: number,
+    text: string,
+    customReference: string
+  ): NodeGroup {
+    const node = this.drawing.createActionNode(x, y, text, customReference);
     this.nodes[node.id] = node;
+    return node;
   }
 
-  addDecorator(x: number, y: number, type: DecoratorType): void {
+  addConditionNode(
+    x: number,
+    y: number,
+    text: string,
+    customReference: string
+  ): NodeGroup {
+    const node = this.drawing.createConditionNode(x, y, text, customReference);
+    this.nodes[node.id] = node;
+    return node;
+  }
+
+  addDecorator(x: number, y: number, type: DecoratorType): NodeGroup {
     const node = this.drawing.createDecoratorNode(x, y, type);
     this.nodes[node.id] = node;
+    return node;
   }
 
-  addTree(x: number, y: number, text: string): void {
+  addTree(x: number, y: number, text: string): NodeGroup {
     const node = this.drawing.createTreeNode(x, y, text);
     this.nodes[node.id] = node;
+    return node;
   }
 
-  connect(source: NodeGroup, target: NodeGroup) {
+  connect(source: NodeGroup, target: NodeGroup): NodeConnection | undefined {
     //Check if target accepts incoming type
-    if (!target.acceptIncoming(source.nodeType)) return;
+    if (!target.acceptIncoming(source.nodeType)) return undefined;
     //Check if target is already connected
     if (target.connectionIn) {
       this.removeConnection(target.connectionIn);
@@ -83,6 +99,7 @@ export class CanvasManagerService extends Destroy {
     const connection = new NodeConnection(source, target, arrow);
     source.connectionsOut.push(connection);
     target.connectionIn = connection;
+    return connection;
   }
 
   removeAllConnections(node: NodeGroup) {

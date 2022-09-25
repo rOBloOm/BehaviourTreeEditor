@@ -7,6 +7,8 @@
   (click)="clicked($event)"
 >
   <h3 fxLayout="row" fxLayoutAlign="center" class="title">
-    {{ selectedTitle$ | async }}
+    {{ (selected$ | async)?.name }}
   </h3>
+  <p>X: {{ (selected$ | async)?.x }}</p>
+  <p>y: {{ (selected$ | async)?.y }}</p>
 </div>

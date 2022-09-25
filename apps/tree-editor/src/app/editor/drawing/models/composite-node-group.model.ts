@@ -4,6 +4,7 @@ import { NodeGroup } from './node-group.model';
 import { Text } from 'two.js/src/text';
 import { Path } from 'two.js/src/path';
 import { Shape } from 'two.js/src/shape';
+import { CompositeType } from '../enums/composite-type.enum';
 
 export class CompositeNodeGroup extends NodeGroup {
   get nodeType(): NodeGroupType {
@@ -15,7 +16,8 @@ export class CompositeNodeGroup extends NodeGroup {
     shape: Path,
     text: Text,
     anchorIn: Shape,
-    anchorOut: Shape
+    anchorOut: Shape,
+    public compositeType: CompositeType
   ) {
     super(group, shape, text);
     this.anchorIn = anchorIn;

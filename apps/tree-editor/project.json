@@ -17,7 +17,10 @@
           "apps/tree-editor/src/favicon.ico",
           "apps/tree-editor/src/assets"
         ],
-        "styles": ["apps/tree-editor/src/styles.scss"],
+        "styles": [
+          "apps/tree-editor/src/styles.scss",
+          "node_modules/ngx-toastr/toastr.css"
+        ],
         "scripts": []
       },
       "configurations": {

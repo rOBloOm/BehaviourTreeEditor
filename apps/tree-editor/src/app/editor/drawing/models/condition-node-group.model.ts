@@ -3,9 +3,10 @@ import { Path } from 'two.js/src/path';
 import { Shape } from 'two.js/src/shape';
 import { Text } from 'two.js/src/text';
 import { NodeGroupType } from '../enums/node-group-type.enum';
+import { ICustomReference } from '../interfaces/custom-reference.interface';
 import { NodeGroup } from './node-group.model';
 
-export class ConditionNodeGroup extends NodeGroup {
+export class ConditionNodeGroup extends NodeGroup implements ICustomReference {
   get nodeType(): NodeGroupType {
     return NodeGroupType.Condition;
   }
@@ -15,11 +16,10 @@ export class ConditionNodeGroup extends NodeGroup {
     shape: Path,
     text: Text,
     anchorIn: Shape,
-    anchorOut: Shape
+    public customReference: string
   ) {
     super(group, shape, text);
     this.anchorIn = anchorIn;
-    this.anchorOut = anchorOut;
   }
 
   acceptIncoming(sourceType: NodeGroupType) {

@@ -11,6 +11,8 @@ import { CompositeNodeGroup } from './models/composite-node-group.model';
 import { DecoratorNodeGroup } from './models/decorator-node-group.model';
 import { DecoratorType } from './enums/decorator-type.enum';
 import { TreeNodeGroup } from './models/tree-node-group.model';
+import { CompositeType } from './enums/composite-type.enum';
+import { ConditionNodeGroup } from './models/condition-node-group.model';
 
 @Injectable()
 export class DrawingService {
@@ -64,7 +66,12 @@ export class DrawingService {
     return new RootNodeGroup(nodeGroup, rootShape, rootText, outAnchorShape);
   }
 
-  createActionNode(x: number, y: number, text: string): NodeGroup {
+  createActionNode(
+    x: number,
+    y: number,
+    text: string,
+    customReference: string
+  ): NodeGroup {
     //Text Shape
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
     const textBoundsWidth =
@@ -95,13 +102,68 @@ export class DrawingService {
       actionText,
     ]);
 
-    return new ActionNodeGroup(nodeGroup, actionShape, actionText, anchorShape);
+    return new ActionNodeGroup(
+      nodeGroup,
+      actionShape,
+      actionText,
+      anchorShape,
+      customReference
+    );
   }
 
-  createCompositeNode(x: number, y: number, text: string): NodeGroup {
+  createConditionNode(
+    x: number,
+    y: number,
+    text: string,
+    customReference: string
+  ) {
+    //Text Shape
+    const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
+    const textBoundsWidth =
+      actionText.getBoundingClientRect().width / this.canvas.zui.scale;
+    //Action Shape
+    const conditionShape = this.canvas.two.makeRoundedRectangle(
+      x,
+      y,
+      this.getRectWidth(textBoundsWidth),
+      EditorSettings.nodeHeight,
+      EditorSettings.nodeRadius
+    );
+
+    conditionShape.fill = EditorSettings.nodeConditionFillColor;
+    conditionShape.stroke = EditorSettings.nodeBorderColor;
+    conditionShape.linewidth = EditorSettings.nodeLineWith;
+
+    //Anchor Shape
+    const anchorShape = this.createAnchor(
+      x,
+      y - EditorSettings.nodeHeight / 2 - EditorSettings.anchorLineWidth
+    );
+
+    //NodeGroup
+    const nodeGroup = this.canvas.two.makeGroup([
+      anchorShape,
+      conditionShape,
+      actionText,
+    ]);
+
+    return new ConditionNodeGroup(
+      nodeGroup,
+      conditionShape,
+      actionText,
+      anchorShape,
+      customReference
+    );
+  }
+
+  createCompositeNode(
+    x: number,
+    y: number,
+    compositeType: CompositeType
+  ): NodeGroup {
     //Text Shape
     const actionText = this.canvas.two.makeText(
-      '=> ' + text + ' =>',
+      CompositeType[compositeType],
       x,
       y,
       this.textStyle
@@ -145,7 +207,8 @@ export class DrawingService {
       actionShape,
       actionText,
       inAnchorShape,
-      outAnchorShape
+      outAnchorShape,
+      compositeType
     );
   }
 
@@ -171,7 +234,12 @@ export class DrawingService {
     decoratorShape.stroke = EditorSettings.nodeBorderColor;
 
     //Text Shape
-    const textShape = this.canvas.two.makeText('Failer', x, y, this.textStyle);
+    const textShape = this.canvas.two.makeText(
+      DecoratorType[type],
+      x,
+      y,
+      this.textStyle
+    );
 
     //Anchor Shapes
     const inAnchorShape = this.createAnchor(x, y - h / 2);
@@ -190,9 +258,9 @@ export class DrawingService {
       nodeGroup,
       decoratorShape,
       textShape,
-      type,
       inAnchorShape,
-      outAnchorShape
+      outAnchorShape,
+      type
     );
   }
 
