@@ -66,13 +66,13 @@ export class NodesPanelComponent implements AfterViewInit {
     this.input.wheel(event);
   }
 
-  @HostListener('window:keydown', ['$event'])
-  keyDown(event: KeyboardEvent) {
-    this.input.keyDown(event);
-  }
+  // @HostListener('window:keydown', ['$event'])
+  // keyDown(event: KeyboardEvent) {
+  //   this.input.keyDown(event);
+  // }
 
-  @HostListener('window:keyup', ['$event'])
-  keyUp(event: KeyboardEvent) {
-    this.input.keyUp(event);
-  }
+  // @HostListener('window:keyup', ['$event'])
+  // keyUp(event: KeyboardEvent) {
+  //   this.input.keyUp(event);
+  // }
 }

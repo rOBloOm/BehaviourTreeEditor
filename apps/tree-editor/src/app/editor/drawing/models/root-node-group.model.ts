@@ -6,6 +6,11 @@ import { Text } from 'two.js/src/text';
 import { Shape } from 'two.js/src/shape';
 
 export class RootNodeGroup extends NodeGroup {
+  //@TODO: Change Name to DisplayName
+  override get name(): string {
+    return '@';
+  }
+
   get nodeType(): NodeGroupType {
     return NodeGroupType.Root;
   }

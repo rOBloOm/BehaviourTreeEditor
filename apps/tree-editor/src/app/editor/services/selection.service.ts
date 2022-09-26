@@ -10,10 +10,10 @@ import { CanvasManagerService } from './canvas-manager.service';
 
 @Injectable()
 export class SelectionService extends Destroy {
-  selectedSubject = new BehaviorSubject<NodeGroup | undefined>(undefined);
+  selectedSubject = new BehaviorSubject<NodeGroup>(undefined);
   selected$ = this.selectedSubject.asObservable();
 
-  get currentSelected(): NodeGroup | undefined {
+  get currentSelected(): NodeGroup {
     return this.selectedSubject.value;
   }
 

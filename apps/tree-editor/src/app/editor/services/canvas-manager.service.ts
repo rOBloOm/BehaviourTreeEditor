@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { forEach } from 'lodash-es';
+import { flatMapDeep, forEach, map } from 'lodash-es';
 import { Destroy } from '../../shared/components/destory';
 import { NodeConnection } from '../drawing/models/node-connection.model';
 import { NodeGroup } from '../drawing/models/node-group.model';
@@ -8,6 +8,11 @@ import { DrawingService } from '../drawing/drawing.service';
 import { SelectionService } from './selection.service';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
+import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
+import { ActionNodeGroup } from '../drawing/models/action-node-group.model';
+import { CompositeNodeGroup } from '../drawing/models/composite-node-group.model';
+import { ConditionNodeGroup } from '../drawing/models/condition-node-group.model';
+import { DecoratorNodeGroup } from '../drawing/models/decorator-node-group.model';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
@@ -133,5 +138,69 @@ export class CanvasManagerService extends Destroy {
   canDelete(id: string) {
     const node = this.nodes[id];
     return node && node.canDelete();
+  }
+
+  redraw(node: NodeGroup, text: string): NodeGroup {
+    //Extract node attributes
+    const x = node.x;
+    const y = node.y;
+    const nodeType = node.nodeType;
+    const parent = node.connectionIn.source;
+    const children = map(node.connectionsOut, (conn) => conn.target);
+
+    // Create the new node
+    let redrawnNode: NodeGroup;
+    switch (nodeType) {
+      case NodeGroupType.Action:
+        redrawnNode = this.addActionNode(
+          x,
+          y,
+          text,
+          (node as ActionNodeGroup).customReference
+        );
+        break;
+      case NodeGroupType.Composite:
+        redrawnNode = this.addCompositeNode(
+          x,
+          y,
+          (node as CompositeNodeGroup).compositeType
+        );
+        break;
+      case NodeGroupType.Condition:
+        redrawnNode = this.addConditionNode(
+          x,
+          y,
+          text,
+          (node as ConditionNodeGroup).customReference
+        );
+        break;
+      case NodeGroupType.Decorator:
+        redrawnNode = this.addDecorator(
+          x,
+          y,
+          (node as DecoratorNodeGroup).decoratorType
+        );
+        break;
+      case NodeGroupType.Tree:
+        redrawnNode = this.addTree(x, y, text);
+        break;
+      default:
+        throw new Error(
+          'Redraw not supportet for Node Type: ' + NodeGroupType[node.nodeType]
+        );
+    }
+
+    //Remove the old node
+    this.removeNode(node.id);
+
+    //Recreate the connections
+    if (parent) {
+      this.connect(parent, redrawnNode);
+    }
+    forEach(children, (child) => {
+      this.connect(redrawnNode, child);
+    });
+
+    return redrawnNode;
   }
 }

@@ -22,6 +22,7 @@ import { EditorMenuBarComponent } from './components/editor-menu-bar/editor-menu
 import { StorageService } from '../data/services/storage.service';
 import { CommandService } from './services/command.service';
 import { ImportService } from '../data/services/import.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,13 @@ import { ImportService } from '../data/services/import.service';
     RightPanelComponent,
     EditorMenuBarComponent,
   ],
-  imports: [CommonModule, EditorRoutingModule, SharedModule, TranslateModule],
+  imports: [
+    CommonModule,
+    EditorRoutingModule,
+    SharedModule,
+    TranslateModule,
+    ReactiveFormsModule,
+  ],
   providers: [
     CanvasService,
     DragService,

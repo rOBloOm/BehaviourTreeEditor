@@ -35,11 +35,15 @@
     --title-bg-color: #555;
 }
 
-html, body {
+html, body, input {
     box-sizing: border-box;
     height: 100%;
     margin: 0;
 
     font-family: 'Raleway', sans-serif;
     font-weight: 400;
+}
+
+html {
+    -webkit-text-size-adjust: 100%
 }

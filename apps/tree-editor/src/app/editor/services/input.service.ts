@@ -27,17 +27,17 @@ export class InputService {
   constructor() {}
 
   keyPressed(event: KeyboardEvent): void {
-    event.preventDefault();
+    //event.preventDefault();
     this.keyPressedSubject.next(event);
   }
 
   keyDown(event: KeyboardEvent): void {
-    event.preventDefault();
+    //event.preventDefault();
     this.keyDownSubject.next(event);
   }
 
   keyUp(event: KeyboardEvent): void {
-    event.preventDefault();
+    //event.preventDefault();
     this.keyUpSubject.next(event);
   }
 

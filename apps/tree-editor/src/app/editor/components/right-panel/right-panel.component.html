@@ -1,14 +1,77 @@
-<div
-  class="RightPanel"
-  fxLayout="column"
-  fxFlex="300px"
-  fxLayoutAlign="start"
-  fxLayoutGap="10"
-  (click)="clicked($event)"
->
-  <h3 fxLayout="row" fxLayoutAlign="center" class="title">
-    {{ (selected$ | async)?.name }}
-  </h3>
-  <p>X: {{ (selected$ | async)?.x }}</p>
-  <p>y: {{ (selected$ | async)?.y }}</p>
+<div class="RightPanel" fxLayout="column" fxFlex="300px" fxLayoutAlign="start">
+  <div
+    *ngIf="selected$ | async; let selected"
+    fxLayout="column"
+    fxLayoutAlign="start"
+  >
+    <ng-template [ngIf]="selected.nodeType === 0">
+      <h3 fxFlex="row" fxLayoutAlign="center" class="title">Tree Node</h3>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="name" class="label">Tree Name</label>
+        <input formControlName="name" />
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 1">
+      <h3 fxFlex="row" fxLayoutAlign="center" class="title">Composite Node</h3>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="name" class="label">Tree Name</label>
+        <input formControlName="name" />
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 2">
+      <h3 fxFlex="row" fxLayoutAlign="center" class="title">Decorator Node</h3>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="name" class="label">Tree Name</label>
+        <input formControlName="name" />
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 3">
+      <h3 fxFlex="row" fxLayoutAlign="center" class="title">Action Node</h3>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="name" class="label">Tree Name</label>
+        <input formControlName="name" />
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 4">
+      <h3 fxFlex="row" fxLayoutAlign="center" class="title">Condition Node</h3>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="name" class="label">Tree Name</label>
+        <input formControlName="name" />
+      </div>
+    </ng-template>
+  </div>
 </div>
