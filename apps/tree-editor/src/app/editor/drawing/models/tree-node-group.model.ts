@@ -10,7 +10,17 @@ export class TreeNodeGroup extends NodeGroup {
     return NodeGroupType.Tree;
   }
 
-  constructor(group: Group, shape: Path, text: Text, anchorIn: Shape) {
+  get displayName(): string {
+    return this.identifier;
+  }
+
+  constructor(
+    group: Group,
+    shape: Path,
+    text: Text,
+    anchorIn: Shape,
+    public identifier: string
+  ) {
     super(group, shape, text);
     this.anchorIn = anchorIn;
   }

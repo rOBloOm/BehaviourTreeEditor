@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import {
+  combineLatest,
   filter,
   map,
   Observable,
@@ -30,14 +31,14 @@ export class RightPanelComponent extends Destroy {
   form: FormGroup;
 
   constructor(
-    private selection: SelectionService,
+    selection: SelectionService,
     private manager: CanvasManagerService,
     fb: FormBuilder
   ) {
     super();
 
     this.form = fb.group({
-      name: null,
+      identifier: null,
     });
 
     this.selected$ = selection.selected$;
@@ -47,20 +48,18 @@ export class RightPanelComponent extends Destroy {
       if (selected) {
         this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
         this.form.setValue({
-          name: selected.name,
+          identifier: selected.identifier,
         });
       }
     });
 
     //Update Tree Name Observable
-    this.selected$
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((selected) => selected.nodeType === NodeGroupType.Tree),
-        switchMap((_) => this.form.valueChanges)
-      )
-      .subscribe((value) => this.updateTreeName(value.name));
+    combineLatest([this.form.valueChanges, this.selected$])
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(([values, selected]) => {
+        if (selected && selected.nodeType === NodeGroupType.Root) {
+          this.manager.updateCurrentTreeIdentifier(values.identifier);
+        }
+      });
   }
-
-  updateTreeName(name: string): void {}
 }

@@ -1,20 +1,32 @@
-<div class="menubar" fxFlex fxLayout="row" fxLayoutAlign="start">
-  <ul fxLayout="row" fxLayoutAlign="start">
-    <li fxLayout="row" fxLayoutAlign="center stretch">
-      <a class="fastlink" fxLayout="column" fxlLayoutAlign="center center">
-        <i class="fa-solid fa-gear"></i>
-      </a>
-    </li>
-  </ul>
+<div class="topbar" fxFlex fxLayout="row" fxLayoutAlign="space-between">
+  <div class="menubar" fxFlex fxLayout="row" fxLayoutAlign="start">
+    <ul fxLayout="row" fxLayoutAlign="start">
+      <li fxLayout="row" fxLayoutAlign="center stretch">
+        <a class="fastlink" fxLayout="column" fxlLayoutAlign="center center">
+          <i class="fa-solid fa-gear"></i>
+        </a>
+      </li>
+    </ul>
 
-  <ul fxLayout="row" fxLayoutAlign="start">
-    <li>
-      <a fxFill fxLayoutAlign="center center">Tree</a>
-      <ul>
-        <li><a (click)="saveActiveTree()">Save</a></li>
-        <li><a (click)="loadTree()">Load</a></li>
-        <li><a (click)="clearTree()">Clear</a></li>
-      </ul>
-    </li>
-  </ul>
+    <ul fxLayout="row" fxLayoutAlign="start">
+      <li>
+        <a fxFill fxLayoutAlign="center center">Tree</a>
+        <ul>
+          <li><a (click)="saveActiveTree()">Save</a></li>
+          <li><a (click)="loadTree()">Load</a></li>
+          <li><a (click)="clearTree()">Clear</a></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+  <div fxLayout="row" fxFlexAlign="end center">
+    <div
+      class="treeTitle"
+      fxFlex="nogrow"
+      fxLayout="row"
+      fxLayoutAlign="start center"
+    >
+      {{ this.treeName$ | async }}
+    </div>
+  </div>
 </div>

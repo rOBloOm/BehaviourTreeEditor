@@ -5,7 +5,7 @@ import { Destroy } from '../../shared/components/destory';
 import { NodeGroup } from '../drawing/models/node-group.model';
 import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
-import { InputService } from './input.service';
+import { MouseInputService } from './mouse-input.service';
 import { CanvasManagerService } from './canvas-manager.service';
 
 @Injectable()
@@ -18,7 +18,7 @@ export class SelectionService extends Destroy {
   }
 
   constructor(
-    private input: InputService,
+    private input: MouseInputService,
     private manager: CanvasManagerService,
     private canvas: CanvasService
   ) {

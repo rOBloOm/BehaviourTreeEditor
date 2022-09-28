@@ -11,6 +11,14 @@ export class DecoratorNodeGroup extends NodeGroup {
     return NodeGroupType.Decorator;
   }
 
+  get identifier(): string {
+    return DecoratorType[this.decoratorType];
+  }
+
+  get displayName(): string {
+    return this.identifier;
+  }
+
   constructor(
     group: Group,
     shape: Path,

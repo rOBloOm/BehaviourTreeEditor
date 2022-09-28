@@ -11,6 +11,14 @@ export class CompositeNodeGroup extends NodeGroup {
     return NodeGroupType.Composite;
   }
 
+  get identifier(): string {
+    return CompositeType[this.compositeType];
+  }
+
+  get displayName(): string {
+    return this.identifier;
+  }
+
   constructor(
     group: Group,
     shape: Path,

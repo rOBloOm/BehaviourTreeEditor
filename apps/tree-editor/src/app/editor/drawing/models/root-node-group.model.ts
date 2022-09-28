@@ -6,8 +6,7 @@ import { Text } from 'two.js/src/text';
 import { Shape } from 'two.js/src/shape';
 
 export class RootNodeGroup extends NodeGroup {
-  //@TODO: Change Name to DisplayName
-  override get name(): string {
+  get displayName(): string {
     return '@';
   }
 
@@ -15,7 +14,13 @@ export class RootNodeGroup extends NodeGroup {
     return NodeGroupType.Root;
   }
 
-  constructor(group: Group, shape: Path, text: Text, anchorOut: Shape) {
+  constructor(
+    group: Group,
+    shape: Path,
+    text: Text,
+    anchorOut: Shape,
+    public identifier: string
+  ) {
     super(group, shape, text);
     this.anchorOut = anchorOut;
   }

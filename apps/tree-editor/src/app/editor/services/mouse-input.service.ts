@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
+import { Destroy } from '../../shared/components/destory';
 
 @Injectable()
-export class InputService {
-  private keyDownSubject = new Subject<KeyboardEvent>();
-  keyDown$ = this.keyDownSubject.asObservable();
+export class MouseInputService extends Destroy {
+  mouseX: number;
+  mouseY: number;
 
-  private keyUpSubject = new Subject<KeyboardEvent>();
-  keyUp$ = this.keyUpSubject.asObservable();
+  get isMouseInsideCanvas(): boolean {
+    return this.mouseInsideCanvasSubject.value;
+  }
 
-  private keyPressedSubject = new Subject<KeyboardEvent>();
-  keyPressed$ = this.keyPressedSubject.asObservable();
+  private mouseInsideCanvasSubject = new BehaviorSubject<boolean>(false);
+  mouseInsideCanvas$ = this.mouseInsideCanvasSubject.asObservable();
 
   private mouseDownSubject = new Subject<MouseEvent>();
   mouseDown$ = this.mouseDownSubject.asObservable();
@@ -24,21 +26,9 @@ export class InputService {
   private wheelSubject = new Subject<WheelEvent>();
   wheel$ = this.wheelSubject.asObservable();
 
-  constructor() {}
-
-  keyPressed(event: KeyboardEvent): void {
-    //event.preventDefault();
-    this.keyPressedSubject.next(event);
-  }
-
-  keyDown(event: KeyboardEvent): void {
-    //event.preventDefault();
-    this.keyDownSubject.next(event);
-  }
-
-  keyUp(event: KeyboardEvent): void {
-    //event.preventDefault();
-    this.keyUpSubject.next(event);
+  constructor() {
+    super();
+    this.trackMouse();
   }
 
   mouseDown(event: MouseEvent): void {
@@ -59,5 +49,20 @@ export class InputService {
   wheel(event: WheelEvent): void {
     event.preventDefault();
     this.wheelSubject.next(event);
+  }
+
+  mouseEnter(event: MouseEvent): void {
+    this.mouseInsideCanvasSubject.next(true);
+  }
+
+  mouseLeave(event: MouseEvent): void {
+    this.mouseInsideCanvasSubject.next(false);
+  }
+
+  private trackMouse(): void {
+    this.mouseMove$.pipe(takeUntil(this.destroy$)).subscribe((mouse) => {
+      this.mouseX = mouse.x;
+      this.mouseY = mouse.y;
+    });
   }
 }

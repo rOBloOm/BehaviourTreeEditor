@@ -3,19 +3,17 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnDestroy,
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import Two from 'two.js';
-import { ZUI } from 'two.js/extras/jsm/zui';
+import { CanvasManagerService } from '../../services/canvas-manager.service';
 import { CanvasService } from '../../services/canvas.service';
+import { CommandService } from '../../services/command.service';
 import { ConnectionService } from '../../services/connection.service';
 import { DragService } from '../../services/drag.service';
-import { InputService } from '../../services/input.service';
-import { SandboxService } from '../../services/sandbox.service';
+import { MouseInputService } from '../../services/mouse-input.service';
+import { LoaderService } from '../../services/loader.service';
 import { SelectionService } from '../../services/selection.service';
-import { ShortcutService } from '../../services/shortcut.service';
 
 @Component({
   selector: 'sp-editor-nodes-panel',
@@ -30,11 +28,12 @@ export class NodesPanelComponent implements AfterViewInit {
   constructor(
     private canvas: CanvasService,
     private drag: DragService,
-    private sandbox: SandboxService,
+    private sandbox: LoaderService,
     private selection: SelectionService,
-    private shortcut: ShortcutService,
     private connection: ConnectionService,
-    private input: InputService
+    private mouse: MouseInputService,
+    private command: CommandService,
+    private manager: CanvasManagerService
   ) {}
 
   ngAfterViewInit(): void {
@@ -42,37 +41,67 @@ export class NodesPanelComponent implements AfterViewInit {
     this.drag.init();
     this.sandbox.init();
     this.selection.init();
-    this.shortcut.init();
     this.connection.init();
   }
 
   @HostListener('mouseup', ['$event'])
   mouseUp(event: MouseEvent) {
-    this.input.mouseUp(event);
+    this.mouse.mouseUp(event);
   }
 
   @HostListener('mousemove', ['$event'])
   mouseMove(event: MouseEvent) {
-    this.input.mouseMove(event);
+    this.mouse.mouseMove(event);
   }
 
   @HostListener('mousedown', ['$event'])
   mouseDown(event: MouseEvent) {
-    this.input.mouseDown(event);
+    this.mouse.mouseDown(event);
   }
 
   @HostListener('wheel', ['$event'])
   wheel(event: WheelEvent) {
-    this.input.wheel(event);
+    this.mouse.wheel(event);
   }
 
-  // @HostListener('window:keydown', ['$event'])
-  // keyDown(event: KeyboardEvent) {
-  //   this.input.keyDown(event);
-  // }
+  @HostListener('mouseenter', ['$event'])
+  enter(event: MouseEvent) {
+    this.mouse.mouseEnter(event);
+  }
 
-  // @HostListener('window:keyup', ['$event'])
-  // keyUp(event: KeyboardEvent) {
-  //   this.input.keyUp(event);
-  // }
+  @HostListener('mouseleave', ['$event'])
+  leave(event: MouseEvent) {
+    this.mouse.mouseLeave(event);
+  }
+
+  @HostListener('window:keydown.shift.a', ['$event'])
+  addAction(event: KeyboardEvent): void {
+    this.command.addAction();
+  }
+
+  @HostListener('window:keydown.shift.c', ['$event'])
+  addCondition(event: KeyboardEvent): void {
+    this.command.addCondition();
+  }
+
+  @HostListener('window:keydown.shift.s', ['$event'])
+  addSelector(event: KeyboardEvent): void {
+    this.command.addSelector();
+  }
+
+  @HostListener('window:keydown.shift.d', ['$event'])
+  addDecorator(event: KeyboardEvent): void {
+    this.command.addDecorator();
+  }
+
+  @HostListener('window:keydown.shift.t', ['$event'])
+  addTree(event: KeyboardEvent): void {
+    this.command.addTree();
+  }
+
+  @HostListener('window:keydown.shift.x', ['$event'])
+  @HostListener('window:keydown.delete', ['$event'])
+  delete(): void {
+    this.command.deleteSelected();
+  }
 }

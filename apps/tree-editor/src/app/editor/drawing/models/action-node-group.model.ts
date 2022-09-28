@@ -4,11 +4,14 @@ import { Path } from 'two.js/src/path';
 import { Text } from 'two.js/src/text';
 import { NodeGroupType } from '../enums/node-group-type.enum';
 import { Shape } from 'two.js/src/shape';
-import { ICustomReference } from '../interfaces/custom-reference.interface';
 
-export class ActionNodeGroup extends NodeGroup implements ICustomReference {
+export class ActionNodeGroup extends NodeGroup {
   get nodeType(): NodeGroupType {
     return NodeGroupType.Action;
+  }
+
+  get displayName(): string {
+    return this.text.value;
   }
 
   constructor(
@@ -16,7 +19,7 @@ export class ActionNodeGroup extends NodeGroup implements ICustomReference {
     shape: Path,
     text: Text,
     anchroIn: Shape,
-    public customReference: string
+    public identifier: string
   ) {
     super(group, shape, text);
     this.anchorIn = anchroIn;

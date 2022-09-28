@@ -1,11 +1,11 @@
 export class SPNode {
-  name: string;
+  displayName: string;
 
   //Maps to a specific node type eg. Selector, Sequence, Failer
   type: string;
 
   //Maps to Cockpit Action or Sensor Condition
-  customReference: string;
+  identifier: string;
 
   children: SPNode[];
   x: number;

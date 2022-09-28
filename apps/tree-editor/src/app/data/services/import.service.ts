@@ -13,7 +13,7 @@ export class ImportService {
 
   import(root: SPNode) {
     this.manager.clear();
-    const rootNode = this.manager.addRootNode(root.x, root.y);
+    const rootNode = this.manager.addRootNode(root.x, root.y, root.identifier);
     this.appendChildrenTo(root.children, rootNode);
   }
 
@@ -31,30 +31,30 @@ export class ImportService {
         return this.manager.addActionNode(
           node.x,
           node.y,
-          node.name,
-          node.customReference
+          node.displayName,
+          node.identifier
         );
       case NodeGroupType[NodeGroupType.Composite]:
         return this.manager.addCompositeNode(
           node.x,
           node.y,
-          CompositeType[node.name]
+          CompositeType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Condition]:
         return this.manager.addConditionNode(
           node.x,
           node.y,
-          node.name,
-          node.customReference
+          node.displayName,
+          node.identifier
         );
       case NodeGroupType[NodeGroupType.Decorator]:
         return this.manager.addDecorator(
           node.x,
           node.y,
-          DecoratorType[node.name]
+          DecoratorType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Tree]:
-        return this.manager.addTree(node.x, node.y, node.name);
+        return this.manager.addTree(node.x, node.y, node.displayName);
       default:
         return {} as NodeGroup;
     }

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { flatMapDeep, forEach, map } from 'lodash-es';
+import { forEach, map, take } from 'lodash-es';
 import { Destroy } from '../../shared/components/destory';
 import { NodeConnection } from '../drawing/models/node-connection.model';
 import { NodeGroup } from '../drawing/models/node-group.model';
@@ -13,28 +13,49 @@ import { ActionNodeGroup } from '../drawing/models/action-node-group.model';
 import { CompositeNodeGroup } from '../drawing/models/composite-node-group.model';
 import { ConditionNodeGroup } from '../drawing/models/condition-node-group.model';
 import { DecoratorNodeGroup } from '../drawing/models/decorator-node-group.model';
+import { TreeNodeGroup } from '../drawing/models/tree-node-group.model';
+import { BehaviorSubject, filter, takeUntil } from 'rxjs';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
   nodes: { [name: string]: NodeGroup } = {};
 
-  private _root: NodeGroup;
-  get root(): NodeGroup {
-    return this._root;
+  private rootSubject = new BehaviorSubject<TreeNodeGroup | undefined>(
+    undefined
+  );
+  root$ = this.rootSubject.asObservable();
+  get currentRoot(): TreeNodeGroup {
+    return this.rootSubject.value;
   }
+
+  rootIdentifierSubject = new BehaviorSubject<string>('');
+  rootIdentifier$ = this.rootIdentifierSubject.asObservable();
 
   constructor(private drawing: DrawingService, private canvas: CanvasService) {
     super();
+
+    this.root$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((root) => root !== undefined)
+      )
+      .subscribe((root) => this.updateCurrentTreeIdentifier(root.identifier));
+  }
+
+  updateCurrentTreeIdentifier(identifier: string) {
+    this.rootSubject.value.identifier = identifier;
+    this.rootIdentifierSubject.next(identifier);
   }
 
   clear() {
     this.canvas.two.clear();
+    this.rootSubject.next(undefined);
   }
 
-  addRootNode(x: number, y: number): NodeGroup {
-    const node = this.drawing.createRootNode(x, y);
-    this._root = node;
+  addRootNode(x: number, y: number, identifier: string): NodeGroup {
+    const node = this.drawing.createRootNode(x, y, identifier);
     this.nodes[node.id] = node;
+    this.rootSubject.next(node);
     return node;
   }
 
@@ -48,9 +69,9 @@ export class CanvasManagerService extends Destroy {
     x: number,
     y: number,
     text: string,
-    customReference: string
+    identifier: string
   ): NodeGroup {
-    const node = this.drawing.createActionNode(x, y, text, customReference);
+    const node = this.drawing.createActionNode(x, y, text, identifier);
     this.nodes[node.id] = node;
     return node;
   }
@@ -59,9 +80,9 @@ export class CanvasManagerService extends Destroy {
     x: number,
     y: number,
     text: string,
-    customReference: string
+    identifier: string
   ): NodeGroup {
-    const node = this.drawing.createConditionNode(x, y, text, customReference);
+    const node = this.drawing.createConditionNode(x, y, text, identifier);
     this.nodes[node.id] = node;
     return node;
   }
@@ -72,8 +93,8 @@ export class CanvasManagerService extends Destroy {
     return node;
   }
 
-  addTree(x: number, y: number, text: string): NodeGroup {
-    const node = this.drawing.createTreeNode(x, y, text);
+  addTree(x: number, y: number, identifier: string): NodeGroup {
+    const node = this.drawing.createTreeNode(x, y, identifier);
     this.nodes[node.id] = node;
     return node;
   }
@@ -140,6 +161,7 @@ export class CanvasManagerService extends Destroy {
     return node && node.canDelete();
   }
 
+  //@TODO remove if not needed
   redraw(node: NodeGroup, text: string): NodeGroup {
     //Extract node attributes
     const x = node.x;
@@ -156,7 +178,7 @@ export class CanvasManagerService extends Destroy {
           x,
           y,
           text,
-          (node as ActionNodeGroup).customReference
+          (node as ActionNodeGroup).identifier
         );
         break;
       case NodeGroupType.Composite:
@@ -171,7 +193,7 @@ export class CanvasManagerService extends Destroy {
           x,
           y,
           text,
-          (node as ConditionNodeGroup).customReference
+          (node as ConditionNodeGroup).identifier
         );
         break;
       case NodeGroupType.Decorator:

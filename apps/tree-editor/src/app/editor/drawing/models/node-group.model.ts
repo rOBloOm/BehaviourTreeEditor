@@ -25,9 +25,9 @@ export abstract class NodeGroup {
     return this.group.position.y + this.shape.position.y;
   }
 
-  get name(): string {
-    return this.text.value;
-  }
+  abstract get displayName(): string;
+
+  abstract get identifier(): string;
 
   selected = false;
 

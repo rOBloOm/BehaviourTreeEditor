@@ -7,13 +7,13 @@ import { Destroy } from '../../shared/components/destory';
 import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
 import { DrawingService } from '../drawing/drawing.service';
-import { InputService } from './input.service';
+import { MouseInputService } from './mouse-input.service';
 import { CanvasManagerService } from './canvas-manager.service';
 
 @Injectable()
 export class DragService extends Destroy {
   constructor(
-    private input: InputService,
+    private input: MouseInputService,
     private canvas: CanvasService,
     private manager: CanvasManagerService,
     private drawing: DrawingService

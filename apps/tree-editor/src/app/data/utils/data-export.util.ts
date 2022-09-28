@@ -1,6 +1,5 @@
 import { forEach } from 'lodash-es';
 import { NodeGroupType } from '../../editor/drawing/enums/node-group-type.enum';
-import { ICustomReference } from '../../editor/drawing/interfaces/custom-reference.interface';
 import { NodeGroup } from '../../editor/drawing/models/node-group.model';
 import { SPNode } from '../models/sp-node.model';
 
@@ -13,9 +12,9 @@ export class DataExport {
     const node = {
       x: canvasNode.x,
       y: canvasNode.y,
-      name: canvasNode.name,
+      identifier: canvasNode.identifier,
+      displayName: canvasNode.displayName,
       type: NodeGroupType[canvasNode.nodeType],
-      customReference: this.getCustomReference(canvasNode),
       children: [],
     } as SPNode;
 
@@ -28,17 +27,5 @@ export class DataExport {
     );
 
     return node;
-  }
-
-  private static getCustomReference(canvasNode: NodeGroup): string {
-    return this.hasCustomReference(canvasNode)
-      ? canvasNode.customReference
-      : '';
-  }
-
-  private static hasCustomReference(
-    canvasNode: any
-  ): canvasNode is ICustomReference {
-    return canvasNode;
   }
 }

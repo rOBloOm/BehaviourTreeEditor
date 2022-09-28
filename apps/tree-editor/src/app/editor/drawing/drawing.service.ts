@@ -35,7 +35,7 @@ export class DrawingService {
 
   constructor(private canvas: CanvasService) {}
 
-  createRootNode(x: number, y: number): NodeGroup {
+  createRootNode(x: number, y: number, identifier: string): NodeGroup {
     //Text Shape
     const rootText = this.canvas.two.makeText('@', x, y, this.textStyle);
 
@@ -63,14 +63,20 @@ export class DrawingService {
       rootText,
     ]);
 
-    return new RootNodeGroup(nodeGroup, rootShape, rootText, outAnchorShape);
+    return new RootNodeGroup(
+      nodeGroup,
+      rootShape,
+      rootText,
+      outAnchorShape,
+      identifier
+    );
   }
 
   createActionNode(
     x: number,
     y: number,
     text: string,
-    customReference: string
+    identifier: string
   ): NodeGroup {
     //Text Shape
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
@@ -107,16 +113,11 @@ export class DrawingService {
       actionShape,
       actionText,
       anchorShape,
-      customReference
+      identifier
     );
   }
 
-  createConditionNode(
-    x: number,
-    y: number,
-    text: string,
-    customReference: string
-  ) {
+  createConditionNode(x: number, y: number, identifier: string, text: string) {
     //Text Shape
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
     const textBoundsWidth =
@@ -152,7 +153,7 @@ export class DrawingService {
       conditionShape,
       actionText,
       anchorShape,
-      customReference
+      identifier
     );
   }
 
@@ -264,9 +265,14 @@ export class DrawingService {
     );
   }
 
-  createTreeNode(x: number, y: number, text: string): NodeGroup {
+  createTreeNode(x: number, y: number, identifier: string): NodeGroup {
     //Text Shape
-    const textShape = this.canvas.two.makeText(text, x, y, this.textStyle);
+    const textShape = this.canvas.two.makeText(
+      identifier,
+      x,
+      y,
+      this.textStyle
+    );
     const textBoundsWidth =
       textShape.getBoundingClientRect().width / this.canvas.zui.scale;
 
@@ -302,7 +308,13 @@ export class DrawingService {
       textShape,
     ]);
 
-    return new TreeNodeGroup(nodeGroup, treeShape, textShape, inAnchorShape);
+    return new TreeNodeGroup(
+      nodeGroup,
+      treeShape,
+      textShape,
+      inAnchorShape,
+      identifier
+    );
   }
 
   createConnection(source: NodeGroup, target: NodeGroup): Path {

@@ -7,7 +7,7 @@ import { NodeGroup } from '../drawing/models/node-group.model';
 import { EditorSettings } from '../drawing/drawing.settings';
 import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
-import { InputService } from './input.service';
+import { MouseInputService } from './mouse-input.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import Two from 'two.js';
 
@@ -15,7 +15,7 @@ import Two from 'two.js';
 export class ConnectionService extends Destroy {
   constructor(
     private canvas: CanvasService,
-    private input: InputService,
+    private input: MouseInputService,
     private manager: CanvasManagerService
   ) {
     super();

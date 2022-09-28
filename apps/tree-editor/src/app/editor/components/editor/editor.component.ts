@@ -5,7 +5,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { InputService } from '../../services/input.service';
+import { MouseInputService } from '../../services/mouse-input.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -19,7 +19,7 @@ export class EditorComponent implements OnInit {
   title = _('SP.Editor.Title');
 
   constructor(
-    private input: InputService,
+    private input: MouseInputService,
     private titleService: Title,
     private translateService: TranslateService
   ) {}
