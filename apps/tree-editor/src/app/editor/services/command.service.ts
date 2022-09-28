@@ -39,13 +39,18 @@ export class CommandService {
     }
   }
 
-  loadTree(): void {
-    // const tree = this.storage.load();
-    // this.importer.import(tree);
-    // this.toastr.success('Tree has been imported!', 'Import Action', {
-    //   timeOut: 1500,
-    //   positionClass: 'toast-bottom-right',
-    // });
+  reloadTree(): void {
+    if (!this.manager.currentRoot) {
+      this.toastr.error('No active tree');
+      return;
+    }
+    this.storage.load(this.manager.currentRoot.identifier).subscribe({
+      error: (err) => this.toastr.error('Error saving tree'),
+      next: (root) => {
+        this.importer.import(root);
+        this.toastr.success('Tree has been reloaded');
+      },
+    });
   }
 
   clearTree(): void {

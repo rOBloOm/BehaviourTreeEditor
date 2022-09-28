@@ -23,6 +23,7 @@ export class StorageService {
 
   add(root: NodeGroup): Observable<SPNode> {
     const data = DataExport.convert(root);
+    delete data.identifier;
     return this.dbService.add(this.treeStore, data);
   }
 
@@ -42,6 +43,6 @@ export class StorageService {
   }
 
   load(identifier: string): Observable<SPNode> {
-    return this.dbService.getByKey(this.treeStore, identifier);
+    return this.dbService.getByKey(this.treeStore, Number.parseInt(identifier));
   }
 }

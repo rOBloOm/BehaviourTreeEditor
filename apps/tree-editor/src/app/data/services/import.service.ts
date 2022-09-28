@@ -13,7 +13,12 @@ export class ImportService {
 
   import(root: SPNode) {
     this.manager.clear();
-    const rootNode = this.manager.addRootNode(root.x, root.y, root.identifier);
+    const rootNode = this.manager.addRootNode(
+      root.x,
+      root.y,
+      root.identifier,
+      root.displayName
+    );
     this.appendChildrenTo(root.children, rootNode);
   }
 

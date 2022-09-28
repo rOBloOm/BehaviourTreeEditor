@@ -27,15 +27,7 @@ export class LoaderService {
         this.importer.import(root);
       });
     } else {
-      this.manager.addRootNode(x, y, '');
+      this.manager.addRootNode(x, y, '', 'NewTree');
     }
-
-    // this.manager.addRootNode(x - 100, y / 2, 'DoSomeWorkTree');
-
-    // this.manager.addActionNode(x, y + 100, 'DoYourWorkOnPushingButtons');
-
-    // this.manager.addCompositeNode(x - 200, y - 100, 'PrioritySelector');
-
-    // this.manager.addCompositeNode(x + 100, y - 100, 'Selector');
   }
 }

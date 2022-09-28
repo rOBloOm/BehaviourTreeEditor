@@ -15,12 +15,13 @@ import { ConditionNodeGroup } from '../drawing/models/condition-node-group.model
 import { DecoratorNodeGroup } from '../drawing/models/decorator-node-group.model';
 import { TreeNodeGroup } from '../drawing/models/tree-node-group.model';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
+import { RootNodeGroup } from '../drawing/models/root-node-group.model';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
   nodes: { [name: string]: NodeGroup } = {};
 
-  private rootSubject = new BehaviorSubject<TreeNodeGroup | undefined>(
+  private rootSubject = new BehaviorSubject<RootNodeGroup | undefined>(
     undefined
   );
   root$ = this.rootSubject.asObservable();
@@ -28,8 +29,8 @@ export class CanvasManagerService extends Destroy {
     return this.rootSubject.value;
   }
 
-  rootIdentifierSubject = new BehaviorSubject<string>('');
-  rootIdentifier$ = this.rootIdentifierSubject.asObservable();
+  rootDisplayNameSubject = new BehaviorSubject<string>('');
+  rootDisplayName$ = this.rootDisplayNameSubject.asObservable();
 
   constructor(private drawing: DrawingService, private canvas: CanvasService) {
     super();
@@ -39,12 +40,12 @@ export class CanvasManagerService extends Destroy {
         takeUntil(this.destroy$),
         filter((root) => root !== undefined)
       )
-      .subscribe((root) => this.updateCurrentTreeIdentifier(root.identifier));
+      .subscribe((root) => this.updateCurrentTreeDisplayName(root.displayName));
   }
 
-  updateCurrentTreeIdentifier(identifier: string) {
-    this.rootSubject.value.identifier = identifier;
-    this.rootIdentifierSubject.next(identifier);
+  updateCurrentTreeDisplayName(displayName: string) {
+    this.rootSubject.value.displayName = displayName;
+    this.rootDisplayNameSubject.next(displayName);
   }
 
   clear() {
@@ -52,8 +53,13 @@ export class CanvasManagerService extends Destroy {
     this.rootSubject.next(undefined);
   }
 
-  addRootNode(x: number, y: number, identifier: string): NodeGroup {
-    const node = this.drawing.createRootNode(x, y, identifier);
+  addRootNode(
+    x: number,
+    y: number,
+    identifier: string,
+    displayName: string
+  ): NodeGroup {
+    const node = this.drawing.createRootNode(x, y, identifier, displayName);
     this.nodes[node.id] = node;
     this.rootSubject.next(node);
     return node;

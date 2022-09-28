@@ -38,7 +38,7 @@ export class RightPanelComponent extends Destroy {
     super();
 
     this.form = fb.group({
-      identifier: null,
+      displayName: null,
     });
 
     this.selected$ = selection.selected$;
@@ -48,7 +48,7 @@ export class RightPanelComponent extends Destroy {
       if (selected) {
         this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
         this.form.setValue({
-          identifier: selected.identifier,
+          displayName: selected.displayName,
         });
       }
     });
@@ -58,7 +58,7 @@ export class RightPanelComponent extends Destroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(([values, selected]) => {
         if (selected && selected.nodeType === NodeGroupType.Root) {
-          this.manager.updateCurrentTreeIdentifier(values.identifier);
+          this.manager.updateCurrentTreeDisplayName(values.displayName);
         }
       });
   }

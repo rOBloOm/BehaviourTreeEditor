@@ -18,7 +18,7 @@ export class EditorMenuBarComponent implements OnInit {
   ngOnInit(): void {}
 
   get treeName$(): Observable<string> {
-    return this.manager.rootIdentifier$;
+    return this.manager.rootDisplayName$;
   }
 
   saveActiveTree(): void {
@@ -26,7 +26,7 @@ export class EditorMenuBarComponent implements OnInit {
   }
 
   loadTree(): void {
-    this.command.loadTree();
+    this.command.reloadTree();
   }
 
   clearTree(): void {

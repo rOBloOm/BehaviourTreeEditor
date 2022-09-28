@@ -35,7 +35,12 @@ export class DrawingService {
 
   constructor(private canvas: CanvasService) {}
 
-  createRootNode(x: number, y: number, identifier: string): NodeGroup {
+  createRootNode(
+    x: number,
+    y: number,
+    identifier: string,
+    displayName
+  ): NodeGroup {
     //Text Shape
     const rootText = this.canvas.two.makeText('@', x, y, this.textStyle);
 
@@ -68,7 +73,8 @@ export class DrawingService {
       rootShape,
       rootText,
       outAnchorShape,
-      identifier
+      identifier,
+      displayName
     );
   }
 
