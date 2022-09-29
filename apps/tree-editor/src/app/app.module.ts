@@ -8,6 +8,7 @@ import { AppComponent } from './app.component';
 import { WebpackTranslateLoader } from './shared/config/translate-loader';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataModule } from './data/data.module';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,6 +24,7 @@ import { DataModule } from './data/data.module';
     }),
     ToastrModule.forRoot(),
     DataModule,
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
