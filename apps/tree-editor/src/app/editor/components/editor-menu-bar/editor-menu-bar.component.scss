@@ -21,6 +21,7 @@
             list-style: none;              
             a {   
                 display: inline-block; 
+                text-decoration: none;
                 i {
                     margin-top: 9px
                 }
@@ -33,8 +34,7 @@
 }
 
 .fastlink {
-  color: #FFF;
-  padding: 0 6px 0 7px;
+  color: #FFF;  
   border-right: 1px solid #333;  
 }
 

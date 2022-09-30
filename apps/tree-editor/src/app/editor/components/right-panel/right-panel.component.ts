@@ -1,22 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { Title } from '@angular/platform-browser';
-import {
-  combineLatest,
-  filter,
-  map,
-  Observable,
-  shareReplay,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { combineLatest, Observable, takeUntil } from 'rxjs';
 import { Destroy } from '../../../shared/components/destory';
 import { SelectionService } from '../../services/selection.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
-import { TranslateService } from '@ngx-translate/core';
 import { NodeGroup } from '../../drawing/models/node-group.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { CanvasManagerService } from '../../services/canvas-manager.service';
 
 @Component({
@@ -28,18 +17,16 @@ import { CanvasManagerService } from '../../services/canvas-manager.service';
 export class RightPanelComponent extends Destroy {
   selected$: Observable<NodeGroup>;
   nodeType: string;
-  form: FormGroup;
+
+  form = new FormGroup({
+    displayName: new FormControl(''),
+  });
 
   constructor(
     selection: SelectionService,
-    private manager: CanvasManagerService,
-    fb: FormBuilder
+    private manager: CanvasManagerService
   ) {
     super();
-
-    this.form = fb.group({
-      displayName: null,
-    });
 
     this.selected$ = selection.selected$;
 
@@ -47,9 +34,7 @@ export class RightPanelComponent extends Destroy {
     this.selected$.pipe(takeUntil(this.destroy$)).subscribe((selected) => {
       if (selected) {
         this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
-        this.form.setValue({
-          displayName: selected.displayName,
-        });
+        this.form.controls.displayName.setValue(selected.displayName);
       }
     });
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { forEach, map, take } from 'lodash-es';
 import { Destroy } from '../../shared/components/destory';
 import { NodeConnection } from '../drawing/models/node-connection.model';

@@ -3,10 +3,10 @@ import {
   Component,
   ElementRef,
   HostListener,
+  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CanvasManagerService } from '../../services/canvas-manager.service';
 import { CanvasService } from '../../services/canvas.service';
 import { CommandService } from '../../services/command.service';
 import { ConnectionService } from '../../services/connection.service';
@@ -19,8 +19,9 @@ import { SelectionService } from '../../services/selection.service';
   selector: 'sp-editor-nodes-panel',
   templateUrl: './nodes-panel.component.html',
   styleUrls: ['./nodes-panel.component.scss'],
+  providers: [],
 })
-export class NodesPanelComponent implements AfterViewInit {
+export class NodesPanelComponent implements AfterViewInit, OnInit {
   @ViewChild('canvas') domElement: ElementRef;
 
   destorySubject = Subject;
@@ -28,18 +29,19 @@ export class NodesPanelComponent implements AfterViewInit {
   constructor(
     private canvas: CanvasService,
     private drag: DragService,
-    private sandbox: LoaderService,
+    private loader: LoaderService,
     private selection: SelectionService,
     private connection: ConnectionService,
     private mouse: MouseInputService,
-    private command: CommandService,
-    private manager: CanvasManagerService
+    private command: CommandService
   ) {}
+
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.canvas.attach(this.domElement.nativeElement);
     this.drag.init();
-    this.sandbox.init();
+    this.loader.init();
     this.selection.init();
     this.connection.init();
   }

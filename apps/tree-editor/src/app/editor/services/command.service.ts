@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { ImportService } from '../../data/services/import.service';
 import { StorageService } from '../../data/services/storage.service';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { CanvasManagerService } from './canvas-manager.service';
 import { CanvasService } from './canvas.service';
+import { LoaderService } from './loader.service';
 import { MouseInputService } from './mouse-input.service';
 import { SelectionService } from './selection.service';
 
@@ -17,7 +17,7 @@ export class CommandService {
     private mouse: MouseInputService,
     private storage: StorageService,
     private toastr: ToastrService,
-    private importer: ImportService,
+    private loader: LoaderService,
     private selection: SelectionService
   ) {}
 
@@ -47,7 +47,7 @@ export class CommandService {
     this.storage.load(this.manager.currentRoot.identifier).subscribe({
       error: (err) => this.toastr.error('Error saving tree'),
       next: (root) => {
-        this.importer.import(root);
+        this.loader.import(root);
         this.toastr.success('Tree has been reloaded');
       },
     });
