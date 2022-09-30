@@ -6,8 +6,8 @@ import { NodeGroup } from '../../editor/drawing/models/node-group.model';
 import { SPNode } from '../models/sp-node.model';
 import { DataExport } from '../utils/data-export.util';
 
-@Injectable()
-export class StorageService {
+@Injectable({ providedIn: 'root' })
+export class TreeStoreService {
   private readonly lastActive = 'last_active_tree_identifier';
   private readonly treeStore = 'tree';
 

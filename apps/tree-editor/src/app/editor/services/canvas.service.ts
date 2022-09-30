@@ -13,7 +13,7 @@ import {
 } from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
-import { Destroy } from '../../shared/components/destory';
+import { Destroy } from '../../utils/components/destory';
 import { MouseInputService } from './mouse-input.service';
 
 @Injectable()

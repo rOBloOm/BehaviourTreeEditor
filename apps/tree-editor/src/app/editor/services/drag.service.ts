@@ -3,12 +3,12 @@ import { forEach } from 'lodash-es';
 import { BehaviorSubject, combineLatest, filter, takeUntil } from 'rxjs';
 import Two from 'two.js';
 import { Shape } from 'two.js/src/shape';
-import { Destroy } from '../../shared/components/destory';
 import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
 import { DrawingService } from '../drawing/drawing.service';
 import { MouseInputService } from './mouse-input.service';
 import { CanvasManagerService } from './canvas-manager.service';
+import { Destroy } from '../../utils/components/destory';
 
 @Injectable()
 export class DragService extends Destroy {

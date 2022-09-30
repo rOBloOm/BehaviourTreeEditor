@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { filter, takeUntil } from 'rxjs';
-import { ZUI } from 'two.js/extras/jsm/zui';
 import { Path } from 'two.js/src/path';
-import { Destroy } from '../../shared/components/destory';
 import { NodeGroup } from '../drawing/models/node-group.model';
 import { EditorSettings } from '../drawing/drawing.settings';
 import { getHitNodeGroup } from '../drawing/drawing.utils';
@@ -10,6 +8,7 @@ import { CanvasService } from './canvas.service';
 import { MouseInputService } from './mouse-input.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import Two from 'two.js';
+import { Destroy } from '../../utils/components/destory';
 
 @Injectable()
 export class ConnectionService extends Destroy {

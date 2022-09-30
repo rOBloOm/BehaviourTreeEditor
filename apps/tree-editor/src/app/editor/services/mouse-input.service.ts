@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { Destroy } from '../../shared/components/destory';
+import { Destroy } from '../../utils/components/destory';
 
 @Injectable()
 export class MouseInputService extends Destroy {

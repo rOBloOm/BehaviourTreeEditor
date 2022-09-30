@@ -5,10 +5,11 @@ import { ToastrModule } from 'ngx-toastr';
 import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
-import { WebpackTranslateLoader } from './shared/config/translate-loader';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { DataModule } from './data/data.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { FlexLayoutModule } from '@angular/flex-layout';
+import { WebpackTranslateLoader } from './utils/config/translate-loader';
 
 @NgModule({
   declarations: [AppComponent],

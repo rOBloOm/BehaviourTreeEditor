@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanvasService } from './canvas.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
-import { StorageService } from '../../data/services/storage.service';
+import { TreeStoreService } from '../../data/services/tree-store.service';
 import { forEach } from 'lodash-es';
 import { SPNode } from '../../data/models/sp-node.model';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
@@ -14,20 +14,21 @@ export class LoaderService {
   constructor(
     private manager: CanvasManagerService,
     private canvas: CanvasService,
-    private storage: StorageService
+    private storage: TreeStoreService
   ) {}
 
   init(): void {
-    const x = this.canvas.two.width * 0.5;
-    const y = this.canvas.two.height * 0.2;
-
     const treeId = this.storage.getActiveTree();
     if (treeId) {
       this.storage.load(treeId).subscribe((root) => {
-        this.import(root);
+        if (root) {
+          this.import(root);
+        } else {
+          this.addInitialNode();
+        }
       });
     } else {
-      this.manager.addRootNode(x, y, '', 'NewTree');
+      this.addInitialNode();
     }
   }
 
@@ -83,5 +84,11 @@ export class LoaderService {
       default:
         return {} as NodeGroup;
     }
+  }
+
+  private addInitialNode(): void {
+    const x = this.canvas.two.width * 0.5;
+    const y = this.canvas.two.height * 0.2;
+    this.manager.addRootNode(x, y, '', 'NewTree');
   }
 }

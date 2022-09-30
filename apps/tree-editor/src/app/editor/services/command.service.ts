@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { StorageService } from '../../data/services/storage.service';
+import { TreeStoreService } from '../../data/services/tree-store.service';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { CanvasManagerService } from './canvas-manager.service';
@@ -15,7 +15,7 @@ export class CommandService {
     private canvas: CanvasService,
     private manager: CanvasManagerService,
     private mouse: MouseInputService,
-    private storage: StorageService,
+    private storage: TreeStoreService,
     private toastr: ToastrService,
     private loader: LoaderService,
     private selection: SelectionService

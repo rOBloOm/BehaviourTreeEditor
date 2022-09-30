@@ -11,7 +11,7 @@ const dbConfig: DBConfig = {
       storeSchema: [
         {
           name: 'project',
-          keypath: '',
+          keypath: 'project',
           options: { unique: false },
         },
         {

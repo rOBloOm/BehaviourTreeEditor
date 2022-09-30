@@ -8,11 +8,16 @@
       fxLayoutAlign="start center"
       fxLayoutGap="20px"
     >
-      <button type="button" class="btn btn-success">Add New</button>
+      <button type="button" class="btn btn-success" (click)="addProject()">
+        Add New
+      </button>
       <button type="button" class="btn btn-secondary" routerLink="/editor">
         Editor <i class="fa-solid fa-right-long"></i>
       </button>
     </div>
   </div>
   <div class="divider"></div>
+  <div *ngFor="let project of projects$ | async">
+    {{ project.name }}
+  </div>
 </div>

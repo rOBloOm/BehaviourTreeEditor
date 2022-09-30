@@ -1,12 +1,12 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { combineLatest, Observable, takeUntil } from 'rxjs';
-import { Destroy } from '../../../shared/components/destory';
 import { SelectionService } from '../../services/selection.service';
 import { marker as _ } from '@biesbjerg/ngx-translate-extract-marker';
 import { NodeGroup } from '../../drawing/models/node-group.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { FormControl, FormGroup } from '@angular/forms';
 import { CanvasManagerService } from '../../services/canvas-manager.service';
+import { Destroy } from '../../../utils/components/destory';
 
 @Component({
   selector: 'sp-editor-right-panel',

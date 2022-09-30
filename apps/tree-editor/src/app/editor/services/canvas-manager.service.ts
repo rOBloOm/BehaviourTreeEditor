@@ -1,11 +1,9 @@
-import { Injectable, OnDestroy } from '@angular/core';
-import { forEach, map, take } from 'lodash-es';
-import { Destroy } from '../../shared/components/destory';
+import { Injectable } from '@angular/core';
+import { forEach, map } from 'lodash-es';
 import { NodeConnection } from '../drawing/models/node-connection.model';
 import { NodeGroup } from '../drawing/models/node-group.model';
 import { CanvasService } from './canvas.service';
 import { DrawingService } from '../drawing/drawing.service';
-import { SelectionService } from './selection.service';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
@@ -16,6 +14,7 @@ import { DecoratorNodeGroup } from '../drawing/models/decorator-node-group.model
 import { TreeNodeGroup } from '../drawing/models/tree-node-group.model';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
 import { RootNodeGroup } from '../drawing/models/root-node-group.model';
+import { Destroy } from '../../utils/components/destory';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
