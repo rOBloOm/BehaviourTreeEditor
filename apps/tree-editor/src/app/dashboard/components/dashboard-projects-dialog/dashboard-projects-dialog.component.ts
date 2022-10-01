@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  OnInit,
+} from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { from, takeUntil } from 'rxjs';
@@ -11,13 +16,29 @@ import { Destroy } from '../../../utils/components/destory';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardProjectsDialogComponent implements OnInit {
+  @Input()
+  name: string;
+
+  @Input()
+  isEdit: false;
+
   form = new FormGroup({
     name: new FormControl(''),
   });
 
+  get title(): string {
+    return this.isEdit ? 'Change project name' : 'Add project';
+  }
+
+  get confirmButtonText(): string {
+    return this.isEdit ? 'save' : 'add';
+  }
+
   constructor(public activeModal: NgbActiveModal) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.form.controls.name.setValue(this.name);
+  }
 
   onAdd(): void {
     this.activeModal.close(this.form.value.name);

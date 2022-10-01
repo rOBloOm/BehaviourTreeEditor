@@ -10,6 +10,8 @@ import { DashboardSettingsComponent } from './components/dashboard-settings/dash
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { DashboardProjectsDialogComponent } from './components/dashboard-projects-dialog/dashboard-projects-dialog.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DashboardProjectsDeleteDialogComponent } from './components/dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -19,12 +21,14 @@ import { ReactiveFormsModule } from '@angular/forms';
     DashboardProjectsComponent,
     DashboardSettingsComponent,
     DashboardProjectsDialogComponent,
+    DashboardProjectsDeleteDialogComponent,
   ],
   imports: [
     CommonModule,
     DashboardRoutingModule,
     FlexLayoutModule,
     ReactiveFormsModule,
+    RouterModule,
   ],
 })
 export class DashboardModule {}

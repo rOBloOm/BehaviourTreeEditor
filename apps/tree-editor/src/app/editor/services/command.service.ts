@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { ProjectStoreService } from '../../data/services/project-store.service';
 import { TreeStoreService } from '../../data/services/tree-store.service';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
@@ -15,7 +16,8 @@ export class CommandService {
     private canvas: CanvasService,
     private manager: CanvasManagerService,
     private mouse: MouseInputService,
-    private storage: TreeStoreService,
+    private treeStore: TreeStoreService,
+    private projectStore: ProjectStoreService,
     private toastr: ToastrService,
     private loader: LoaderService,
     private selection: SelectionService
@@ -24,15 +26,18 @@ export class CommandService {
   saveActiveTree(): void {
     const root = this.manager.currentRoot;
     if (root.identifier === '') {
-      this.storage.add(root).subscribe({
+      this.treeStore.add(root).subscribe({
         error: (err) => this.toastr.error('Error saving tree'),
         next: (root) => {
+          const project = this.projectStore.active;
+          project.rootNodeId = parseInt(root.identifier);
+          this.projectStore.updateProject(project);
+          this.manager.currentRoot.identifier = root.identifier;
           this.toastr.success('Tree has been saved');
-          this.storage.setActiveTree(root.identifier);
         },
       });
     } else {
-      this.storage.update(root).subscribe({
+      this.treeStore.update(root).subscribe({
         error: (err) => this.toastr.error('Error saving tree'),
         complete: () => this.toastr.success('Tree has been saved'),
       });
@@ -44,13 +49,15 @@ export class CommandService {
       this.toastr.error('No active tree');
       return;
     }
-    this.storage.load(this.manager.currentRoot.identifier).subscribe({
-      error: (err) => this.toastr.error('Error saving tree'),
-      next: (root) => {
-        this.loader.import(root);
-        this.toastr.success('Tree has been reloaded');
-      },
-    });
+    this.treeStore
+      .load(parseInt(this.manager.currentRoot.identifier))
+      .subscribe({
+        error: (err) => this.toastr.error('Error saving tree'),
+        next: (root) => {
+          this.loader.import(root);
+          this.toastr.success('Tree has been reloaded');
+        },
+      });
   }
 
   clearTree(): void {

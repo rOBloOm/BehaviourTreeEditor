@@ -1,30 +1,22 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService, WithID } from 'ngx-indexed-db';
 import { hasUncaughtExceptionCaptureCallback } from 'process';
-import { map, Observable } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 import { NodeGroup } from '../../editor/drawing/models/node-group.model';
 import { SPNode } from '../models/sp-node.model';
 import { DataExport } from '../utils/data-export.util';
 
 @Injectable({ providedIn: 'root' })
 export class TreeStoreService {
-  private readonly lastActive = 'last_active_tree_identifier';
-  private readonly treeStore = 'tree';
+  static readonly TREE_STORE = 'tree';
+  static readonly LAST_ACTIVE_TREE = 'last_active_tree';
 
   constructor(private dbService: NgxIndexedDBService) {}
-
-  getActiveTree(): string {
-    return localStorage.getItem(this.lastActive);
-  }
-
-  setActiveTree(identifier: string): void {
-    localStorage.setItem(this.lastActive, identifier);
-  }
 
   add(root: NodeGroup): Observable<SPNode> {
     const data = DataExport.convert(root);
     delete data.identifier;
-    return this.dbService.add(this.treeStore, data);
+    return this.dbService.add(TreeStoreService.TREE_STORE, data);
   }
 
   update(root: NodeGroup): Observable<SPNode> {
@@ -32,17 +24,27 @@ export class TreeStoreService {
     if (root.identifier === '') {
       return this.add(root);
     } else {
-      return this.dbService.update(this.treeStore, data);
+      return this.dbService.update(TreeStoreService.TREE_STORE, data);
     }
+  }
+
+  delete(identifier: number): void {
+    this.dbService
+      .deleteByKey(TreeStoreService.TREE_STORE, identifier)
+      .subscribe({
+        error: (err) => {
+          throw new Error(err);
+        },
+      });
   }
 
   loadAll(): Observable<SPNode[]> {
     return this.dbService
-      .getAll(this.treeStore)
+      .getAll(TreeStoreService.TREE_STORE)
       .pipe(map((result) => result.map((node) => node as SPNode)));
   }
 
-  load(identifier: string): Observable<SPNode> {
-    return this.dbService.getByKey(this.treeStore, Number.parseInt(identifier));
+  load(identifier: number): Observable<SPNode> {
+    return this.dbService.getByID(TreeStoreService.TREE_STORE, identifier);
   }
 }

@@ -23,7 +23,11 @@ import { WebpackTranslateLoader } from './utils/config/translate-loader';
         useClass: WebpackTranslateLoader,
       },
     }),
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 2000,
+      positionClass: 'toast-bottom-right',
+      preventDuplicates: true,
+    }),
     DataModule,
     NgbModule,
   ],

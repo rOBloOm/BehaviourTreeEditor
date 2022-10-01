@@ -1,6 +1,11 @@
 <div fxFlex fxLayout="column">
-  <div class="header" fxLayout="row" fxLayoutAlgin="start center">
-    <h1>Projects</h1>
+  <div
+    class="header"
+    fxLayout="row"
+    fxLayoutAlgin="start center"
+    fxLayoutGap="10px"
+  >
+    <h1 fxFlex="400px">Projects</h1>
     <div
       class="toolbar"
       fxFlex
@@ -11,13 +16,38 @@
       <button type="button" class="btn btn-success" (click)="addProject()">
         Add New
       </button>
-      <button type="button" class="btn btn-secondary" routerLink="/editor">
-        Editor <i class="fa-solid fa-right-long"></i>
-      </button>
     </div>
   </div>
   <div class="divider"></div>
   <div *ngFor="let project of projects$ | async">
-    {{ project.name }}
+    <div fxFlex fxLayout="row" fxLayoutGap="10px" class="projectItem">
+      <div class="projectname" fxLayout="row" fxLayoutAlign="start center">
+        <div>{{ project.name }}</div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        title="open editor"
+        (click)="openEditor(project)"
+      >
+        Open <i class="fa-solid fa-right-long"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        title="rename project"
+        (click)="renameProject(project)"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-danger"
+        title="delete project"
+        (click)="deleteProject(project)"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+    </div>
   </div>
 </div>

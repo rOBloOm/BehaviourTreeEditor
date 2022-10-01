@@ -8,28 +8,35 @@ import { SPNode } from '../../data/models/sp-node.model';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
+import { ProjectStoreService } from '../../data/services/project-store.service';
+import { filter, switchMap, takeUntil, takeWhile } from 'rxjs';
+import { Destroy } from '../../utils/components/destory';
 
 @Injectable()
-export class LoaderService {
+export class LoaderService extends Destroy {
   constructor(
     private manager: CanvasManagerService,
     private canvas: CanvasService,
-    private storage: TreeStoreService
-  ) {}
+    private projectStore: ProjectStoreService,
+    private treeStore: TreeStoreService
+  ) {
+    super();
+  }
 
   init(): void {
-    const treeId = this.storage.getActiveTree();
-    if (treeId) {
-      this.storage.load(treeId).subscribe((root) => {
+    this.projectStore.active$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((value) => value !== undefined),
+        switchMap((project) => this.treeStore.load(project.rootNodeId))
+      )
+      .subscribe((root) => {
         if (root) {
           this.import(root);
         } else {
           this.addInitialNode();
         }
       });
-    } else {
-      this.addInitialNode();
-    }
   }
 
   import(root: SPNode) {

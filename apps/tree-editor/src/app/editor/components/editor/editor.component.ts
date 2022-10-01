@@ -33,7 +33,6 @@ export class EditorComponent implements OnInit {
   title = _('SP.Editor.Title');
 
   constructor(
-    private input: MouseInputService,
     private titleService: Title,
     private translateService: TranslateService
   ) {}

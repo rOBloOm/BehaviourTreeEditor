@@ -34,6 +34,9 @@
       </li>
     </ul>
   </div>
+  <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+    {{ treeName$ | async }}
+  </div>
   <div fxLayout="row" fxFlexAlign="end center">
     <div
       class="treeTitle"
@@ -41,7 +44,7 @@
       fxLayout="row"
       fxLayoutAlign="start center"
     >
-      {{ this.treeName$ | async }}
+      {{ projectName$ | async }}
     </div>
   </div>
 </div>
