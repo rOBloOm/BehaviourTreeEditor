@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
-import { NgxIndexedDBService, WithID } from 'ngx-indexed-db';
-import { hasUncaughtExceptionCaptureCallback } from 'process';
-import { map, Observable, switchMap } from 'rxjs';
+import { NgxIndexedDBService } from 'ngx-indexed-db';
+import { map, Observable } from 'rxjs';
 import { NodeGroup } from '../../editor/drawing/models/node-group.model';
 import { SPNode } from '../models/sp-node.model';
 import { DataExport } from '../utils/data-export.util';

@@ -75,35 +75,4 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
   leave(event: MouseEvent) {
     this.mouse.mouseLeave(event);
   }
-
-  @HostListener('window:keydown.shift.a', ['$event'])
-  addAction(event: KeyboardEvent): void {
-    this.command.addAction();
-  }
-
-  @HostListener('window:keydown.shift.c', ['$event'])
-  addCondition(event: KeyboardEvent): void {
-    this.command.addCondition();
-  }
-
-  @HostListener('window:keydown.shift.s', ['$event'])
-  addSelector(event: KeyboardEvent): void {
-    this.command.addSelector();
-  }
-
-  @HostListener('window:keydown.shift.d', ['$event'])
-  addDecorator(event: KeyboardEvent): void {
-    this.command.addDecorator();
-  }
-
-  @HostListener('window:keydown.shift.t', ['$event'])
-  addTree(event: KeyboardEvent): void {
-    this.command.addTree();
-  }
-
-  @HostListener('window:keydown.shift.x', ['$event'])
-  @HostListener('window:keydown.delete', ['$event'])
-  delete(): void {
-    this.command.deleteSelected();
-  }
 }

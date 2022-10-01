@@ -4,6 +4,7 @@ import { ProjectStoreService } from '../../../data/services/project-store.servic
 import { Destroy } from '../../../utils/components/destory';
 import { CanvasManagerService } from '../../services/canvas-manager.service';
 import { CommandService } from '../../services/command.service';
+import { NodePanel } from '../left-panel/left-panel.component';
 
 @Component({
   selector: 'sp-editor-menu-bar',
@@ -33,6 +34,18 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
   }
 
   ngOnInit(): void {}
+
+  openTreePanel(): void {
+    this.command.openPanel(NodePanel.AccTree);
+  }
+
+  openActionPanel(): void {
+    this.command.openPanel(NodePanel.AccAction);
+  }
+
+  openConditionPanel(): void {
+    this.command.openPanel(NodePanel.AccCondition);
+  }
 
   saveActiveTree(): void {
     this.command.saveActiveTree();

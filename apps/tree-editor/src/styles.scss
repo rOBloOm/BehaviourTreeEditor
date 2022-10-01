@@ -48,3 +48,34 @@ html {
     -webkit-text-size-adjust: 100%
 }
 
+//Boostrap overrides
+.accordion-button {
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--color-dark4);
+    color: var(--color-light1)
+}
+
+.accordion-item {
+    border-color: var(--color-dark1);
+}
+
+.accordion {
+    color: var(--color-light1);
+    --bs-accordion-bg: var(--color-dark3);
+    --bs-accordion-border-color: var(--color-dark1)
+    --bs-accordion-btn-focus-border-color: var(--color-dark1);
+    --bs-accordion-active-color: var(--color-light3);
+    --bs-accordion-btn-focus-border-color:var(--color-light3);
+    --bs-accordion-btn-focus-box-shadow: none;
+}
+
+.accordion-body {
+    color: var(--color-light2);
+}
+
+.accordion-button:not(.collapsed) { 
+    background-color: var(--color-light3);
+    color: var(--color-dark1);    
+}

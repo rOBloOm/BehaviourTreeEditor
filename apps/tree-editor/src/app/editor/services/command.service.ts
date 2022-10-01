@@ -1,7 +1,9 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 import { ProjectStoreService } from '../../data/services/project-store.service';
 import { TreeStoreService } from '../../data/services/tree-store.service';
+import { NodePanel } from '../components/left-panel/left-panel.component';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { CanvasManagerService } from './canvas-manager.service';
@@ -12,6 +14,9 @@ import { SelectionService } from './selection.service';
 
 @Injectable()
 export class CommandService {
+  openTreePanelSubject = new Subject<NodePanel>();
+  openTreePanel$ = this.openTreePanelSubject.asObservable();
+
   constructor(
     private canvas: CanvasService,
     private manager: CanvasManagerService,
@@ -42,6 +47,10 @@ export class CommandService {
         complete: () => this.toastr.success('Tree has been saved'),
       });
     }
+  }
+
+  openPanel(panel: NodePanel): void {
+    this.openTreePanelSubject.next(panel);
   }
 
   reloadTree(): void {

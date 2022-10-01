@@ -4,3 +4,11 @@
     background-color: var(--accent-gb-color);
     box-shadow: 0 0 16px 0 #0b0b0b
 }
+
+.accHeader {
+    height: 20px;
+}
+
+.accPanel {
+    height: calc(100vh - 150px)
+}

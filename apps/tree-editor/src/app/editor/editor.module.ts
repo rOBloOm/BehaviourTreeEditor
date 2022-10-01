@@ -7,11 +7,11 @@ import { NodesPanelComponent } from './components/nodes-panel/nodes-panel.compon
 import { EditorComponent } from './components/editor/editor.component';
 import { LeftPanelComponent } from './components/left-panel/left-panel.component';
 import { RightPanelComponent } from './components/right-panel/right-panel.component';
-import { TranslateModule } from '@ngx-translate/core';
 import { EditorMenuBarComponent } from './components/editor-menu-bar/editor-menu-bar.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { TreeStoreService } from '../data/services/tree-store.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
+import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -24,9 +24,10 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   imports: [
     CommonModule,
     EditorRoutingModule,
-    TranslateModule,
     ReactiveFormsModule,
     FlexLayoutModule,
+    KeyboardShortcutsModule.forRoot(),
+    NgbAccordionModule,
   ],
 })
 export class EditorModule {}

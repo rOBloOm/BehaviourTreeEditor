@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { TranslateService } from '@ngx-translate/core';
 import { ProjectStoreService } from './data/services/project-store.service';
 
 @Component({
@@ -10,13 +9,7 @@ import { ProjectStoreService } from './data/services/project-store.service';
 export class AppComponent {
   title = 'tree-editor';
 
-  constructor(translate: TranslateService, projectStore: ProjectStoreService) {
-    // this language will be used as a fallback when a translation isn't found in the current language
-    translate.setDefaultLang('en');
-
-    // the lang to use, if the lang isn't available, it will use the current loader to get them
-    translate.use('en');
-
+  constructor(projectStore: ProjectStoreService) {
     // load the last active project
     projectStore.loadLastActive();
   }
