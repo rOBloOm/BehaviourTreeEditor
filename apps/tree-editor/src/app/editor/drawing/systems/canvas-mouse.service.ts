@@ -26,6 +26,12 @@ export class CanvasMouseService extends Destroy {
   private wheelSubject = new Subject<WheelEvent>();
   wheel$ = this.wheelSubject.asObservable();
 
+  private dragSubject = new Subject<DragEvent>();
+  drag$ = this.dragSubject.asObservable();
+
+  private dropSubject = new Subject<DragEvent>();
+  drop$ = this.dropSubject.asObservable();
+
   constructor() {
     super();
     this.trackMouse();
@@ -59,17 +65,21 @@ export class CanvasMouseService extends Destroy {
     this.mouseInsideCanvasSubject.next(false);
   }
 
-  dragOver(event: MouseEvent): void {
-    event.preventDefault();
+  dragOver(event: DragEvent): void {
     this.mouseMoveSubject.next(event);
+    this.dragSubject.next(event);
   }
 
-  dragEnter(event: MouseEvent): void {
+  dragEnter(event: DragEvent): void {
     this.mouseInsideCanvasSubject.next(true);
   }
 
-  dragLeave(event: MouseEvent): void {
+  dragLeave(event: DragEvent): void {
     this.mouseInsideCanvasSubject.next(false);
+  }
+
+  drop(event: DragEvent): void {
+    this.dropSubject.next(event);
   }
 
   private trackMouse(): void {

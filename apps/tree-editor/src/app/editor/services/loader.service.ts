@@ -62,8 +62,8 @@ export class LoaderService extends Destroy {
         return this.canvasManager.addActionNode(
           node.x,
           node.y,
-          node.displayName,
-          node.identifier
+          node.identifier,
+          node.displayName
         );
       case NodeGroupType[NodeGroupType.Composite]:
         return this.canvasManager.addCompositeNode(
@@ -75,8 +75,8 @@ export class LoaderService extends Destroy {
         return this.canvasManager.addConditionNode(
           node.x,
           node.y,
-          node.displayName,
-          node.identifier
+          node.identifier,
+          node.displayName
         );
       case NodeGroupType[NodeGroupType.Decorator]:
         return this.canvasManager.addDecorator(

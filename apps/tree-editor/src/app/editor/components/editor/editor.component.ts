@@ -6,7 +6,7 @@ import {
   OnInit,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { DrawingService } from '../../drawing/drawing.service';
+import { CanvasDrawingService } from '../../drawing/systems/canvas-drawing.service';
 import { CommandService } from '../../services/command.service';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
 import { LoaderService } from '../../services/loader.service';
@@ -17,6 +17,7 @@ import { CanvasManagerService } from '../../drawing/systems/canvas-manager.servi
 import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
+import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
 
 @Component({
   selector: 'sp-editor',
@@ -24,14 +25,15 @@ import { CanvasService } from '../../drawing/systems/canvas.service';
   styleUrls: ['./editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
+    CanvasService,
     CanvasMouseService,
-    CommandService,
     CanvasSelectionService,
     CanvasConnectionService,
-    DrawingService,
+    CanvasDrawingService,
+    CommandService,
     CanvasManagerService,
-    CanvasService,
     CanvasDragService,
+    CanvasDropService,
     LoaderService,
   ],
 })
@@ -87,30 +89,5 @@ export class EditorComponent implements AfterViewInit {
 
   ngOnInit(): void {
     this.titleService.setTitle('Behaviour Tree Editor');
-  }
-
-  @HostListener('window:keydown.shift.a', ['$event'])
-  addAction(event: KeyboardEvent): void {
-    this.command.addAction();
-  }
-
-  @HostListener('window:keydown.shift.c', ['$event'])
-  addCondition(event: KeyboardEvent): void {
-    this.command.addCondition();
-  }
-
-  @HostListener('window:keydown.shift.s', ['$event'])
-  addSelector(event: KeyboardEvent): void {
-    this.command.addSelector();
-  }
-
-  @HostListener('window:keydown.shift.d', ['$event'])
-  addDecorator(event: KeyboardEvent): void {
-    this.command.addDecorator();
-  }
-
-  @HostListener('window:keydown.shift.t', ['$event'])
-  addTree(event: KeyboardEvent): void {
-    this.command.addTree();
   }
 }

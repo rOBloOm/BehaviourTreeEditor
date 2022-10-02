@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import Two from 'two.js';
 import { Path } from 'two.js/src/path';
-import { NodeGroup } from './models/node-group.model';
-import { EditorSettings } from './drawing.settings';
-import { RootNodeGroup } from './models/root-node-group.model';
-import { ActionNodeGroup } from './models/action-node-group.model';
-import { CompositeNodeGroup } from './models/composite-node-group.model';
-import { DecoratorNodeGroup } from './models/decorator-node-group.model';
-import { DecoratorType } from './enums/decorator-type.enum';
-import { TreeNodeGroup } from './models/tree-node-group.model';
-import { CompositeType } from './enums/composite-type.enum';
-import { ConditionNodeGroup } from './models/condition-node-group.model';
-import { CanvasService } from './systems/canvas.service';
+import { NodeGroup } from '../models/node-group.model';
+import { EditorSettings } from '../drawing.settings';
+import { RootNodeGroup } from '../models/root-node-group.model';
+import { ActionNodeGroup } from '../models/action-node-group.model';
+import { CompositeNodeGroup } from '../models/composite-node-group.model';
+import { DecoratorNodeGroup } from '../models/decorator-node-group.model';
+import { DecoratorType } from '../enums/decorator-type.enum';
+import { TreeNodeGroup } from '../models/tree-node-group.model';
+import { CompositeType } from '../enums/composite-type.enum';
+import { ConditionNodeGroup } from '../models/condition-node-group.model';
+import { CanvasService } from './canvas.service';
 
 @Injectable()
-export class DrawingService {
+export class CanvasDrawingService {
   private get textStyle(): any {
     return {
       size: 18,
@@ -80,8 +80,8 @@ export class DrawingService {
   createActionNode(
     x: number,
     y: number,
-    text: string,
-    identifier: string
+    identifier: string,
+    text: string
   ): NodeGroup {
     //Text Shape
     const actionText = this.canvas.two.makeText(text, x, y, this.textStyle);
@@ -169,7 +169,7 @@ export class DrawingService {
   ): NodeGroup {
     //Text Shape
     const actionText = this.canvas.two.makeText(
-      CompositeType[compositeType],
+      compositeType.toString(),
       x,
       y,
       this.textStyle
@@ -241,7 +241,7 @@ export class DrawingService {
 
     //Text Shape
     const textShape = this.canvas.two.makeText(
-      DecoratorType[type],
+      type.toString(),
       x,
       y,
       this.textStyle

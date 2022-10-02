@@ -14,6 +14,8 @@ import {
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
 import { Destroy } from '../../../utils/components/destory';
+import { CommandService } from '../../services/command.service';
+import { CanvasDropData } from '../models/canvas-drop-data.model';
 import { CanvasMouseService } from './canvas-mouse.service';
 
 @Injectable()
@@ -27,7 +29,7 @@ export class CanvasService extends Destroy {
     return this.panningSubject.asObservable();
   }
 
-  constructor(private inputService: CanvasMouseService) {
+  constructor(private canvasMouse: CanvasMouseService) {
     super();
   }
 
@@ -48,7 +50,7 @@ export class CanvasService extends Destroy {
   }
 
   private initZoomBehavior(): void {
-    this.inputService.wheel$.subscribe((event) => {
+    this.canvasMouse.wheel$.subscribe((event) => {
       event.stopPropagation();
       event.preventDefault();
 
@@ -62,7 +64,7 @@ export class CanvasService extends Destroy {
     let panning = false;
     var mouse = new Two.Vector();
 
-    this.inputService.mouseDown$
+    this.canvasMouse.mouseDown$
       .pipe(
         filter((event) => event.shiftKey && event.button === 0),
         takeUntil(this.destroy$)
@@ -74,14 +76,14 @@ export class CanvasService extends Destroy {
         this.panningSubject.next(true);
       });
 
-    this.inputService.mouseUp$.pipe(takeUntil(this.destroy$)).subscribe(() => {
+    this.canvasMouse.mouseUp$.pipe(takeUntil(this.destroy$)).subscribe(() => {
       if (panning) {
         panning = false;
         this.panningSubject.next(false);
       }
     });
 
-    combineLatest([this.inputService.mouseMove$, this.pannig$])
+    combineLatest([this.canvasMouse.mouseMove$, this.pannig$])
       .pipe(
         filter(([, panning]) => panning),
         takeUntil(this.destroy$)

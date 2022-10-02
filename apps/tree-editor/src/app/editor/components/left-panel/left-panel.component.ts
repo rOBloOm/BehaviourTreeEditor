@@ -10,6 +10,10 @@ import { Destroy } from '../../../utils/components/destory';
 import { takeUntil } from 'rxjs';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
+import { CanvasDropData } from '../../drawing/models/canvas-drop-data.model';
+import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
+import { DecoratorType } from '../../drawing/enums/decorator-type.enum';
+import { CompositeType } from '../../drawing/enums/composite-type.enum';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -112,27 +116,55 @@ export class LeftPanelComponent
   }
 
   public dragStartTree(event: DragEvent, item: string) {
-    event.dataTransfer.setData('id', item);
+    const data = {
+      nodeType: NodeGroupType[NodeGroupType.Tree],
+      name: item,
+      identifier: item,
+    } as CanvasDropData;
+
+    event.dataTransfer.setData(CanvasDropData.NODE_DATA, JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
   }
 
   public dragStartAction(event: DragEvent, item: string) {
-    event.dataTransfer.setData('id', item);
+    const data = {
+      nodeType: NodeGroupType[NodeGroupType.Action],
+      name: item,
+      identifier: item,
+    } as CanvasDropData;
+
+    event.dataTransfer.setData(CanvasDropData.NODE_DATA, JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
   }
 
   public dragStartCondition(event: DragEvent, item: string) {
-    event.dataTransfer.setData('id', item);
+    const data = {
+      nodeType: NodeGroupType[NodeGroupType.Condition],
+      name: item,
+      identifier: item,
+    } as CanvasDropData;
+
+    event.dataTransfer.setData(CanvasDropData.NODE_DATA, JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
   }
 
   public dragStartDecorator(event: DragEvent, item: string) {
-    event.dataTransfer.setData('id', item);
+    const data = {
+      nodeType: NodeGroupType[NodeGroupType.Decorator],
+      nodeSubType: DecoratorType[item],
+    } as CanvasDropData;
+
+    event.dataTransfer.setData(CanvasDropData.NODE_DATA, JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
   }
 
   public dragStartComposite(event: DragEvent, item: string) {
-    event.dataTransfer.setData('id', item);
+    const data = {
+      nodeType: NodeGroupType[NodeGroupType.Composite],
+      nodeSubType: CompositeType[item],
+    } as CanvasDropData;
+
+    event.dataTransfer.setData(CanvasDropData.NODE_DATA, JSON.stringify(data));
     event.dataTransfer.effectAllowed = 'move';
   }
 }

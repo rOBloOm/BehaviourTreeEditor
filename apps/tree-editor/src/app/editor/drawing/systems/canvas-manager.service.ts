@@ -3,7 +3,7 @@ import { forEach, map } from 'lodash-es';
 import { CanvasService } from './canvas.service';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
 import { Destroy } from '../../../utils/components/destory';
-import { DrawingService } from '../drawing.service';
+import { CanvasDrawingService } from './canvas-drawing.service';
 import { CompositeType } from '../enums/composite-type.enum';
 import { DecoratorType } from '../enums/decorator-type.enum';
 import { NodeGroupType } from '../enums/node-group-type.enum';
@@ -31,7 +31,10 @@ export class CanvasManagerService extends Destroy {
   rootDisplayNameSubject = new BehaviorSubject<string>('');
   rootDisplayName$ = this.rootDisplayNameSubject.asObservable();
 
-  constructor(private drawing: DrawingService, private canvas: CanvasService) {
+  constructor(
+    private drawing: CanvasDrawingService,
+    private canvas: CanvasService
+  ) {
     super();
 
     this.root$
@@ -80,10 +83,10 @@ export class CanvasManagerService extends Destroy {
   addActionNode(
     x: number,
     y: number,
-    text: string,
-    identifier: string
+    identifier: string,
+    text: string
   ): NodeGroup {
-    const node = this.drawing.createActionNode(x, y, text, identifier);
+    const node = this.drawing.createActionNode(x, y, identifier, text);
     this.nodes[node.id] = node;
     return node;
   }
@@ -91,10 +94,10 @@ export class CanvasManagerService extends Destroy {
   addConditionNode(
     x: number,
     y: number,
-    text: string,
-    identifier: string
+    identifier: string,
+    text: string
   ): NodeGroup {
-    const node = this.drawing.createConditionNode(x, y, text, identifier);
+    const node = this.drawing.createConditionNode(x, y, identifier, text);
     this.nodes[node.id] = node;
     return node;
   }
@@ -204,8 +207,8 @@ export class CanvasManagerService extends Destroy {
         redrawnNode = this.addConditionNode(
           x,
           y,
-          text,
-          (node as ConditionNodeGroup).identifier
+          (node as ConditionNodeGroup).identifier,
+          text
         );
         break;
       case NodeGroupType.Decorator:

@@ -7,7 +7,7 @@ import { CanvasService } from './canvas.service';
 import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import { Destroy } from '../../../utils/components/destory';
-import { DrawingService } from '../drawing.service';
+import { CanvasDrawingService } from './canvas-drawing.service';
 import { getHitNodeGroup } from '../drawing.utils';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class CanvasDragService extends Destroy {
     private input: CanvasMouseService,
     private canvas: CanvasService,
     private manager: CanvasManagerService,
-    private drawing: DrawingService
+    private drawing: CanvasDrawingService
   ) {
     super();
   }

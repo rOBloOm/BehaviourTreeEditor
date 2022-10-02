@@ -14,6 +14,7 @@ import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
 import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
+import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
 
 @Component({
   selector: 'sp-editor-nodes-panel',
@@ -29,11 +30,11 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
   constructor(
     private canvas: CanvasService,
     private canvasDrag: CanvasDragService,
+    private canvasDrop: CanvasDropService,
     private canvasSelection: CanvasSelectionService,
     private canvasConnection: CanvasConnectionService,
     private canvasMouse: CanvasMouseService,
-    private loader: LoaderService,
-    private command: CommandService
+    private loader: LoaderService
   ) {}
 
   ngOnInit(): void {}
@@ -41,14 +42,10 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     this.canvas.attach(this.domElement.nativeElement);
     this.canvasDrag.init();
+    this.canvasDrop.init();
     this.loader.init();
     this.canvasSelection.init();
     this.canvasConnection.init();
-  }
-
-  public drop(event: DragEvent) {
-    const name = event.dataTransfer.getData('id');
-    this.command.addTreeWith(name);
   }
 
   @HostListener('mouseup', ['$event'])
@@ -82,17 +79,22 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
   }
 
   @HostListener('dragover', ['$event'])
-  dragover(event: MouseEvent) {
+  dragover(event: DragEvent) {
     this.canvasMouse.dragOver(event);
   }
 
   @HostListener('dragenter', ['$event'])
-  dragEnter(event: MouseEvent) {
+  dragEnter(event: DragEvent) {
     this.canvasMouse.mouseEnter(event);
   }
 
   @HostListener('dragleave', ['$event'])
-  dragLeave(event: MouseEvent) {
+  dragLeave(event: DragEvent) {
     this.canvasMouse.mouseLeave(event);
+  }
+
+  @HostListener('drop', ['$event'])
+  drop(event: DragEvent) {
+    this.canvasMouse.drop(event);
   }
 }

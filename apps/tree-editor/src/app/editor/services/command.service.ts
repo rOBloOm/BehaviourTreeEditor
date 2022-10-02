@@ -69,64 +69,44 @@ export class CommandService {
       });
   }
 
-  addAction(): void {
+  addActionWith(identifier: string, name: string): void {
     if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
       this.canvasMouse.mouseX,
       this.canvasMouse.mouseY
     );
-    this.canvasManager.addActionNode(
-      pos.x,
-      pos.y,
-      'GetMeSomeAction',
-      'action01'
-    );
+    this.canvasManager.addActionNode(pos.x, pos.y, identifier, name);
   }
 
-  addCondition(): void {
+  addConditionWith(identifier: string, name: string): void {
     if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
       this.canvasMouse.mouseX,
       this.canvasMouse.mouseY
     );
-    this.canvasManager.addConditionNode(
-      pos.x,
-      pos.y,
-      'IsItMoving?',
-      'condition01'
-    );
+    this.canvasManager.addConditionNode(pos.x, pos.y, identifier, name);
   }
 
-  addSelector(): void {
+  addCompositeWith(type: CompositeType): void {
     if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
       this.canvasMouse.mouseX,
       this.canvasMouse.mouseY
     );
-    this.canvasManager.addCompositeNode(pos.x, pos.y, CompositeType.Selector);
+    this.canvasManager.addCompositeNode(pos.x, pos.y, type);
   }
 
-  addDecorator(): void {
+  addDecoratorWith(type: DecoratorType): void {
     if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
       this.canvasMouse.mouseX,
       this.canvasMouse.mouseY
     );
-    this.canvasManager.addDecorator(pos.x, pos.y, DecoratorType.Inverter);
-  }
-
-  addTree(): void {
-    if (!this.canvasMouse.isMouseInsideCanvas) return;
-
-    const pos = this.canvas.zui.clientToSurface(
-      this.canvasMouse.mouseX,
-      this.canvasMouse.mouseY
-    );
-    this.canvasManager.addTree(pos.x, pos.y, 'SomeOtherTree');
+    this.canvasManager.addDecorator(pos.x, pos.y, type);
   }
 
   addTreeWith(name: string): void {
