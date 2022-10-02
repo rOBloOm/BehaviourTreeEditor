@@ -36,7 +36,6 @@
             >
           </li>
           <li><a (click)="loadTree()">Reload</a></li>
-          <li><a (click)="clearTree()">Clear</a></li>
         </ul>
       </li>
       <li>
@@ -46,8 +45,25 @@
             <a
               fxFlex
               fxLayoutAlign="space-between center"
+              (click)="openTreePanel()"
+              >New Tree <span class="shortcut">ctrl + n</span></a
+            >
+          </li>
+          <li></li>
+          <li>
+            <a
+              fxFlex
+              fxLayoutAlign="space-between center"
+              (click)="openTreePanel()"
+              >Trees <span class="shortcut">a t</span></a
+            >
+          </li>
+          <li>
+            <a
+              fxFlex
+              fxLayoutAlign="space-between center"
               (click)="openActionPanel()"
-              >Add Action <span class="shortcut">a a</span></a
+              >Actions <span class="shortcut">a a</span></a
             >
           </li>
           <li>
@@ -55,15 +71,23 @@
               fxFlex
               fxLayoutAlign="space-between center"
               (click)="openConditionPanel()"
-              >Add Condition <span class="shortcut">a c</span></a
+              >Conditions <span class="shortcut">a c</span></a
             >
           </li>
           <li>
             <a
               fxFlex
               fxLayoutAlign="space-between center"
-              (click)="openTreePanel()"
-              >Add Tree <span class="shortcut">a t</span></a
+              (click)="openDecoratorPanel()"
+              >Decorators <span class="shortcut">a d</span></a
+            >
+          </li>
+          <li>
+            <a
+              fxFlex
+              fxLayoutAlign="space-between center"
+              (click)="openCompositePanel()"
+              >Composites <span class="shortcut">a f</span></a
             >
           </li>
         </ul>

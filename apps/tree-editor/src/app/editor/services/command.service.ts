@@ -6,11 +6,11 @@ import { TreeStoreService } from '../../data/services/tree-store.service';
 import { NodePanel } from '../components/left-panel/left-panel.component';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
-import { CanvasManagerService } from './canvas-manager.service';
-import { CanvasService } from './canvas.service';
+import { CanvasManagerService } from '../drawing/systems/canvas-manager.service';
+import { CanvasMouseService } from '../drawing/systems/canvas-mouse.service';
+import { CanvasSelectionService } from '../drawing/systems/canvas-selection.service';
+import { CanvasService } from '../drawing/systems/canvas.service';
 import { LoaderService } from './loader.service';
-import { MouseInputService } from './mouse-input.service';
-import { SelectionService } from './selection.service';
 
 @Injectable()
 export class CommandService {
@@ -19,17 +19,17 @@ export class CommandService {
 
   constructor(
     private canvas: CanvasService,
-    private manager: CanvasManagerService,
-    private mouse: MouseInputService,
+    private canvasManager: CanvasManagerService,
+    private canvasMouse: CanvasMouseService,
+    private canvasSelection: CanvasSelectionService,
     private treeStore: TreeStoreService,
     private projectStore: ProjectStoreService,
-    private toastr: ToastrService,
     private loader: LoaderService,
-    private selection: SelectionService
+    private toastr: ToastrService
   ) {}
 
   saveActiveTree(): void {
-    const root = this.manager.currentRoot;
+    const root = this.canvasManager.currentRoot;
     if (root.identifier === '') {
       this.treeStore.add(root).subscribe({
         error: (err) => this.toastr.error('Error saving tree'),
@@ -37,7 +37,7 @@ export class CommandService {
           const project = this.projectStore.active;
           project.rootNodeId = parseInt(root.identifier);
           this.projectStore.updateProject(project);
-          this.manager.currentRoot.identifier = root.identifier;
+          this.canvasManager.currentRoot.identifier = root.identifier;
           this.toastr.success('Tree has been saved');
         },
       });
@@ -54,12 +54,12 @@ export class CommandService {
   }
 
   reloadTree(): void {
-    if (!this.manager.currentRoot) {
+    if (!this.canvasManager.currentRoot) {
       this.toastr.error('No active tree');
       return;
     }
     this.treeStore
-      .load(parseInt(this.manager.currentRoot.identifier))
+      .load(parseInt(this.canvasManager.currentRoot.identifier))
       .subscribe({
         error: (err) => this.toastr.error('Error saving tree'),
         next: (root) => {
@@ -69,65 +69,81 @@ export class CommandService {
       });
   }
 
-  clearTree(): void {
-    this.manager.clear();
-  }
-
   addAction(): void {
-    if (!this.mouse.isMouseInsideCanvas) return;
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
-      this.mouse.mouseX,
-      this.mouse.mouseY
+      this.canvasMouse.mouseX,
+      this.canvasMouse.mouseY
     );
-    this.manager.addActionNode(pos.x, pos.y, 'GetMeSomeAction', 'action01');
+    this.canvasManager.addActionNode(
+      pos.x,
+      pos.y,
+      'GetMeSomeAction',
+      'action01'
+    );
   }
 
   addCondition(): void {
-    if (!this.mouse.isMouseInsideCanvas) return;
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
-      this.mouse.mouseX,
-      this.mouse.mouseY
+      this.canvasMouse.mouseX,
+      this.canvasMouse.mouseY
     );
-    this.manager.addConditionNode(pos.x, pos.y, 'IsItMoving?', 'condition01');
+    this.canvasManager.addConditionNode(
+      pos.x,
+      pos.y,
+      'IsItMoving?',
+      'condition01'
+    );
   }
 
   addSelector(): void {
-    if (!this.mouse.isMouseInsideCanvas) return;
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
-      this.mouse.mouseX,
-      this.mouse.mouseY
+      this.canvasMouse.mouseX,
+      this.canvasMouse.mouseY
     );
-    this.manager.addCompositeNode(pos.x, pos.y, CompositeType.Selector);
+    this.canvasManager.addCompositeNode(pos.x, pos.y, CompositeType.Selector);
   }
 
   addDecorator(): void {
-    if (!this.mouse.isMouseInsideCanvas) return;
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
-      this.mouse.mouseX,
-      this.mouse.mouseY
+      this.canvasMouse.mouseX,
+      this.canvasMouse.mouseY
     );
-    this.manager.addDecorator(pos.x, pos.y, DecoratorType.Inverter);
+    this.canvasManager.addDecorator(pos.x, pos.y, DecoratorType.Inverter);
   }
 
   addTree(): void {
-    if (!this.mouse.isMouseInsideCanvas) return;
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
-      this.mouse.mouseX,
-      this.mouse.mouseY
+      this.canvasMouse.mouseX,
+      this.canvasMouse.mouseY
     );
-    this.manager.addTree(pos.x, pos.y, 'SomeOtherTree');
+    this.canvasManager.addTree(pos.x, pos.y, 'SomeOtherTree');
+  }
+
+  addTreeWith(name: string): void {
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
+
+    const pos = this.canvas.zui.clientToSurface(
+      this.canvasMouse.mouseX,
+      this.canvasMouse.mouseY
+    );
+    this.canvasManager.addTree(pos.x, pos.y, name);
   }
 
   deleteSelected(): void {
-    if (!this.mouse.isMouseInsideCanvas) return;
+    if (!this.canvasMouse.isMouseInsideCanvas) return;
 
-    if (this.selection.currentSelected !== undefined) {
-      this.manager.removeNode(this.selection.currentSelected.id);
+    if (this.canvasSelection.currentSelected !== undefined) {
+      this.canvasManager.removeNode(this.canvasSelection.currentSelected.id);
     }
   }
 }

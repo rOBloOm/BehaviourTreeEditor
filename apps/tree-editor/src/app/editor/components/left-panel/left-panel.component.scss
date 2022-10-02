@@ -10,5 +10,11 @@
 }
 
 .accPanel {
-    height: calc(100vh - 150px)
+    height: calc(100vh - 185px);
+}
+
+.node-list-item {
+    padding: 2px !important;
+    padding-left: 5px !important;
+    background-color: var(--color-light2);
 }

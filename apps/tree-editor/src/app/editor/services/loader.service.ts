@@ -1,6 +1,4 @@
 import { Injectable } from '@angular/core';
-import { CanvasService } from './canvas.service';
-import { CanvasManagerService } from './canvas-manager.service';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { TreeStoreService } from '../../data/services/tree-store.service';
 import { forEach } from 'lodash-es';
@@ -9,14 +7,14 @@ import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
 import { ProjectStoreService } from '../../data/services/project-store.service';
-import { filter, switchMap, takeUntil, takeWhile } from 'rxjs';
+import { filter, switchMap, takeUntil } from 'rxjs';
 import { Destroy } from '../../utils/components/destory';
+import { CanvasManagerService } from '../drawing/systems/canvas-manager.service';
 
 @Injectable()
 export class LoaderService extends Destroy {
   constructor(
-    private manager: CanvasManagerService,
-    private canvas: CanvasService,
+    private canvasManager: CanvasManagerService,
     private projectStore: ProjectStoreService,
     private treeStore: TreeStoreService
   ) {
@@ -34,14 +32,14 @@ export class LoaderService extends Destroy {
         if (root) {
           this.import(root);
         } else {
-          this.addInitialNode();
+          this.canvasManager.initNewTree();
         }
       });
   }
 
   import(root: SPNode) {
-    this.manager.clear();
-    const rootNode = this.manager.addRootNode(
+    this.canvasManager.clear();
+    const rootNode = this.canvasManager.addRootNode(
       root.x,
       root.y,
       root.identifier,
@@ -53,7 +51,7 @@ export class LoaderService extends Destroy {
   private appendChildrenTo(children: SPNode[], parent: NodeGroup): void {
     forEach(children, (child) => {
       const childNode = this.createNodeFrom(child);
-      this.manager.connect(parent, childNode);
+      this.canvasManager.connect(parent, childNode);
       this.appendChildrenTo(child.children, childNode);
     });
   }
@@ -61,41 +59,35 @@ export class LoaderService extends Destroy {
   private createNodeFrom(node: SPNode): NodeGroup {
     switch (node.type) {
       case NodeGroupType[NodeGroupType.Action]:
-        return this.manager.addActionNode(
+        return this.canvasManager.addActionNode(
           node.x,
           node.y,
           node.displayName,
           node.identifier
         );
       case NodeGroupType[NodeGroupType.Composite]:
-        return this.manager.addCompositeNode(
+        return this.canvasManager.addCompositeNode(
           node.x,
           node.y,
           CompositeType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Condition]:
-        return this.manager.addConditionNode(
+        return this.canvasManager.addConditionNode(
           node.x,
           node.y,
           node.displayName,
           node.identifier
         );
       case NodeGroupType[NodeGroupType.Decorator]:
-        return this.manager.addDecorator(
+        return this.canvasManager.addDecorator(
           node.x,
           node.y,
           DecoratorType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Tree]:
-        return this.manager.addTree(node.x, node.y, node.displayName);
+        return this.canvasManager.addTree(node.x, node.y, node.displayName);
       default:
         return {} as NodeGroup;
     }
-  }
-
-  private addInitialNode(): void {
-    const x = this.canvas.two.width * 0.5;
-    const y = this.canvas.two.height * 0.2;
-    this.manager.addRootNode(x, y, '', 'NewTree');
   }
 }

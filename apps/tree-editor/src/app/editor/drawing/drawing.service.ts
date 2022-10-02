@@ -3,8 +3,6 @@ import Two from 'two.js';
 import { Path } from 'two.js/src/path';
 import { NodeGroup } from './models/node-group.model';
 import { EditorSettings } from './drawing.settings';
-import { CanvasService } from '../services/canvas.service';
-import { NodeGroupType } from './enums/node-group-type.enum';
 import { RootNodeGroup } from './models/root-node-group.model';
 import { ActionNodeGroup } from './models/action-node-group.model';
 import { CompositeNodeGroup } from './models/composite-node-group.model';
@@ -13,6 +11,7 @@ import { DecoratorType } from './enums/decorator-type.enum';
 import { TreeNodeGroup } from './models/tree-node-group.model';
 import { CompositeType } from './enums/composite-type.enum';
 import { ConditionNodeGroup } from './models/condition-node-group.model';
+import { CanvasService } from './systems/canvas.service';
 
 @Injectable()
 export class DrawingService {

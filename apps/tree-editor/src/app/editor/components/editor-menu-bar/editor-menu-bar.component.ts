@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { filter, map, Observable, takeUntil, tap } from 'rxjs';
 import { ProjectStoreService } from '../../../data/services/project-store.service';
 import { Destroy } from '../../../utils/components/destory';
-import { CanvasManagerService } from '../../services/canvas-manager.service';
+import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CommandService } from '../../services/command.service';
 import { NodePanel } from '../left-panel/left-panel.component';
 
@@ -22,12 +22,12 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
   }
 
   get treeName$(): Observable<string> {
-    return this.manager.rootDisplayName$;
+    return this.canvasManager.rootDisplayName$;
   }
 
   constructor(
+    private canvasManager: CanvasManagerService,
     private command: CommandService,
-    private manager: CanvasManagerService,
     private projectStore: ProjectStoreService
   ) {
     super();
@@ -47,15 +47,19 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
     this.command.openPanel(NodePanel.AccCondition);
   }
 
+  openDecoratorPanel(): void {
+    this.command.openPanel(NodePanel.AccDecorator);
+  }
+
+  openCompositePanel(): void {
+    this.command.openPanel(NodePanel.AccComposite);
+  }
+
   saveActiveTree(): void {
     this.command.saveActiveTree();
   }
 
   loadTree(): void {
     this.command.reloadTree();
-  }
-
-  clearTree(): void {
-    this.command.clearTree();
   }
 }

@@ -14,46 +14,116 @@
   >
     <ngb-panel id="acc-trees" title="Trees">
       <ng-template ngbPanelContent>
-        <div class="accPanel">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-          terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-          skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-          Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-          single-origin coffee nulla assumenda shoreditch et. Nihil anim
-          keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-          sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-          occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-          you probably haven't heard of them accusamus labore sustainable VHS.
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input class="editor-input" placeholder="search trees" />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartTree($event, tree)"
+              *ngFor="let tree of trees"
+            >
+              {{ tree }}
+            </li>
+          </ul>
         </div>
       </ng-template>
     </ngb-panel>
     <ngb-panel id="acc-actions" title="Actions">
       <ng-template ngbPanelContent>
-        <div class="accPanel">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-          terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-          skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-          Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-          single-origin coffee nulla assumenda shoreditch et. Nihil anim
-          keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-          sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-          occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-          you probably haven't heard of them accusamus labore sustainable VHS.
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input class="editor-input" placeholder="search actions" />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartAction($event, action)"
+              *ngFor="let action of actions"
+            >
+              {{ action }}
+            </li>
+          </ul>
         </div>
       </ng-template>
     </ngb-panel>
     <ngb-panel id="acc-conditions" title="Conditions">
       <ng-template ngbPanelContent>
-        <div class="accPanel">
-          Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus
-          terry richardson ad squid. 3 wolf moon officia aute, non cupidatat
-          skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
-          Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid
-          single-origin coffee nulla assumenda shoreditch et. Nihil anim
-          keffiyeh helvetica, craft beer labore wes anderson cred nesciunt
-          sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-          occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt
-          you probably haven't heard of them accusamus labore sustainable VHS.
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input class="editor-input" placeholder="search conditions" />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartCondition($event, condition)"
+              *ngFor="let condition of conditions"
+            >
+              {{ condition }}
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="acc-decorators" title="Decorators">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input class="editor-input" placeholder="search decorators" />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartDecorator($event, decorator)"
+              *ngFor="let decorator of decorators"
+            >
+              {{ decorator }}
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="acc-composites" title="Composites">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input class="editor-input" placeholder="search composites" />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartComposite($event, composite)"
+              *ngFor="let composite of composites"
+            >
+              {{ composite }}
+            </li>
+          </ul>
         </div>
       </ng-template>
     </ngb-panel>

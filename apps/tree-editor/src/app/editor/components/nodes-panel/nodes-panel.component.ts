@@ -7,13 +7,13 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CanvasService } from '../../services/canvas.service';
 import { CommandService } from '../../services/command.service';
-import { ConnectionService } from '../../services/connection.service';
-import { DragService } from '../../services/drag.service';
-import { MouseInputService } from '../../services/mouse-input.service';
+import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
 import { LoaderService } from '../../services/loader.service';
-import { SelectionService } from '../../services/selection.service';
+import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
+import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
+import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
+import { CanvasService } from '../../drawing/systems/canvas.service';
 
 @Component({
   selector: 'sp-editor-nodes-panel',
@@ -28,11 +28,11 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
 
   constructor(
     private canvas: CanvasService,
-    private drag: DragService,
+    private canvasDrag: CanvasDragService,
+    private canvasSelection: CanvasSelectionService,
+    private canvasConnection: CanvasConnectionService,
+    private canvasMouse: CanvasMouseService,
     private loader: LoaderService,
-    private selection: SelectionService,
-    private connection: ConnectionService,
-    private mouse: MouseInputService,
     private command: CommandService
   ) {}
 
@@ -40,39 +40,59 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit(): void {
     this.canvas.attach(this.domElement.nativeElement);
-    this.drag.init();
+    this.canvasDrag.init();
     this.loader.init();
-    this.selection.init();
-    this.connection.init();
+    this.canvasSelection.init();
+    this.canvasConnection.init();
+  }
+
+  public drop(event: DragEvent) {
+    const name = event.dataTransfer.getData('id');
+    this.command.addTreeWith(name);
   }
 
   @HostListener('mouseup', ['$event'])
   mouseUp(event: MouseEvent) {
-    this.mouse.mouseUp(event);
+    this.canvasMouse.mouseUp(event);
   }
 
   @HostListener('mousemove', ['$event'])
   mouseMove(event: MouseEvent) {
-    this.mouse.mouseMove(event);
+    this.canvasMouse.mouseMove(event);
   }
 
   @HostListener('mousedown', ['$event'])
   mouseDown(event: MouseEvent) {
-    this.mouse.mouseDown(event);
+    this.canvasMouse.mouseDown(event);
   }
 
   @HostListener('wheel', ['$event'])
   wheel(event: WheelEvent) {
-    this.mouse.wheel(event);
+    this.canvasMouse.wheel(event);
   }
 
   @HostListener('mouseenter', ['$event'])
   enter(event: MouseEvent) {
-    this.mouse.mouseEnter(event);
+    this.canvasMouse.mouseEnter(event);
   }
 
   @HostListener('mouseleave', ['$event'])
   leave(event: MouseEvent) {
-    this.mouse.mouseLeave(event);
+    this.canvasMouse.mouseLeave(event);
+  }
+
+  @HostListener('dragover', ['$event'])
+  dragover(event: MouseEvent) {
+    this.canvasMouse.dragOver(event);
+  }
+
+  @HostListener('dragenter', ['$event'])
+  dragEnter(event: MouseEvent) {
+    this.canvasMouse.mouseEnter(event);
+  }
+
+  @HostListener('dragleave', ['$event'])
+  dragLeave(event: MouseEvent) {
+    this.canvasMouse.mouseLeave(event);
   }
 }

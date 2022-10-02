@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
-import { NodeGroup } from '../drawing/models/node-group.model';
-import { getHitNodeGroup } from '../drawing/drawing.utils';
 import { CanvasService } from './canvas.service';
-import { MouseInputService } from './mouse-input.service';
+import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../../utils/components/destory';
+import { getHitNodeGroup } from '../drawing.utils';
+import { NodeGroup } from '../models/node-group.model';
 
 @Injectable()
-export class SelectionService extends Destroy {
+export class CanvasSelectionService extends Destroy {
   selectedSubject = new BehaviorSubject<NodeGroup>(undefined);
   selected$ = this.selectedSubject.asObservable();
 
@@ -18,7 +18,7 @@ export class SelectionService extends Destroy {
   }
 
   constructor(
-    private input: MouseInputService,
+    private input: CanvasMouseService,
     private manager: CanvasManagerService,
     private canvas: CanvasService
   ) {

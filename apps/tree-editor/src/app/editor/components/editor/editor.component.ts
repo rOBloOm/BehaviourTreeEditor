@@ -6,17 +6,17 @@ import {
   OnInit,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { MouseInputService } from '../../services/mouse-input.service';
 import { DrawingService } from '../../drawing/drawing.service';
-import { CanvasManagerService } from '../../services/canvas-manager.service';
-import { CanvasService } from '../../services/canvas.service';
 import { CommandService } from '../../services/command.service';
-import { ConnectionService } from '../../services/connection.service';
-import { DragService } from '../../services/drag.service';
+import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
 import { LoaderService } from '../../services/loader.service';
-import { SelectionService } from '../../services/selection.service';
 import { ShortcutEventOutput, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { NodePanel } from '../left-panel/left-panel.component';
+import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
+import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
+import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
+import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
+import { CanvasService } from '../../drawing/systems/canvas.service';
 
 @Component({
   selector: 'sp-editor',
@@ -24,14 +24,14 @@ import { NodePanel } from '../left-panel/left-panel.component';
   styleUrls: ['./editor.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
-    MouseInputService,
+    CanvasMouseService,
     CommandService,
-    SelectionService,
-    ConnectionService,
+    CanvasSelectionService,
+    CanvasConnectionService,
     DrawingService,
     CanvasManagerService,
     CanvasService,
-    DragService,
+    CanvasDragService,
     LoaderService,
   ],
 })
@@ -41,29 +41,48 @@ export class EditorComponent implements AfterViewInit {
   constructor(private titleService: Title, private command: CommandService) {}
 
   ngAfterViewInit(): void {
-    this.shortcuts.push({
-      key: 'cmd + s',
-      command: (output: ShortcutEventOutput) => this.command.saveActiveTree(),
-      preventDefault: true,
-    });
-    this.shortcuts.push({
-      key: 'a t',
-      command: (output: ShortcutEventOutput) =>
-        this.command.openPanel(NodePanel.AccTree),
-      preventDefault: true,
-    });
-    this.shortcuts.push({
-      key: 'a a',
-      command: (output: ShortcutEventOutput) =>
-        this.command.openPanel(NodePanel.AccAction),
-      preventDefault: true,
-    });
-    this.shortcuts.push({
-      key: 'a c',
-      command: (output: ShortcutEventOutput) =>
-        this.command.openPanel(NodePanel.AccCondition),
-      preventDefault: true,
-    });
+    this.shortcuts.push(
+      {
+        key: 'cmd + s',
+        command: (output: ShortcutEventOutput) => this.command.saveActiveTree(),
+        preventDefault: true,
+      },
+      {
+        key: 'a t',
+        command: (output: ShortcutEventOutput) =>
+          this.command.openPanel(NodePanel.AccTree),
+        preventDefault: true,
+      },
+      {
+        key: 'a a',
+        command: (output: ShortcutEventOutput) =>
+          this.command.openPanel(NodePanel.AccAction),
+        preventDefault: true,
+      },
+      {
+        key: 'a c',
+        command: (output: ShortcutEventOutput) =>
+          this.command.openPanel(NodePanel.AccCondition),
+        preventDefault: true,
+      },
+      {
+        key: 'a d',
+        command: (output: ShortcutEventOutput) =>
+          this.command.openPanel(NodePanel.AccDecorator),
+        preventDefault: true,
+      },
+      {
+        key: 'a f',
+        command: (output: ShortcutEventOutput) =>
+          this.command.openPanel(NodePanel.AccComposite),
+        preventDefault: true,
+      },
+      {
+        key: ['x', 'del'],
+        command: (output: ShortcutEventOutput) => this.command.deleteSelected(),
+        preventDefault: true,
+      }
+    );
   }
 
   ngOnInit(): void {
@@ -93,11 +112,5 @@ export class EditorComponent implements AfterViewInit {
   @HostListener('window:keydown.shift.t', ['$event'])
   addTree(event: KeyboardEvent): void {
     this.command.addTree();
-  }
-
-  @HostListener('window:keydown.shift.x', ['$event'])
-  @HostListener('window:keydown.delete', ['$event'])
-  delete(): void {
-    this.command.deleteSelected();
   }
 }

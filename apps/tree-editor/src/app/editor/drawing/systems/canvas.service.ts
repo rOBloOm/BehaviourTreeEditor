@@ -13,8 +13,8 @@ import {
 } from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
-import { Destroy } from '../../utils/components/destory';
-import { MouseInputService } from './mouse-input.service';
+import { Destroy } from '../../../utils/components/destory';
+import { CanvasMouseService } from './canvas-mouse.service';
 
 @Injectable()
 export class CanvasService extends Destroy {
@@ -27,7 +27,7 @@ export class CanvasService extends Destroy {
     return this.panningSubject.asObservable();
   }
 
-  constructor(private inputService: MouseInputService) {
+  constructor(private inputService: CanvasMouseService) {
     super();
   }
 

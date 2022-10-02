@@ -1,20 +1,20 @@
 import { Injectable } from '@angular/core';
 import { forEach, map } from 'lodash-es';
-import { NodeConnection } from '../drawing/models/node-connection.model';
-import { NodeGroup } from '../drawing/models/node-group.model';
 import { CanvasService } from './canvas.service';
-import { DrawingService } from '../drawing/drawing.service';
-import { DecoratorType } from '../drawing/enums/decorator-type.enum';
-import { CompositeType } from '../drawing/enums/composite-type.enum';
-import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
-import { ActionNodeGroup } from '../drawing/models/action-node-group.model';
-import { CompositeNodeGroup } from '../drawing/models/composite-node-group.model';
-import { ConditionNodeGroup } from '../drawing/models/condition-node-group.model';
-import { DecoratorNodeGroup } from '../drawing/models/decorator-node-group.model';
-import { TreeNodeGroup } from '../drawing/models/tree-node-group.model';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
-import { RootNodeGroup } from '../drawing/models/root-node-group.model';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../../utils/components/destory';
+import { DrawingService } from '../drawing.service';
+import { CompositeType } from '../enums/composite-type.enum';
+import { DecoratorType } from '../enums/decorator-type.enum';
+import { NodeGroupType } from '../enums/node-group-type.enum';
+import { ActionNodeGroup } from '../models/action-node-group.model';
+import { CompositeNodeGroup } from '../models/composite-node-group.model';
+import { ConditionNodeGroup } from '../models/condition-node-group.model';
+import { DecoratorNodeGroup } from '../models/decorator-node-group.model';
+import { NodeConnection } from '../models/node-connection.model';
+import { NodeGroup } from '../models/node-group.model';
+import { RootNodeGroup } from '../models/root-node-group.model';
+import { TreeNodeGroup } from '../models/tree-node-group.model';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
@@ -50,6 +50,13 @@ export class CanvasManagerService extends Destroy {
   clear() {
     this.canvas.two.clear();
     this.rootSubject.next(undefined);
+  }
+
+  initNewTree() {
+    this.clear();
+    const x = this.canvas.two.width * 0.5;
+    const y = this.canvas.two.height * 0.2;
+    this.addRootNode(x, y, '', 'NewTree');
   }
 
   addRootNode(

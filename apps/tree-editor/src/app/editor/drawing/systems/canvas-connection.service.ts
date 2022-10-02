@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
 import { filter, takeUntil } from 'rxjs';
 import { Path } from 'two.js/src/path';
-import { NodeGroup } from '../drawing/models/node-group.model';
-import { EditorSettings } from '../drawing/drawing.settings';
-import { getHitNodeGroup } from '../drawing/drawing.utils';
+import { NodeGroup } from '../models/node-group.model';
+import { EditorSettings } from '../drawing.settings';
+import { getHitNodeGroup } from '../drawing.utils';
 import { CanvasService } from './canvas.service';
-import { MouseInputService } from './mouse-input.service';
+import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import Two from 'two.js';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../../utils/components/destory';
 
 @Injectable()
-export class ConnectionService extends Destroy {
+export class CanvasConnectionService extends Destroy {
   constructor(
     private canvas: CanvasService,
-    private input: MouseInputService,
-    private manager: CanvasManagerService
+    private canvasManager: CanvasManagerService,
+    private canvasMouse: CanvasMouseService
   ) {
     super();
   }
@@ -25,7 +25,7 @@ export class ConnectionService extends Destroy {
     let connecting = false;
     let arrow: Path;
 
-    this.input.mouseDown$
+    this.canvasMouse.mouseDown$
       .pipe(
         takeUntil(this.destroy$),
         filter((mouseDown) => mouseDown.button === 0 && mouseDown.ctrlKey)
@@ -34,17 +34,17 @@ export class ConnectionService extends Destroy {
         const hit = getHitNodeGroup(
           this.canvas.two,
           mouseDown,
-          this.manager.nodes
+          this.canvasManager.nodes
         );
         if (hit) {
-          source = this.manager.nodes[hit.id];
+          source = this.canvasManager.nodes[hit.id];
           if (source.acceptOutgoing()) {
             connecting = true;
           }
         }
       });
 
-    this.input.mouseMove$
+    this.canvasMouse.mouseMove$
       .pipe(takeUntil(this.destroy$))
       .subscribe((mouseMove) => {
         if (source && connecting) {
@@ -68,7 +68,7 @@ export class ConnectionService extends Destroy {
         }
       });
 
-    this.input.mouseUp$
+    this.canvasMouse.mouseUp$
       .pipe(
         takeUntil(this.destroy$),
         filter(() => connecting)
@@ -82,11 +82,11 @@ export class ConnectionService extends Destroy {
         const hit = getHitNodeGroup(
           this.canvas.two,
           mouseUp,
-          this.manager.nodes,
+          this.canvasManager.nodes,
           [source]
         );
         if (hit) {
-          this.manager.connect(source, this.manager.nodes[hit.id]);
+          this.canvasManager.connect(source, this.canvasManager.nodes[hit.id]);
         }
       });
   }

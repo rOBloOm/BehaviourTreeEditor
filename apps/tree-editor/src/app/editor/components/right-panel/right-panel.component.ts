@@ -1,11 +1,11 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { combineLatest, Observable, takeUntil } from 'rxjs';
-import { SelectionService } from '../../services/selection.service';
 import { NodeGroup } from '../../drawing/models/node-group.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { FormControl, FormGroup } from '@angular/forms';
-import { CanvasManagerService } from '../../services/canvas-manager.service';
 import { Destroy } from '../../../utils/components/destory';
+import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
+import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 
 @Component({
   selector: 'sp-editor-right-panel',
@@ -22,12 +22,12 @@ export class RightPanelComponent extends Destroy {
   });
 
   constructor(
-    selection: SelectionService,
-    private manager: CanvasManagerService
+    private canvasManager: CanvasManagerService,
+    private canvasSelection: CanvasSelectionService
   ) {
     super();
 
-    this.selected$ = selection.selected$;
+    this.selected$ = canvasSelection.selected$;
 
     //Update Values form selected Node
     this.selected$.pipe(takeUntil(this.destroy$)).subscribe((selected) => {
@@ -42,7 +42,7 @@ export class RightPanelComponent extends Destroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe(([values, selected]) => {
         if (selected && selected.nodeType === NodeGroupType.Root) {
-          this.manager.updateCurrentTreeDisplayName(values.displayName);
+          this.canvasManager.updateCurrentTreeDisplayName(values.displayName);
         }
       });
   }

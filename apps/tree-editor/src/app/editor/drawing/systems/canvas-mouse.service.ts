@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../../utils/components/destory';
 
 @Injectable()
-export class MouseInputService extends Destroy {
+export class CanvasMouseService extends Destroy {
   mouseX: number;
   mouseY: number;
 
@@ -56,6 +56,19 @@ export class MouseInputService extends Destroy {
   }
 
   mouseLeave(event: MouseEvent): void {
+    this.mouseInsideCanvasSubject.next(false);
+  }
+
+  dragOver(event: MouseEvent): void {
+    event.preventDefault();
+    this.mouseMoveSubject.next(event);
+  }
+
+  dragEnter(event: MouseEvent): void {
+    this.mouseInsideCanvasSubject.next(true);
+  }
+
+  dragLeave(event: MouseEvent): void {
     this.mouseInsideCanvasSubject.next(false);
   }
 
