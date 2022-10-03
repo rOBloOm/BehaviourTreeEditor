@@ -1,7 +1,7 @@
 export class SPNode {
   displayName: string;
   //The project refernce
-  project: number;
+  projectId: number;
 
   //Maps to a specific node type eg. Selector, Sequence, Failer
   type: string;

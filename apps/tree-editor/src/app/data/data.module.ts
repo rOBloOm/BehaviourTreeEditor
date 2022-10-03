@@ -3,6 +3,21 @@ import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 import { ProjectStoreService } from './services/project-store.service';
 import { TreeStoreService } from './services/tree-store.service';
 
+export function migrationFactory() {
+  // The animal table was added with version 2 but none of the existing tables or data needed
+  // to be modified so a migrator for that version is not included.
+  return {
+    1: (db, transaction) => {
+      const store = transaction.objectStore(TreeStoreService.TREE_STORE);
+      store.createIndex(
+        TreeStoreService.IX_PROJECT,
+        TreeStoreService.IX_PROJECT,
+        { unique: false }
+      );
+    },
+  };
+}
+
 const dbConfig: DBConfig = {
   name: 'SweetPotatoDb',
   version: 1,
@@ -36,6 +51,7 @@ const dbConfig: DBConfig = {
       ],
     },
   ],
+  migrationFactory,
 };
 
 @NgModule({

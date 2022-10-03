@@ -7,13 +7,15 @@ import {
 } from '@angular/core';
 import { CommandService } from '../../services/command.service';
 import { Destroy } from '../../../utils/components/destory';
-import { takeUntil } from 'rxjs';
+import { Observable, takeUntil } from 'rxjs';
 import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasDropData } from '../../drawing/models/canvas-drop-data.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { DecoratorType } from '../../drawing/enums/decorator-type.enum';
 import { CompositeType } from '../../drawing/enums/composite-type.enum';
+import { TreeStoreService } from '../../../data/services/tree-store.service';
+import { SPNode } from '../../../data/models/sp-node.model';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -27,29 +29,6 @@ export class LeftPanelComponent
 {
   @ViewChild('accordion')
   accordion: NgbAccordion;
-
-  trees: string[] = [
-    'Tresade1',
-    '-.,ölkölköl',
-    'asdfasd',
-    'asdfasdfasdfasd',
-    'Tree1',
-    'Trfasdfasdfee1',
-    'Tree1',
-    'Tsadfasdfree1',
-    'Tree1',
-    'Treeasdfaas1',
-    'Tree1',
-    'kjaslkdjf',
-    'Tree1',
-    'Tree1',
-    'Tree1',
-    'Treeasdfaas1',
-    'Tree1',
-    'kjaslkdjf',
-    'Tree1',
-    'Tree1',
-  ];
 
   actions: string[] = [
     'action01',
@@ -93,11 +72,15 @@ export class LeftPanelComponent
     'UntilSuccess',
   ];
 
+  trees$: Observable<SPNode[]>;
+
   constructor(
     private canvasManager: CanvasManagerService,
-    private command: CommandService
+    private command: CommandService,
+    private treeStore: TreeStoreService
   ) {
     super();
+    this.trees$ = treeStore.trees$;
   }
   ngAfterViewInit(): void {
     this.accordion.expand(NodePanel.AccTree);
@@ -115,11 +98,11 @@ export class LeftPanelComponent
     console.log(this.canvasManager.nodes);
   }
 
-  public dragStartTree(event: DragEvent, item: string) {
+  public dragStartTree(event: DragEvent, tree: SPNode) {
     const data = {
       nodeType: NodeGroupType[NodeGroupType.Tree],
-      name: item,
-      identifier: item,
+      name: tree.displayName,
+      identifier: tree.identifier,
     } as CanvasDropData;
 
     event.dataTransfer.setData(CanvasDropData.NODE_DATA, JSON.stringify(data));

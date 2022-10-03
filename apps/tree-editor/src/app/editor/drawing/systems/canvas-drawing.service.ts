@@ -39,7 +39,7 @@ export class CanvasDrawingService {
     y: number,
     identifier: string,
     displayName
-  ): NodeGroup {
+  ): RootNodeGroup {
     //Text Shape
     const rootText = this.canvas.two.makeText('@', x, y, this.textStyle);
 

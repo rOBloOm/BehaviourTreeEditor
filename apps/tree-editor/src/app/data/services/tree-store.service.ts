@@ -1,35 +1,78 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { map, Observable } from 'rxjs';
+import {
+  combineLatest,
+  map,
+  Observable,
+  of,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { NodeGroup } from '../../editor/drawing/models/node-group.model';
+import { Destroy } from '../../utils/components/destory';
 import { SPNode } from '../models/sp-node.model';
 import { DataExport } from '../utils/data-export.util';
+import { ProjectStoreService } from './project-store.service';
 
 @Injectable({ providedIn: 'root' })
-export class TreeStoreService {
+export class TreeStoreService extends Destroy {
   static readonly TREE_STORE = 'tree';
   static readonly LAST_ACTIVE_TREE = 'last_active_tree';
+  static readonly IX_PROJECT = 'projectId';
 
-  constructor(private dbService: NgxIndexedDBService) {}
+  trees$: Observable<SPNode[]>;
+  treesChangedSubject = new Subject<boolean>();
+
+  constructor(
+    private dbService: NgxIndexedDBService,
+    private projectStore: ProjectStoreService
+  ) {
+    super();
+
+    this.trees$ = combineLatest([
+      projectStore.active$,
+      this.treesChangedSubject.asObservable().pipe(startWith(false)),
+    ]).pipe(
+      takeUntil(this.destroy$),
+      switchMap(([project]) => {
+        if (!project) return of([] as SPNode[]);
+        return this.dbService.getAllByIndex<SPNode>(
+          TreeStoreService.TREE_STORE,
+          TreeStoreService.IX_PROJECT,
+          IDBKeyRange.only(project.id)
+        );
+      })
+    );
+  }
 
   add(root: NodeGroup): Observable<SPNode> {
     const data = DataExport.convert(root);
     delete data.identifier;
-    return this.dbService.add(TreeStoreService.TREE_STORE, data);
+    data.projectId = this.projectStore.active.id;
+    return this.dbService
+      .add(TreeStoreService.TREE_STORE, data)
+      .pipe(tap(() => this.treesChangedSubject.next(true)));
   }
 
   update(root: NodeGroup): Observable<SPNode> {
-    const data = DataExport.convert(root);
-    if (root.identifier === '') {
-      return this.add(root);
-    } else {
-      return this.dbService.update(TreeStoreService.TREE_STORE, data);
+    if (!root.identifier) {
+      throw Error('Trying to update an new tree');
     }
+
+    const data = DataExport.convert(root);
+    data.projectId = this.projectStore.active.id;
+    return this.dbService
+      .update(TreeStoreService.TREE_STORE, data)
+      .pipe(tap(() => this.treesChangedSubject.next(true)));
   }
 
   delete(identifier: number): void {
     this.dbService
       .deleteByKey(TreeStoreService.TREE_STORE, identifier)
+      .pipe(tap(() => this.treesChangedSubject.next(true)))
       .subscribe({
         error: (err) => {
           throw new Error(err);

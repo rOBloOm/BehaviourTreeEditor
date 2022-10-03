@@ -35,7 +35,6 @@ export class CommandService {
         error: (err) => this.toastr.error('Error saving tree'),
         next: (root) => {
           const project = this.projectStore.active;
-          project.rootNodeId = parseInt(root.identifier);
           this.projectStore.updateProject(project);
           this.canvasManager.currentRoot.identifier = root.identifier;
           this.toastr.success('Tree has been saved');
@@ -67,6 +66,10 @@ export class CommandService {
           this.toastr.success('Tree has been reloaded');
         },
       });
+  }
+
+  newTree(): void {
+    this.canvasManager.initNewTree();
   }
 
   addActionWith(identifier: string, name: string): void {

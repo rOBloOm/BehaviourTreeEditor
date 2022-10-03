@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { from, Observable, of, takeUntil } from 'rxjs';
+import { SPNode } from '../../../data/models/sp-node.model';
 import { SPProject } from '../../../data/models/sp-project.model';
 import { ProjectStoreService } from '../../../data/services/project-store.service';
 import { TreeStoreService } from '../../../data/services/tree-store.service';

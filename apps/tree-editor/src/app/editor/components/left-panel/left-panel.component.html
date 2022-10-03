@@ -27,9 +27,9 @@
               class="node-list-item list-group-item list-group-item-action"
               draggable="true"
               (dragstart)="dragStartTree($event, tree)"
-              *ngFor="let tree of trees"
+              *ngFor="let tree of trees$ | async"
             >
-              {{ tree }}
+              {{ tree.displayName }}
             </li>
           </ul>
         </div>
