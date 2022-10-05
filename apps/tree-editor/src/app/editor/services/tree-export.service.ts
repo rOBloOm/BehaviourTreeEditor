@@ -1,14 +1,16 @@
+import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
-import { NodeGroupType } from '../../editor/drawing/enums/node-group-type.enum';
-import { NodeGroup } from '../../editor/drawing/models/node-group.model';
-import { SPNode } from '../models/sp-node.model';
+import { SPNode } from '../../data/models/sp-node.model';
+import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
+import { NodeGroup } from '../drawing/models/node-group.model';
 
-export class DataExport {
-  public static convert(root: NodeGroup): SPNode {
+@Injectable()
+export class TreeExportSerive {
+  public export(root: NodeGroup): SPNode {
     return this.convertNode(root);
   }
 
-  private static convertNode(canvasNode: NodeGroup): SPNode {
+  private convertNode(canvasNode: NodeGroup): SPNode {
     const node = {
       x: canvasNode.x,
       y: canvasNode.y,

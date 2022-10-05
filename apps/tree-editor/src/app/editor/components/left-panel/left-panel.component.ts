@@ -16,6 +16,7 @@ import { DecoratorType } from '../../drawing/enums/decorator-type.enum';
 import { CompositeType } from '../../drawing/enums/composite-type.enum';
 import { TreeStoreService } from '../../../data/services/tree-store.service';
 import { SPNode } from '../../../data/models/sp-node.model';
+import { EditorManagerService } from '../../services/editor-manager.service';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -77,10 +78,10 @@ export class LeftPanelComponent
   constructor(
     private canvasManager: CanvasManagerService,
     private command: CommandService,
-    private treeStore: TreeStoreService
+    private editorManager: EditorManagerService
   ) {
     super();
-    this.trees$ = treeStore.trees$;
+    this.trees$ = editorManager.activeProjectTrees$;
   }
   ngAfterViewInit(): void {
     this.accordion.expand(NodePanel.AccTree);

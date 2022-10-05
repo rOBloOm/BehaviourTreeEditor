@@ -2,12 +2,22 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
-import { from, Observable, of, takeUntil } from 'rxjs';
+import {
+  filter,
+  from,
+  Observable,
+  of,
+  startWith,
+  Subject,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { SPNode } from '../../../data/models/sp-node.model';
 import { SPProject } from '../../../data/models/sp-project.model';
 import { ProjectStoreService } from '../../../data/services/project-store.service';
 import { TreeStoreService } from '../../../data/services/tree-store.service';
 import { Destroy } from '../../../utils/components/destory';
+import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
 
@@ -16,20 +26,25 @@ import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/d
   templateUrl: './dashboard-projects.component.html',
   styleUrls: ['./dashboard-projects.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [ProjectFactoryService],
 })
 export class DashboardProjectsComponent extends Destroy {
   projects$: Observable<SPProject[]>;
-
+  private reloadSubject = new Subject<boolean>();
   constructor(
     private modalService: NgbModal,
+    private projectFactory: ProjectFactoryService,
     private projectStore: ProjectStoreService,
-    private treeStore: TreeStoreService,
     private toastr: ToastrService,
     private router: Router
   ) {
     super();
 
-    this.projects$ = this.projectStore.allProjects$;
+    this.projects$ = this.reloadSubject.pipe(
+      takeUntil(this.destroy$),
+      startWith(true),
+      switchMap(() => this.projectStore.allProjects$)
+    );
   }
 
   addProject(): void {
@@ -38,12 +53,14 @@ export class DashboardProjectsComponent extends Destroy {
         centered: true,
       }).result
     )
-      .pipe(takeUntil(this.destroy$))
-      .subscribe((name: string) => {
-        if (name) {
-          this.projectStore.addProject(name);
-          this.toastr.success('project added');
-        }
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((name) => name !== undefined),
+        switchMap((name) => this.projectFactory.createProject(name))
+      )
+      .subscribe(() => {
+        this.toastr.success('project added');
+        this.reloadSubject.next(true);
       });
   }
 
@@ -61,8 +78,10 @@ export class DashboardProjectsComponent extends Destroy {
         next: (name: string) => {
           if (name) {
             project.name = name;
-            this.projectStore.updateProject(project);
-            this.toastr.success('project renamed');
+            this.projectStore.updateProject(project).subscribe({
+              next: () => this.toastr.success('project renamed'),
+            });
+            this.reloadSubject.next(true);
           }
         },
       });
@@ -77,23 +96,22 @@ export class DashboardProjectsComponent extends Destroy {
     );
     dialog.componentInstance.name = project.name;
     from(dialog.result)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((result) => result && result.delete),
+        switchMap(() => this.projectStore.deleteProject(project.id))
+      )
       .subscribe({
-        error: () => {},
-        next: (result) => {
-          if (result && result.delete) {
-            if (project.rootNodeId >= 0) {
-              this.treeStore.delete(project.rootNodeId);
-            }
-            this.projectStore.deleteProject(project.id);
-            this.toastr.success('project deleted');
-          }
+        error: () => this.toastr.error('error deleting project'),
+        next: () => {
+          this.toastr.success('project deleted');
+          this.reloadSubject.next(true);
         },
       });
   }
 
   openEditor(project: SPProject): void {
-    this.projectStore.setActive(project);
+    this.projectStore.saveActiveProject(project);
     this.router.navigate(['editor']);
   }
 }

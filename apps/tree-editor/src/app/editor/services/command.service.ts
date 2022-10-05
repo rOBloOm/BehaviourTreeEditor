@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { Subject } from 'rxjs';
-import { ProjectStoreService } from '../../data/services/project-store.service';
-import { TreeStoreService } from '../../data/services/tree-store.service';
 import { NodePanel } from '../components/left-panel/left-panel.component';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
@@ -10,7 +8,7 @@ import { CanvasManagerService } from '../drawing/systems/canvas-manager.service'
 import { CanvasMouseService } from '../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../drawing/systems/canvas.service';
-import { LoaderService } from './loader.service';
+import { EditorManagerService } from './editor-manager.service';
 
 @Injectable()
 export class CommandService {
@@ -22,50 +20,20 @@ export class CommandService {
     private canvasManager: CanvasManagerService,
     private canvasMouse: CanvasMouseService,
     private canvasSelection: CanvasSelectionService,
-    private treeStore: TreeStoreService,
-    private projectStore: ProjectStoreService,
-    private loader: LoaderService,
+    private treeManager: EditorManagerService,
     private toastr: ToastrService
   ) {}
 
   saveActiveTree(): void {
     const root = this.canvasManager.currentRoot;
-    if (root.identifier === '') {
-      this.treeStore.add(root).subscribe({
-        error: (err) => this.toastr.error('Error saving tree'),
-        next: (root) => {
-          const project = this.projectStore.active;
-          this.projectStore.updateProject(project);
-          this.canvasManager.currentRoot.identifier = root.identifier;
-          this.toastr.success('Tree has been saved');
-        },
-      });
-    } else {
-      this.treeStore.update(root).subscribe({
-        error: (err) => this.toastr.error('Error saving tree'),
-        complete: () => this.toastr.success('Tree has been saved'),
-      });
-    }
+    this.treeManager.updateTree(root).subscribe({
+      error: (err) => this.toastr.error('Error saving tree'),
+      complete: () => this.toastr.success('Tree has been saved'),
+    });
   }
 
   openPanel(panel: NodePanel): void {
     this.openTreePanelSubject.next(panel);
-  }
-
-  reloadTree(): void {
-    if (!this.canvasManager.currentRoot) {
-      this.toastr.error('No active tree');
-      return;
-    }
-    this.treeStore
-      .load(parseInt(this.canvasManager.currentRoot.identifier))
-      .subscribe({
-        error: (err) => this.toastr.error('Error saving tree'),
-        next: (root) => {
-          this.loader.import(root);
-          this.toastr.success('Tree has been reloaded');
-        },
-      });
   }
 
   newTree(): void {

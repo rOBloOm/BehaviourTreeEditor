@@ -1,41 +1,15 @@
 import { Injectable } from '@angular/core';
-import { DecoratorType } from '../drawing/enums/decorator-type.enum';
-import { TreeStoreService } from '../../data/services/tree-store.service';
 import { forEach } from 'lodash-es';
 import { SPNode } from '../../data/models/sp-node.model';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
+import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
-import { ProjectStoreService } from '../../data/services/project-store.service';
-import { filter, switchMap, takeUntil } from 'rxjs';
-import { Destroy } from '../../utils/components/destory';
 import { CanvasManagerService } from '../drawing/systems/canvas-manager.service';
 
 @Injectable()
-export class LoaderService extends Destroy {
-  constructor(
-    private canvasManager: CanvasManagerService,
-    private projectStore: ProjectStoreService,
-    private treeStore: TreeStoreService
-  ) {
-    super();
-  }
-
-  init(): void {
-    this.projectStore.active$
-      .pipe(
-        takeUntil(this.destroy$),
-        filter((value) => value !== undefined),
-        switchMap((project) => this.treeStore.load(project.rootNodeId))
-      )
-      .subscribe((root) => {
-        if (root) {
-          this.import(root);
-        } else {
-          this.canvasManager.initNewTree();
-        }
-      });
-  }
+export class TreeImportService {
+  constructor(private canvasManager: CanvasManagerService) {}
 
   import(root: SPNode) {
     this.canvasManager.clear();

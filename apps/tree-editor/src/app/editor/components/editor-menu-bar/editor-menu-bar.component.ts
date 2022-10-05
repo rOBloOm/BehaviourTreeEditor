@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { filter, map, Observable, takeUntil, tap } from 'rxjs';
-import { ProjectStoreService } from '../../../data/services/project-store.service';
+import { Observable, switchMap } from 'rxjs';
 import { Destroy } from '../../../utils/components/destory';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CommandService } from '../../services/command.service';
+import { EditorManagerService } from '../../services/editor-manager.service';
 import { NodePanel } from '../left-panel/left-panel.component';
 
 @Component({
@@ -14,10 +14,8 @@ import { NodePanel } from '../left-panel/left-panel.component';
 })
 export class EditorMenuBarComponent extends Destroy implements OnInit {
   get projectName$(): Observable<string> {
-    return this.projectStore.active$.pipe(
-      takeUntil(this.destroy$),
-      filter((project) => project !== undefined),
-      map((project) => project.name)
+    return this.editorManager.activeProject$.pipe(
+      switchMap((project) => project.name)
     );
   }
 
@@ -28,7 +26,7 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
   constructor(
     private canvasManager: CanvasManagerService,
     private command: CommandService,
-    private projectStore: ProjectStoreService
+    private editorManager: EditorManagerService
   ) {
     super();
   }
@@ -57,9 +55,5 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
 
   saveActiveTree(): void {
     this.command.saveActiveTree();
-  }
-
-  loadTree(): void {
-    this.command.reloadTree();
   }
 }

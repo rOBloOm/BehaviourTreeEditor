@@ -2,7 +2,15 @@ import { createInjectableType } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { take } from 'lodash-es';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { BehaviorSubject, Observable, of, switchMap, takeUntil } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  of,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { Destroy } from '../../utils/components/destory';
 import { SPProject } from '../models/sp-project.model';
 
@@ -11,84 +19,56 @@ export class ProjectStoreService extends Destroy {
   static readonly PROJECT_STORE = 'project';
   static readonly ACTIVE_PROJECT = 'active_project';
 
-  allProjectsSubject = new BehaviorSubject<SPProject[]>([]);
-  allProjects$ = this.allProjectsSubject.asObservable();
+  private projectsChangedSubject = new BehaviorSubject<boolean>(false);
+  projectsChanged$ = this.projectsChangedSubject.asObservable();
 
-  activeSubject = new BehaviorSubject<SPProject | undefined>(undefined);
-  active$ = this.activeSubject.asObservable();
+  allProjects$: Observable<SPProject[]>;
 
-  get active(): SPProject {
-    return this.activeSubject.value;
-  }
+  private projectDeletedSubject = new Subject<number>();
+  delted$ = this.projectDeletedSubject.asObservable();
 
   constructor(private dbService: NgxIndexedDBService) {
     super();
 
-    this.dbService
-      .getAll<SPProject>(ProjectStoreService.PROJECT_STORE)
-      .subscribe((projects) => this.allProjectsSubject.next(projects));
+    this.allProjects$ = this.projectsChangedSubject.pipe(
+      takeUntil(this.destroy$),
+      switchMap(() =>
+        this.dbService.getAll<SPProject>(ProjectStoreService.PROJECT_STORE)
+      )
+    );
+
+    this.projectsChangedSubject.next(true);
   }
 
-  addProject(name: string): void {
+  addProject(name: string): Observable<SPProject> {
     const project = <SPProject>{ name: name, rootNodeId: -1, isActive: false };
 
-    this.dbService
-      .add(ProjectStoreService.PROJECT_STORE, project)
-      .pipe(
-        switchMap(() =>
-          this.dbService.getAll<SPProject>(ProjectStoreService.PROJECT_STORE)
-        )
-      )
-      .subscribe((projects) => {
-        this.allProjectsSubject.next(projects);
-      });
+    return this.dbService.add(ProjectStoreService.PROJECT_STORE, project);
   }
 
-  updateProject(project: SPProject): void {
-    this.dbService
-      .update(ProjectStoreService.PROJECT_STORE, project)
-      .pipe(
-        switchMap(() =>
-          this.dbService.getAll<SPProject>(ProjectStoreService.PROJECT_STORE)
-        )
-      )
-      .subscribe((projects) => {
-        this.allProjectsSubject.next(projects);
-      });
+  updateProject(project: SPProject): Observable<SPProject> {
+    return this.dbService.update(ProjectStoreService.PROJECT_STORE, project);
   }
 
-  deleteProject(id: number): void {
-    this.dbService
-      .deleteByKey(ProjectStoreService.PROJECT_STORE, id)
-      .pipe(
-        switchMap(() =>
-          this.dbService.getAll<SPProject>(ProjectStoreService.PROJECT_STORE)
-        )
-      )
-      .subscribe((projects) => {
-        this.allProjectsSubject.next(projects);
-      });
+  deleteProject(id: number): Observable<boolean> {
+    return this.dbService.deleteByKey(ProjectStoreService.PROJECT_STORE, id);
   }
 
-  setActive(project: SPProject) {
+  saveActiveProject(project: SPProject) {
     localStorage.setItem(
       ProjectStoreService.ACTIVE_PROJECT,
       project.id.toString()
     );
-
-    this.activeSubject.next(project);
   }
 
-  loadLastActive(): void {
+  loadActiveProject(): Observable<SPProject | undefined> {
     const id = localStorage.getItem(ProjectStoreService.ACTIVE_PROJECT);
     if (id) {
-      this.dbService
-        .getByID<SPProject>(ProjectStoreService.PROJECT_STORE, parseInt(id))
-        .subscribe((project) => {
-          if (project) {
-            this.activeSubject.next(project);
-          }
-        });
+      return this.dbService.getByKey(
+        ProjectStoreService.PROJECT_STORE,
+        parseInt(id)
+      );
     }
+    return of(undefined);
   }
 }

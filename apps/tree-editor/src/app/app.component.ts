@@ -6,11 +6,4 @@ import { ProjectStoreService } from './data/services/project-store.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'tree-editor';
-
-  constructor(projectStore: ProjectStoreService) {
-    // load the last active project
-    projectStore.loadLastActive();
-  }
-}
+export class AppComponent {}

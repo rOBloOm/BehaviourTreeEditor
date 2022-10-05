@@ -7,14 +7,14 @@ import {
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
-import { CommandService } from '../../services/command.service';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
-import { LoaderService } from '../../services/loader.service';
 import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
 import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
 import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
+import { EditorManagerService } from '../../services/editor-manager.service';
+import { TreeExportSerive } from '../../services/tree-export.service';
 
 @Component({
   selector: 'sp-editor-nodes-panel',
@@ -34,16 +34,16 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
     private canvasSelection: CanvasSelectionService,
     private canvasConnection: CanvasConnectionService,
     private canvasMouse: CanvasMouseService,
-    private loader: LoaderService
+    private editorManager: EditorManagerService
   ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
+    this.editorManager.init();
     this.canvas.attach(this.domElement.nativeElement);
     this.canvasDrag.init();
     this.canvasDrop.init();
-    this.loader.init();
     this.canvasSelection.init();
     this.canvasConnection.init();
   }

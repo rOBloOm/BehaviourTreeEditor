@@ -9,7 +9,6 @@ import { Title } from '@angular/platform-browser';
 import { CanvasDrawingService } from '../../drawing/systems/canvas-drawing.service';
 import { CommandService } from '../../services/command.service';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
-import { LoaderService } from '../../services/loader.service';
 import { ShortcutEventOutput, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { NodePanel } from '../left-panel/left-panel.component';
 import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
@@ -18,6 +17,9 @@ import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
 import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
+import { EditorManagerService } from '../../services/editor-manager.service';
+import { TreeExportSerive } from '../../services/tree-export.service';
+import { TreeImportService } from '../../services/tree-import.service';
 
 @Component({
   selector: 'sp-editor',
@@ -34,7 +36,9 @@ import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
     CanvasManagerService,
     CanvasDragService,
     CanvasDropService,
-    LoaderService,
+    EditorManagerService,
+    TreeExportSerive,
+    TreeImportService,
   ],
 })
 export class EditorComponent implements AfterViewInit {
