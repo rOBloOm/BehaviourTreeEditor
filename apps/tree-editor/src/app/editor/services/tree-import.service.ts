@@ -59,7 +59,12 @@ export class TreeImportService {
           DecoratorType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Tree]:
-        return this.canvasManager.addTree(node.x, node.y, node.displayName);
+        return this.canvasManager.addTree(
+          node.x,
+          node.y,
+          node.identifier,
+          node.displayName
+        );
       default:
         return {} as NodeGroup;
     }

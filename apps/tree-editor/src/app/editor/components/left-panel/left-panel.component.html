@@ -24,12 +24,32 @@
 
           <ul class="node-list list-group styled-scrollbars">
             <li
-              class="node-list-item list-group-item list-group-item-action"
-              draggable="true"
+              class="node-list-item list-group-item"
+              [draggable]="!(isRootTree$(tree.identifier) | async)"
               (dragstart)="dragStartTree($event, tree)"
               *ngFor="let tree of trees$ | async"
             >
-              {{ tree.displayName }}
+              <div fxFlexLayout="row" fxLayoutAlign="space-between center">
+                <div
+                  fxFlex
+                  [ngClass]="treeItemClass$(tree.identifier) | async"
+                  (click)="setActive(tree.identifier)"
+                >
+                  {{ tree.displayName }}
+                </div>
+                <div
+                  class="tree-item-actions"
+                  fxFlexLayout="row"
+                  fxLayoutAlign="end center"
+                  fxLayoutGap="5px"
+                  *ngIf="!(isRootTree$(tree.identifier) | async)"
+                >
+                  <i
+                    (click)="deleteTree(tree)"
+                    class="fa-solid fa-trash tree-item-delete"
+                  ></i>
+                </div>
+              </div>
             </li>
           </ul>
         </div>

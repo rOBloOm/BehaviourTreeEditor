@@ -19,6 +19,7 @@ import { ProjectStoreService } from '../../data/services/project-store.service';
 import { TreeStoreService } from '../../data/services/tree-store.service';
 import { Destroy } from '../../utils/components/destory';
 import { NodeGroup } from '../drawing/models/node-group.model';
+import { CanvasSelectionService } from '../drawing/systems/canvas-selection.service';
 import { TreeExportSerive } from './tree-export.service';
 import { TreeImportService } from './tree-import.service';
 
@@ -42,7 +43,8 @@ export class EditorManagerService extends Destroy {
     private projectStore: ProjectStoreService,
     private treeStore: TreeStoreService,
     private exportService: TreeExportSerive,
-    private importService: TreeImportService
+    private importService: TreeImportService,
+    selection: CanvasSelectionService
   ) {
     super();
 
@@ -59,6 +61,11 @@ export class EditorManagerService extends Destroy {
       )
       .subscribe((trees) => this.activeProjectTreesSubject.next(trees));
 
+    //Reset selection if tree changes
+    this.acitveTree$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(() => selection.deselectAll());
+
     //fire trees subject if tree gets added or updated
     this.activeProjectTreesChangedSubject
       .pipe(
@@ -66,20 +73,13 @@ export class EditorManagerService extends Destroy {
         switchMap(() => this.activeProject$),
         switchMap((project) => {
           if (project) {
-            return combineLatest([
-              of(project),
-              this.treeStore.getAllByProjectId(project.id),
-            ]);
+            return this.treeStore.getAllByProjectId(project.id);
           } else {
-            return combineLatest([of(project), of([]) as Observable<SPNode[]>]);
+            return of(<SPNode[]>[]);
           }
         })
       )
-      .subscribe(([project, trees]) => {
-        const rootTree = trees.find(
-          (tree) => tree.identifier === project.rootNodeId.toString()
-        );
-        this.activeTreeSubject.next(rootTree);
+      .subscribe((trees) => {
         this.activeProjectTreesSubject.next(trees);
       });
   }
@@ -112,6 +112,12 @@ export class EditorManagerService extends Destroy {
     );
   }
 
+  deleteTree(id: number): Observable<boolean> {
+    return this.treeStore
+      .delete(id)
+      .pipe(tap(() => this.activeProjectTreesChangedSubject.next(true)));
+  }
+
   setActiveTree(id: number) {
     combineLatest([this.activeProject$, this.activeProjectTrees$])
       .pipe(filter(([project]) => project !== undefined))
@@ -122,5 +128,17 @@ export class EditorManagerService extends Destroy {
         this.importService.import(tree);
         this.activeTreeSubject.next(tree);
       });
+  }
+
+  isRootTree$(id: number): Observable<boolean> {
+    return this.activeProject$.pipe(
+      map((project) => project.rootNodeId === id)
+    );
+  }
+
+  isActiveTree$(id: number): Observable<boolean> {
+    return this.acitveTree$.pipe(
+      map((tree) => tree.identifier == id.toString())
+    );
   }
 }

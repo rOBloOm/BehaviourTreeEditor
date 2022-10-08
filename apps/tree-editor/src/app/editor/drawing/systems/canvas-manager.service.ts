@@ -55,11 +55,11 @@ export class CanvasManagerService extends Destroy {
     this.rootSubject.next(undefined);
   }
 
-  initNewTree() {
+  initNewTree(): NodeGroup {
     this.clear();
     const x = this.canvas.two.width * 0.5;
     const y = this.canvas.two.height * 0.2;
-    this.addRootNode(x, y, '', 'NewTree');
+    return this.addRootNode(x, y, '', 'NewTree');
   }
 
   addRootNode(
@@ -108,8 +108,8 @@ export class CanvasManagerService extends Destroy {
     return node;
   }
 
-  addTree(x: number, y: number, identifier: string): NodeGroup {
-    const node = this.drawing.createTreeNode(x, y, identifier);
+  addTree(x: number, y: number, identifier: string, name: string): NodeGroup {
+    const node = this.drawing.createTreeNode(x, y, identifier, name);
     this.nodes[node.id] = node;
     return node;
   }
@@ -174,70 +174,5 @@ export class CanvasManagerService extends Destroy {
   canDelete(id: string) {
     const node = this.nodes[id];
     return node && node.canDelete();
-  }
-
-  //@TODO remove if not needed
-  redraw(node: NodeGroup, text: string): NodeGroup {
-    //Extract node attributes
-    const x = node.x;
-    const y = node.y;
-    const nodeType = node.nodeType;
-    const parent = node.connectionIn.source;
-    const children = map(node.connectionsOut, (conn) => conn.target);
-
-    // Create the new node
-    let redrawnNode: NodeGroup;
-    switch (nodeType) {
-      case NodeGroupType.Action:
-        redrawnNode = this.addActionNode(
-          x,
-          y,
-          text,
-          (node as ActionNodeGroup).identifier
-        );
-        break;
-      case NodeGroupType.Composite:
-        redrawnNode = this.addCompositeNode(
-          x,
-          y,
-          (node as CompositeNodeGroup).compositeType
-        );
-        break;
-      case NodeGroupType.Condition:
-        redrawnNode = this.addConditionNode(
-          x,
-          y,
-          (node as ConditionNodeGroup).identifier,
-          text
-        );
-        break;
-      case NodeGroupType.Decorator:
-        redrawnNode = this.addDecorator(
-          x,
-          y,
-          (node as DecoratorNodeGroup).decoratorType
-        );
-        break;
-      case NodeGroupType.Tree:
-        redrawnNode = this.addTree(x, y, text);
-        break;
-      default:
-        throw new Error(
-          'Redraw not supportet for Node Type: ' + NodeGroupType[node.nodeType]
-        );
-    }
-
-    //Remove the old node
-    this.removeNode(node.id);
-
-    //Recreate the connections
-    if (parent) {
-      this.connect(parent, redrawnNode);
-    }
-    forEach(children, (child) => {
-      this.connect(redrawnNode, child);
-    });
-
-    return redrawnNode;
   }
 }

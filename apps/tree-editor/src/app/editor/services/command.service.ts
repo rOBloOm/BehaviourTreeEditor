@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { Subject } from 'rxjs';
+import { first, Subject, switchMap, tap } from 'rxjs';
 import { NodePanel } from '../components/left-panel/left-panel.component';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
@@ -20,16 +20,24 @@ export class CommandService {
     private canvasManager: CanvasManagerService,
     private canvasMouse: CanvasMouseService,
     private canvasSelection: CanvasSelectionService,
-    private treeManager: EditorManagerService,
+    private editorManager: EditorManagerService,
     private toastr: ToastrService
   ) {}
 
   saveActiveTree(): void {
     const root = this.canvasManager.currentRoot;
-    this.treeManager.updateTree(root).subscribe({
-      error: (err) => this.toastr.error('Error saving tree'),
-      complete: () => this.toastr.success('Tree has been saved'),
-    });
+    this.editorManager
+      .updateTree(root)
+      .pipe(
+        tap(() => {
+          const activeElement = document.activeElement as HTMLInputElement;
+          activeElement?.blur();
+        })
+      )
+      .subscribe({
+        error: (err) => this.toastr.error('Error saving tree'),
+        complete: () => this.toastr.success('Tree has been saved'),
+      });
   }
 
   openPanel(panel: NodePanel): void {
@@ -37,7 +45,14 @@ export class CommandService {
   }
 
   newTree(): void {
-    this.canvasManager.initNewTree();
+    const root = this.canvasManager.initNewTree();
+    this.editorManager
+      .addTree(root)
+      .pipe(
+        first(),
+        tap((treeId) => this.editorManager.setActiveTree(treeId))
+      )
+      .subscribe(() => this.toastr.success('tree added'));
   }
 
   addActionWith(identifier: string, name: string): void {
@@ -80,14 +95,14 @@ export class CommandService {
     this.canvasManager.addDecorator(pos.x, pos.y, type);
   }
 
-  addTreeWith(name: string): void {
+  addTreeWith(identifier: string, name: string): void {
     if (!this.canvasMouse.isMouseInsideCanvas) return;
 
     const pos = this.canvas.zui.clientToSurface(
       this.canvasMouse.mouseX,
       this.canvasMouse.mouseY
     );
-    this.canvasManager.addTree(pos.x, pos.y, name);
+    this.canvasManager.addTree(pos.x, pos.y, identifier, name);
   }
 
   deleteSelected(): void {

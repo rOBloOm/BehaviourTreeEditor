@@ -31,8 +31,8 @@
             <a
               fxFlex
               fxLayoutAlign="space-between center"
-              (click)="openTreePanel()"
-              >New Tree <span class="shortcut">ctrl + n</span></a
+              (click)="addNewTree()"
+              >New Tree <span class="shortcut">shift + n</span></a
             >
           </li>
           <li></li>
@@ -41,7 +41,7 @@
               fxFlex
               fxLayoutAlign="space-between center"
               (click)="openTreePanel()"
-              >Trees <span class="shortcut">a t</span></a
+              >Trees <span class="shortcut">a, t</span></a
             >
           </li>
           <li>
@@ -49,7 +49,7 @@
               fxFlex
               fxLayoutAlign="space-between center"
               (click)="openActionPanel()"
-              >Actions <span class="shortcut">a a</span></a
+              >Actions <span class="shortcut">a, a</span></a
             >
           </li>
           <li>
@@ -57,7 +57,7 @@
               fxFlex
               fxLayoutAlign="space-between center"
               (click)="openConditionPanel()"
-              >Conditions <span class="shortcut">a c</span></a
+              >Conditions <span class="shortcut">a, c</span></a
             >
           </li>
           <li>
@@ -65,7 +65,7 @@
               fxFlex
               fxLayoutAlign="space-between center"
               (click)="openDecoratorPanel()"
-              >Decorators <span class="shortcut">a d</span></a
+              >Decorators <span class="shortcut">a, d</span></a
             >
           </li>
           <li>
@@ -73,7 +73,7 @@
               fxFlex
               fxLayoutAlign="space-between center"
               (click)="openCompositePanel()"
-              >Composites <span class="shortcut">a f</span></a
+              >Composites <span class="shortcut">a, f</span></a
             >
           </li>
         </ul>

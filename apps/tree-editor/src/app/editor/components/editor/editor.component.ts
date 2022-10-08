@@ -9,7 +9,11 @@ import { Title } from '@angular/platform-browser';
 import { CanvasDrawingService } from '../../drawing/systems/canvas-drawing.service';
 import { CommandService } from '../../services/command.service';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
-import { ShortcutEventOutput, ShortcutInput } from 'ng-keyboard-shortcuts';
+import {
+  AllowIn,
+  ShortcutEventOutput,
+  ShortcutInput,
+} from 'ng-keyboard-shortcuts';
 import { NodePanel } from '../left-panel/left-panel.component';
 import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
@@ -52,6 +56,23 @@ export class EditorComponent implements AfterViewInit {
         key: 'cmd + s',
         command: (output: ShortcutEventOutput) => this.command.saveActiveTree(),
         preventDefault: true,
+        allowIn: [
+          AllowIn.Input,
+          AllowIn.Select,
+          AllowIn.Textarea,
+          AllowIn.ContentEditable,
+        ],
+      },
+      {
+        key: 'shift + n',
+        command: (output: ShortcutEventOutput) => this.command.newTree(),
+        preventDefault: true,
+        allowIn: [
+          AllowIn.Input,
+          AllowIn.Select,
+          AllowIn.Textarea,
+          AllowIn.ContentEditable,
+        ],
       },
       {
         key: 'a t',

@@ -33,6 +33,10 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
 
   ngOnInit(): void {}
 
+  addNewTree(): void {
+    this.command.newTree();
+  }
+
   openTreePanel(): void {
     this.command.openPanel(NodePanel.AccTree);
   }

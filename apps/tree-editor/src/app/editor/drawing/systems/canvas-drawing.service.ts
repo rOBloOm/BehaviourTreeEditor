@@ -270,14 +270,14 @@ export class CanvasDrawingService {
     );
   }
 
-  createTreeNode(x: number, y: number, identifier: string): NodeGroup {
+  createTreeNode(
+    x: number,
+    y: number,
+    identifier: string,
+    name: string
+  ): NodeGroup {
     //Text Shape
-    const textShape = this.canvas.two.makeText(
-      identifier,
-      x,
-      y,
-      this.textStyle
-    );
+    const textShape = this.canvas.two.makeText(name, x, y, this.textStyle);
     const textBoundsWidth =
       textShape.getBoundingClientRect().width / this.canvas.zui.scale;
 
@@ -318,7 +318,8 @@ export class CanvasDrawingService {
       treeShape,
       textShape,
       inAnchorShape,
-      identifier
+      identifier,
+      name
     );
   }
 

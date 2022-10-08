@@ -4,6 +4,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {
   filter,
+  first,
   from,
   Observable,
   of,
@@ -97,7 +98,7 @@ export class DashboardProjectsComponent extends Destroy {
     dialog.componentInstance.name = project.name;
     from(dialog.result)
       .pipe(
-        takeUntil(this.destroy$),
+        first(),
         filter((result) => result && result.delete),
         switchMap(() => this.projectStore.deleteProject(project.id))
       )

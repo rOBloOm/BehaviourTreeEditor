@@ -16,6 +16,7 @@ export class TreeStoreService extends Destroy {
 
   add(tree: SPNode): Observable<SPNode> {
     if (tree.identifier) throw new Error('node already added');
+    delete tree.identifier;
     return this.dbService.add(TreeStoreService.TREE_STORE, tree);
   }
 

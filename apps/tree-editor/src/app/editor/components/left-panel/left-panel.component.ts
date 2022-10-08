@@ -7,8 +7,18 @@ import {
 } from '@angular/core';
 import { CommandService } from '../../services/command.service';
 import { Destroy } from '../../../utils/components/destory';
-import { Observable, takeUntil } from 'rxjs';
-import { NgbAccordion } from '@ng-bootstrap/ng-bootstrap';
+import {
+  combineLatest,
+  filter,
+  first,
+  from,
+  map,
+  Observable,
+  shareReplay,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
+import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasDropData } from '../../drawing/models/canvas-drop-data.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
@@ -17,6 +27,9 @@ import { CompositeType } from '../../drawing/enums/composite-type.enum';
 import { TreeStoreService } from '../../../data/services/tree-store.service';
 import { SPNode } from '../../../data/models/sp-node.model';
 import { EditorManagerService } from '../../services/editor-manager.service';
+import { DefaultFlexOffsetDirective } from '@angular/flex-layout';
+import { ToastrService } from 'ngx-toastr';
+import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dialog.component';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -76,6 +89,8 @@ export class LeftPanelComponent
   trees$: Observable<SPNode[]>;
 
   constructor(
+    private modalService: NgbModal,
+    private toastr: ToastrService,
     private canvasManager: CanvasManagerService,
     private command: CommandService,
     private editorManager: EditorManagerService
@@ -99,7 +114,55 @@ export class LeftPanelComponent
     console.log(this.canvasManager.nodes);
   }
 
-  public dragStartTree(event: DragEvent, tree: SPNode) {
+  setActive(treeId: string): void {
+    this.editorManager.setActiveTree(parseInt(treeId));
+  }
+
+  deleteTree(tree: SPNode): void {
+    const dialog = this.modalService.open(DeleteTreeDialogComponent, {
+      centered: true,
+    });
+    dialog.componentInstance.name = tree.displayName;
+    dialog.componentInstance.isEdit = true;
+
+    from(dialog.result)
+      .pipe(
+        first(),
+        filter((result) => result && result.delete),
+        switchMap(() =>
+          this.editorManager.deleteTree(parseInt(tree.identifier))
+        )
+      )
+      .subscribe({
+        error: () => this.toastr.error('Error deleting tree'),
+        next: () => this.toastr.success('Tree deleted'),
+      });
+  }
+
+  isRootTree$(identifier: string): Observable<boolean> {
+    return this.editorManager
+      .isRootTree$(parseInt(identifier))
+      .pipe(shareReplay());
+  }
+
+  treeItemClass$(identifier: string): Observable<string> {
+    return combineLatest([
+      this.editorManager.isRootTree$(parseInt(identifier)),
+      this.editorManager.isActiveTree$(parseInt(identifier)),
+    ]).pipe(
+      map(([isRoot, isActive]) => {
+        if (isActive && isRoot) return 'active-tree-item root-tree-item';
+
+        return isActive
+          ? 'active-tree-item'
+          : isRoot
+          ? 'root-tree-item'
+          : 'tree-item';
+      })
+    );
+  }
+
+  dragStartTree(event: DragEvent, tree: SPNode) {
     const data = {
       nodeType: NodeGroupType[NodeGroupType.Tree],
       name: tree.displayName,
@@ -110,7 +173,7 @@ export class LeftPanelComponent
     event.dataTransfer.effectAllowed = 'move';
   }
 
-  public dragStartAction(event: DragEvent, item: string) {
+  dragStartAction(event: DragEvent, item: string) {
     const data = {
       nodeType: NodeGroupType[NodeGroupType.Action],
       name: item,
@@ -121,7 +184,7 @@ export class LeftPanelComponent
     event.dataTransfer.effectAllowed = 'move';
   }
 
-  public dragStartCondition(event: DragEvent, item: string) {
+  dragStartCondition(event: DragEvent, item: string) {
     const data = {
       nodeType: NodeGroupType[NodeGroupType.Condition],
       name: item,
@@ -132,7 +195,7 @@ export class LeftPanelComponent
     event.dataTransfer.effectAllowed = 'move';
   }
 
-  public dragStartDecorator(event: DragEvent, item: string) {
+  dragStartDecorator(event: DragEvent, item: string) {
     const data = {
       nodeType: NodeGroupType[NodeGroupType.Decorator],
       nodeSubType: DecoratorType[item],
@@ -142,7 +205,7 @@ export class LeftPanelComponent
     event.dataTransfer.effectAllowed = 'move';
   }
 
-  public dragStartComposite(event: DragEvent, item: string) {
+  dragStartComposite(event: DragEvent, item: string) {
     const data = {
       nodeType: NodeGroupType[NodeGroupType.Composite],
       nodeSubType: CompositeType[item],

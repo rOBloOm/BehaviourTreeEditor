@@ -25,7 +25,7 @@ export class ProjectStoreService extends Destroy {
   allProjects$: Observable<SPProject[]>;
 
   private projectDeletedSubject = new Subject<number>();
-  delted$ = this.projectDeletedSubject.asObservable();
+  deleted$ = this.projectDeletedSubject.asObservable();
 
   constructor(private dbService: NgxIndexedDBService) {
     super();

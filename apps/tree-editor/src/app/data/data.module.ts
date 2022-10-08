@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
+import { EditorProjectConfigStoreService } from './services/editor-project-config-store.service';
+import { EditorTreeConfigStoreService } from './services/editor-tree-config-store.service';
 import { ProjectStoreService } from './services/project-store.service';
 import { TreeStoreService } from './services/tree-store.service';
 
@@ -48,6 +50,22 @@ const dbConfig: DBConfig = {
         { name: 'name', keypath: '', options: { unique: false } },
         { name: 'rootNodeId', keypath: '', options: { unique: false } },
         { name: 'isActive', keypath: 'isActive', options: { unique: false } },
+      ],
+    },
+    {
+      store: EditorProjectConfigStoreService.EDITOR_PROJECT_CONFIG_STORE,
+      storeConfig: { keyPath: 'projectId', autoIncrement: false },
+      storeSchema: [
+        { name: 'activeTreeId', keypath: '', options: { unique: false } },
+      ],
+    },
+    {
+      store: EditorTreeConfigStoreService.EDITOR_TREE_CONFIG_STORE,
+      storeConfig: { keyPath: 'treeId', autoIncrement: false },
+      storeSchema: [
+        { name: 'x', keypath: '', options: { unique: false } },
+        { name: 'y', keypath: '', options: { unique: false } },
+        { name: 'zoom', keypath: '', options: { unique: false } },
       ],
     },
   ],

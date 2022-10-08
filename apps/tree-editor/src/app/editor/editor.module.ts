@@ -12,6 +12,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
+import { DeleteTreeDialogComponent } from './components/delete-tree-dialog/delete-tree-dialog.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
     LeftPanelComponent,
     RightPanelComponent,
     EditorMenuBarComponent,
+    DeleteTreeDialogComponent,
   ],
   imports: [
     CommonModule,

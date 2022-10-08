@@ -34,7 +34,7 @@ export class CanvasDropService extends Destroy {
       if (dropData) {
         switch (dropData.nodeType) {
           case NodeGroupType[NodeGroupType.Tree]:
-            this.command.addTreeWith(dropData.identifier);
+            this.command.addTreeWith(dropData.identifier, dropData.name);
             break;
           case NodeGroupType[NodeGroupType.Action]:
             this.command.addActionWith(dropData.identifier, dropData.name);
