@@ -61,6 +61,11 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
     this.canvasMouse.mouseDown(event);
   }
 
+  @HostListener('dblclick', ['$event'])
+  doubleClick(event: MouseEvent) {
+    this.canvasMouse.doubleClick(event);
+  }
+
   @HostListener('wheel', ['$event'])
   wheel(event: WheelEvent) {
     this.canvasMouse.wheel(event);

@@ -17,6 +17,9 @@ export class CanvasMouseService extends Destroy {
   private mouseDownSubject = new Subject<MouseEvent>();
   mouseDown$ = this.mouseDownSubject.asObservable();
 
+  private doubleClickSubject = new Subject<MouseEvent>();
+  doubleClick$ = this.doubleClickSubject.asObservable();
+
   private mouseUpSubject = new Subject<MouseEvent>();
   mouseUp$ = this.mouseUpSubject.asObservable();
 
@@ -40,6 +43,11 @@ export class CanvasMouseService extends Destroy {
   mouseDown(event: MouseEvent): void {
     event.preventDefault();
     this.mouseDownSubject.next(event);
+  }
+
+  doubleClick(event: MouseEvent): void {
+    event.preventDefault();
+    this.doubleClickSubject.next(event);
   }
 
   mouseUp(event: MouseEvent): void {

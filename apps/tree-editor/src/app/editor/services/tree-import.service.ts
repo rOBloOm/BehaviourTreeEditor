@@ -9,61 +9,70 @@ import { CanvasManagerService } from '../drawing/systems/canvas-manager.service'
 
 @Injectable()
 export class TreeImportService {
-  constructor(private canvasManager: CanvasManagerService) {}
+  constructor(private canvas: CanvasManagerService) {}
 
-  import(root: SPNode) {
-    this.canvasManager.clear();
-    const rootNode = this.canvasManager.addRootNode(
+  import(root: SPNode, trees: SPNode[]) {
+    this.canvas.clear();
+    const rootNode = this.canvas.addRootNode(
       root.x,
       root.y,
       root.identifier,
       root.displayName
     );
-    this.appendChildrenTo(root.children, rootNode);
+    this.appendChildrenTo(root.children, rootNode, trees);
   }
 
-  private appendChildrenTo(children: SPNode[], parent: NodeGroup): void {
+  private appendChildrenTo(
+    children: SPNode[],
+    parent: NodeGroup,
+    trees: SPNode[]
+  ): void {
     forEach(children, (child) => {
-      const childNode = this.createNodeFrom(child);
-      this.canvasManager.connect(parent, childNode);
-      this.appendChildrenTo(child.children, childNode);
+      const childNode = this.createNodeFrom(child, trees);
+      this.canvas.connect(parent, childNode);
+      this.appendChildrenTo(child.children, childNode, trees);
     });
   }
 
-  private createNodeFrom(node: SPNode): NodeGroup {
+  private createNodeFrom(node: SPNode, trees: SPNode[]): NodeGroup {
     switch (node.type) {
       case NodeGroupType[NodeGroupType.Action]:
-        return this.canvasManager.addActionNode(
+        return this.canvas.addActionNode(
           node.x,
           node.y,
           node.identifier,
           node.displayName
         );
       case NodeGroupType[NodeGroupType.Composite]:
-        return this.canvasManager.addCompositeNode(
+        return this.canvas.addCompositeNode(
           node.x,
           node.y,
           CompositeType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Condition]:
-        return this.canvasManager.addConditionNode(
+        return this.canvas.addConditionNode(
           node.x,
           node.y,
           node.identifier,
           node.displayName
         );
       case NodeGroupType[NodeGroupType.Decorator]:
-        return this.canvasManager.addDecorator(
+        return this.canvas.addDecorator(
           node.x,
           node.y,
           DecoratorType[node.displayName]
         );
       case NodeGroupType[NodeGroupType.Tree]:
-        return this.canvasManager.addTree(
+        //Look up the tree desplayname in case it has been updated
+        const displayName =
+          trees.find((tree) => tree.identifier === node.identifier)
+            ?.displayName ?? node.displayName;
+
+        return this.canvas.addTree(
           node.x,
           node.y,
           node.identifier,
-          node.displayName
+          displayName
         );
       default:
         return {} as NodeGroup;

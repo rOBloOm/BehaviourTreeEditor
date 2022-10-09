@@ -19,6 +19,7 @@ import { SPProject } from '../../data/models/sp-project.model';
 import { ProjectStoreService } from '../../data/services/project-store.service';
 import { TreeStoreService } from '../../data/services/tree-store.service';
 import { Destroy } from '../../utils/components/destory';
+import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
 import { CanvasManagerService } from '../drawing/systems/canvas-manager.service';
 import { CanvasSelectionService } from '../drawing/systems/canvas-selection.service';
@@ -71,6 +72,15 @@ export class EditorManagerService extends Destroy {
     this.acitveTree$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => selection.deselectAll());
+
+    //Register tree navigation with doubleclick on node
+    selection.doubleClicked$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((node) => node !== undefined),
+        filter((node) => node.nodeType === NodeGroupType.Tree)
+      )
+      .subscribe((node) => this.setActiveTree(parseInt(node.identifier)));
   }
 
   addTree(root: NodeGroup): Observable<number> {
@@ -120,7 +130,7 @@ export class EditorManagerService extends Destroy {
         if (trees.length === 0) return;
 
         const tree = trees.find((tree) => tree.identifier == id.toString());
-        this.importService.import(tree);
+        this.importService.import(tree, trees);
         this.activeTreeSubject.next(tree);
       });
   }

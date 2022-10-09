@@ -10,15 +10,18 @@ import { NodeGroup } from '../models/node-group.model';
 
 @Injectable()
 export class CanvasSelectionService extends Destroy {
-  selectedSubject = new BehaviorSubject<NodeGroup>(undefined);
+  private selectedSubject = new BehaviorSubject<NodeGroup>(undefined);
   selected$ = this.selectedSubject.asObservable();
+
+  private doubleClickedSubject = new BehaviorSubject<NodeGroup>(undefined);
+  doubleClicked$ = this.doubleClickedSubject.asObservable();
 
   get currentSelected(): NodeGroup {
     return this.selectedSubject.value;
   }
 
   constructor(
-    private input: CanvasMouseService,
+    private mouse: CanvasMouseService,
     private manager: CanvasManagerService,
     private canvas: CanvasService
   ) {
@@ -26,8 +29,13 @@ export class CanvasSelectionService extends Destroy {
   }
 
   init(): void {
+    this.registerClicks();
+    this.registerDoubleClicks();
+  }
+
+  registerClicks(): void {
     //Select items on the canvas
-    this.input.mouseDown$
+    this.mouse.mouseDown$
       .pipe(
         takeUntil(this.destroy$),
         filter(
@@ -53,6 +61,21 @@ export class CanvasSelectionService extends Destroy {
           //if nothing was hit, deselect everything
           this.deselectAll();
           this.selectedSubject.next(undefined);
+        }
+      });
+  }
+
+  registerDoubleClicks(): void {
+    //Doubleclick items on the canvas
+    this.mouse.doubleClick$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((event) => {
+        const hit = getHitNodeGroup(this.canvas.two, event, this.manager.nodes);
+        if (hit) {
+          const hitNode = this.manager.nodes[hit.id];
+          if (hitNode) {
+            this.doubleClickedSubject.next(hitNode);
+          }
         }
       });
   }
