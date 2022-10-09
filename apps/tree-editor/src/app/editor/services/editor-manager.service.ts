@@ -1,3 +1,4 @@
+import { ThisReceiver } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -19,20 +20,20 @@ import { ProjectStoreService } from '../../data/services/project-store.service';
 import { TreeStoreService } from '../../data/services/tree-store.service';
 import { Destroy } from '../../utils/components/destory';
 import { NodeGroup } from '../drawing/models/node-group.model';
+import { CanvasManagerService } from '../drawing/systems/canvas-manager.service';
 import { CanvasSelectionService } from '../drawing/systems/canvas-selection.service';
 import { TreeExportSerive } from './tree-export.service';
 import { TreeImportService } from './tree-import.service';
 
 @Injectable()
 export class EditorManagerService extends Destroy {
-  activeProject$: Observable<SPProject>;
+  private activeProjectSubject = new BehaviorSubject<SPProject | undefined>(
+    undefined
+  );
+  activeProject$ = this.activeProjectSubject.asObservable();
 
   private activeProjectTreesSubject = new BehaviorSubject<SPNode[]>([]);
   activeProjectTrees$ = this.activeProjectTreesSubject.asObservable();
-
-  private activeProjectTreesChangedSubject = new Subject<boolean>();
-  activeProjectTreesChanged$ =
-    this.activeProjectTreesChangedSubject.asObservable();
 
   private activeTreeSubject = new BehaviorSubject<SPNode | undefined>(
     undefined
@@ -44,50 +45,32 @@ export class EditorManagerService extends Destroy {
     private treeStore: TreeStoreService,
     private exportService: TreeExportSerive,
     private importService: TreeImportService,
+    private canvas: CanvasManagerService,
     selection: CanvasSelectionService
   ) {
     super();
 
-    //Get the active project
-    this.activeProject$ = this.projectStore
+    this.projectStore
       .loadActiveProject()
-      .pipe(shareReplay());
-
-    //initially load tree from active project which will never change during the lifecyle of this service
-    this.activeProject$
       .pipe(
-        takeUntil(this.destroy$),
-        switchMap((project) => this.treeStore.getAllByProjectId(project.id))
+        switchMap((project) =>
+          combineLatest([
+            of(project),
+            this.treeStore.getAllByProjectId(project.id),
+          ])
+        ),
+        first()
       )
-      .subscribe((trees) => this.activeProjectTreesSubject.next(trees));
+      .subscribe(([project, trees]) => {
+        this.activeProjectTreesSubject.next(trees);
+        this.activeProjectSubject.next(project);
+        this.setActiveTree(project.rootNodeId);
+      });
 
     //Reset selection if tree changes
     this.acitveTree$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => selection.deselectAll());
-
-    //fire trees subject if tree gets added or updated
-    this.activeProjectTreesChangedSubject
-      .pipe(
-        takeUntil(this.destroy$),
-        switchMap(() => this.activeProject$),
-        switchMap((project) => {
-          if (project) {
-            return this.treeStore.getAllByProjectId(project.id);
-          } else {
-            return of(<SPNode[]>[]);
-          }
-        })
-      )
-      .subscribe((trees) => {
-        this.activeProjectTreesSubject.next(trees);
-      });
-  }
-
-  init() {
-    this.activeProject$.pipe(first()).subscribe((project) => {
-      this.setActiveTree(project.rootNodeId);
-    });
   }
 
   addTree(root: NodeGroup): Observable<number> {
@@ -97,7 +80,10 @@ export class EditorManagerService extends Destroy {
       tap((project) => (node.projectId = project.id)),
       switchMap(() => this.treeStore.add(node)),
       switchMap((node) => of(parseInt(node.identifier))),
-      tap(() => this.activeProjectTreesChangedSubject.next(true))
+      switchMap((identifier) =>
+        combineLatest([of(identifier), this.reloadTrees()])
+      ),
+      map(([identifier]) => identifier)
     );
   }
 
@@ -107,20 +93,29 @@ export class EditorManagerService extends Destroy {
       first(),
       tap((project) => (node.projectId = project.id)),
       switchMap(() => this.treeStore.update(node)),
-      tap(() => this.activeProjectTreesChangedSubject.next(true)),
+      switchMap(() => this.reloadTrees()),
       switchMap(() => of(true))
     );
   }
 
   deleteTree(id: number): Observable<boolean> {
-    return this.treeStore
-      .delete(id)
-      .pipe(tap(() => this.activeProjectTreesChangedSubject.next(true)));
+    return this.treeStore.delete(id).pipe(
+      switchMap(() => this.reloadTrees()),
+      switchMap(() => this.isActiveTree$(id).pipe(first())),
+      tap((isActive) => {
+        if (isActive) this.canvas.clear();
+        this.setActiveTree(this.activeProjectSubject.value.rootNodeId);
+      }),
+      switchMap(() => of(true))
+    );
   }
 
   setActiveTree(id: number) {
     combineLatest([this.activeProject$, this.activeProjectTrees$])
-      .pipe(filter(([project]) => project !== undefined))
+      .pipe(
+        first(),
+        filter(([project]) => project !== undefined)
+      )
       .subscribe(([, trees]) => {
         if (trees.length === 0) return;
 
@@ -138,7 +133,16 @@ export class EditorManagerService extends Destroy {
 
   isActiveTree$(id: number): Observable<boolean> {
     return this.acitveTree$.pipe(
-      map((tree) => tree.identifier == id.toString())
+      map((tree) => tree?.identifier == id.toString() ?? false)
     );
+  }
+
+  private reloadTrees(): Observable<SPNode[]> {
+    return this.treeStore
+      .getAllByProjectId(this.activeProjectSubject.value.id)
+      .pipe(
+        first(),
+        tap((trees) => this.activeProjectTreesSubject.next(trees))
+      );
   }
 }

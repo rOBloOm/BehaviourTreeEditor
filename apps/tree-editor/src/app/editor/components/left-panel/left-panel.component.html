@@ -4,6 +4,7 @@
   fxLayout="column"
   fxLayoutAlign="start center"
   fxLayoutGap="10"
+  [formGroup]="form"
 >
   <ngb-accordion
     #accordion
@@ -20,14 +21,25 @@
           fxLayoutAlign="start stretch"
           fxLayoutGap="10px"
         >
-          <input class="editor-input" placeholder="search trees" />
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <input
+              fxFlex
+              class="editor-input"
+              placeholder="search trees"
+              formControlName="treeSearch"
+              type="search"
+            />
+            <div fxFlex="25px" class="add-tree-button" (click)="addTree()">
+              <i class="fa-solid fa-plus"></i>
+            </div>
+          </div>
 
           <ul class="node-list list-group styled-scrollbars">
             <li
               class="node-list-item list-group-item"
               [draggable]="!(isRootTree$(tree.identifier) | async)"
               (dragstart)="dragStartTree($event, tree)"
-              *ngFor="let tree of trees$ | async"
+              *ngFor="let tree of filteredTrees$ | async"
             >
               <div fxFlexLayout="row" fxLayoutAlign="space-between center">
                 <div
@@ -63,7 +75,11 @@
           fxLayoutAlign="start stretch"
           fxLayoutGap="10px"
         >
-          <input class="editor-input" placeholder="search actions" />
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search actions"
+          />
 
           <ul class="node-list list-group styled-scrollbars">
             <li
@@ -86,7 +102,11 @@
           fxLayoutAlign="start stretch"
           fxLayoutGap="10px"
         >
-          <input class="editor-input" placeholder="search conditions" />
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search conditions"
+          />
 
           <ul class="node-list list-group styled-scrollbars">
             <li
@@ -109,14 +129,19 @@
           fxLayoutAlign="start stretch"
           fxLayoutGap="10px"
         >
-          <input class="editor-input" placeholder="search decorators" />
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search decorators"
+            formControlName="decoratorSearch"
+          />
 
           <ul class="node-list list-group styled-scrollbars">
             <li
               class="node-list-item list-group-item list-group-item-action"
               draggable="true"
               (dragstart)="dragStartDecorator($event, decorator)"
-              *ngFor="let decorator of decorators"
+              *ngFor="let decorator of filteredDecorators$ | async"
             >
               {{ decorator }}
             </li>
@@ -132,7 +157,11 @@
           fxLayoutAlign="start stretch"
           fxLayoutGap="10px"
         >
-          <input class="editor-input" placeholder="search composites" />
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search composites"
+          />
 
           <ul class="node-list list-group styled-scrollbars">
             <li

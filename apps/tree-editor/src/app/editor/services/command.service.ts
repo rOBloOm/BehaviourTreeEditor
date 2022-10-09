@@ -48,11 +48,11 @@ export class CommandService {
     const root = this.canvasManager.initNewTree();
     this.editorManager
       .addTree(root)
-      .pipe(
-        first(),
-        tap((treeId) => this.editorManager.setActiveTree(treeId))
-      )
-      .subscribe(() => this.toastr.success('tree added'));
+      .pipe(first())
+      .subscribe((treeId) => {
+        this.editorManager.setActiveTree(treeId);
+        this.toastr.success('tree added');
+      });
   }
 
   addActionWith(identifier: string, name: string): void {

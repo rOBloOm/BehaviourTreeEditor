@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { Observable, switchMap } from 'rxjs';
+import { map, Observable, switchMap, tap } from 'rxjs';
 import { Destroy } from '../../../utils/components/destory';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CommandService } from '../../services/command.service';
@@ -15,7 +15,7 @@ import { NodePanel } from '../left-panel/left-panel.component';
 export class EditorMenuBarComponent extends Destroy implements OnInit {
   get projectName$(): Observable<string> {
     return this.editorManager.activeProject$.pipe(
-      switchMap((project) => project.name)
+      map((project) => project?.name ?? '')
     );
   }
 

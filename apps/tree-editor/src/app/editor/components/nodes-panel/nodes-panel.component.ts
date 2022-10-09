@@ -33,14 +33,12 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
     private canvasDrop: CanvasDropService,
     private canvasSelection: CanvasSelectionService,
     private canvasConnection: CanvasConnectionService,
-    private canvasMouse: CanvasMouseService,
-    private editorManager: EditorManagerService
+    private canvasMouse: CanvasMouseService
   ) {}
 
   ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    this.editorManager.init();
     this.canvas.attach(this.domElement.nativeElement);
     this.canvasDrag.init();
     this.canvasDrop.init();

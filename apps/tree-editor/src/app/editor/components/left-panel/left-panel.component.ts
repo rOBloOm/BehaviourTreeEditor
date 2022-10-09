@@ -14,9 +14,12 @@ import {
   from,
   map,
   Observable,
+  of,
   shareReplay,
+  startWith,
   switchMap,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
@@ -30,6 +33,7 @@ import { EditorManagerService } from '../../services/editor-manager.service';
 import { DefaultFlexOffsetDirective } from '@angular/flex-layout';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dialog.component';
+import { FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -86,7 +90,15 @@ export class LeftPanelComponent
     'UntilSuccess',
   ];
 
-  trees$: Observable<SPNode[]>;
+  filteredTrees$: Observable<SPNode[]>;
+  filteredDecorators$: Observable<string[]>;
+  filteredComposites$: Observable<string[]>;
+
+  form = new FormGroup({
+    treeSearch: new FormControl<string>(''),
+    decoratorSearch: new FormControl<string>(''),
+    compositeSearch: new FormControl<string>(''),
+  });
 
   constructor(
     private modalService: NgbModal,
@@ -96,7 +108,32 @@ export class LeftPanelComponent
     private editorManager: EditorManagerService
   ) {
     super();
-    this.trees$ = editorManager.activeProjectTrees$;
+
+    this.filteredTrees$ = combineLatest([
+      editorManager.activeProjectTrees$,
+      this.form.controls.treeSearch.valueChanges.pipe(startWith('')),
+    ]).pipe(
+      takeUntil(this.destroy$),
+      map(([trees, search]) => {
+        return search.length > 0
+          ? trees.filter((tree) =>
+              tree.displayName.toLowerCase().includes(search.toLowerCase())
+            )
+          : trees;
+      })
+    );
+
+    this.filteredDecorators$ =
+      this.form.controls.decoratorSearch.valueChanges.pipe(
+        startWith(''),
+        map((search) => {
+          return search.length > 0
+            ? this.decorators.filter((decorator) =>
+                decorator.toLowerCase().includes(search.toLowerCase())
+              )
+            : this.decorators;
+        })
+      );
   }
   ngAfterViewInit(): void {
     this.accordion.expand(NodePanel.AccTree);
@@ -116,6 +153,10 @@ export class LeftPanelComponent
 
   setActive(treeId: string): void {
     this.editorManager.setActiveTree(parseInt(treeId));
+  }
+
+  addTree(): void {
+    this.command.newTree();
   }
 
   deleteTree(tree: SPNode): void {
