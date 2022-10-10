@@ -1,4 +1,9 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+} from '@angular/core';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -7,17 +12,15 @@ import {
   first,
   from,
   Observable,
-  of,
   startWith,
   Subject,
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { SPNode } from '../../../data/models/sp-node.model';
 import { SPProject } from '../../../data/models/sp-project.model';
 import { ProjectStoreService } from '../../../data/services/project-store.service';
-import { TreeStoreService } from '../../../data/services/tree-store.service';
 import { Destroy } from '../../../utils/components/destory';
+import { ProjectExportService } from '../../services/project-export.service';
 import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
@@ -32,12 +35,18 @@ import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/d
 export class DashboardProjectsComponent extends Destroy {
   projects$: Observable<SPProject[]>;
   private reloadSubject = new Subject<boolean>();
+
+  urlSubject = new Subject<SafeUrl>();
+
   constructor(
     private modalService: NgbModal,
     private projectFactory: ProjectFactoryService,
     private projectStore: ProjectStoreService,
     private toastr: ToastrService,
-    private router: Router
+    private router: Router,
+    private projectExport: ProjectExportService,
+    private sanitizer: DomSanitizer,
+    private changeDection: ChangeDetectorRef
   ) {
     super();
 
@@ -114,5 +123,27 @@ export class DashboardProjectsComponent extends Destroy {
   openEditor(project: SPProject): void {
     this.projectStore.saveActiveProject(project);
     this.router.navigate(['editor']);
+  }
+
+  downloadProject(project: SPProject): void {
+    this.projectExport
+      .exportProject(project)
+      .pipe(first())
+      .subscribe((json) => {
+        const uri = this.sanitizer.bypassSecurityTrustUrl(
+          'data:text/json;charset=UTF-8,' + encodeURIComponent(json)
+        );
+
+        this.urlSubject.next(uri);
+
+        //Does not work without triggering change detection
+        this.changeDection.detectChanges();
+
+        let downloadRef = document.getElementById(
+          'downloadRef'
+        ) as HTMLLinkElement;
+
+        downloadRef.click();
+      });
   }
 }

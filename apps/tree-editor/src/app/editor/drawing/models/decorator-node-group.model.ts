@@ -16,7 +16,7 @@ export class DecoratorNodeGroup extends NodeGroup {
   }
 
   get displayName(): string {
-    return this.identifier;
+    return this.decoratorType.toString();
   }
 
   constructor(

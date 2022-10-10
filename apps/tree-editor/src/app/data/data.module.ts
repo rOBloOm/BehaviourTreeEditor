@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { DBConfig, NgxIndexedDBModule } from 'ngx-indexed-db';
 import { EditorProjectConfigStoreService } from './services/editor-project-config-store.service';
 import { EditorTreeConfigStoreService } from './services/editor-tree-config-store.service';
+import { LeafNodeStoreService } from './services/leaf-node-store.service';
 import { ProjectStoreService } from './services/project-store.service';
 import { TreeStoreService } from './services/tree-store.service';
 
@@ -66,6 +67,14 @@ const dbConfig: DBConfig = {
         { name: 'x', keypath: '', options: { unique: false } },
         { name: 'y', keypath: '', options: { unique: false } },
         { name: 'zoom', keypath: '', options: { unique: false } },
+      ],
+    },
+    {
+      store: LeafNodeStoreService.LEAF_NODE_STORE,
+      storeConfig: { keyPath: 'identifier', autoIncrement: false },
+      storeSchema: [
+        { name: 'displayName', keypath: '', options: { unique: false } },
+        { name: 'nodeType', keypath: 'nodeType', options: { unique: false } },
       ],
     },
   ],

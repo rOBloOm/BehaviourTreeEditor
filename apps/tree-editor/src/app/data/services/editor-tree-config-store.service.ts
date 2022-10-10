@@ -5,7 +5,7 @@ import { SPEditorProjectConfig } from '../models/sp-editor-project-config.model'
 import { SPEditorTreeConfig } from '../models/sp-editor-tree-config.model';
 import { EditorProjectConfigStoreService } from './editor-project-config-store.service';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EditorTreeConfigStoreService {
   static readonly EDITOR_TREE_CONFIG_STORE = 'tree-config';
 

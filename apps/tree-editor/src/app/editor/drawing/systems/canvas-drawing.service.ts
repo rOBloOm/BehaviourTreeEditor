@@ -158,7 +158,8 @@ export class CanvasDrawingService {
       conditionShape,
       actionText,
       anchorShape,
-      identifier
+      identifier,
+      text
     );
   }
 

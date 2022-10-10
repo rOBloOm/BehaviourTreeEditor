@@ -10,16 +10,13 @@ export class ConditionNodeGroup extends NodeGroup {
     return NodeGroupType.Condition;
   }
 
-  get displayName(): string {
-    return this.identifier;
-  }
-
   constructor(
     group: Group,
     shape: Path,
     text: Text,
     anchorIn: Shape,
-    public identifier: string
+    public identifier: string,
+    public displayName: string
   ) {
     super(group, shape, text);
     this.anchorIn = anchorIn;

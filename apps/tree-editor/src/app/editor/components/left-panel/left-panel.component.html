@@ -79,6 +79,7 @@
             type="search"
             class="editor-input"
             placeholder="search actions"
+            formControlName="actionSearch"
           />
 
           <ul class="node-list list-group styled-scrollbars">
@@ -86,9 +87,9 @@
               class="node-list-item list-group-item list-group-item-action"
               draggable="true"
               (dragstart)="dragStartAction($event, action)"
-              *ngFor="let action of actions"
+              *ngFor="let action of filteredActions$ | async"
             >
-              {{ action }}
+              {{ action.displayName }}
             </li>
           </ul>
         </div>
@@ -106,6 +107,7 @@
             type="search"
             class="editor-input"
             placeholder="search conditions"
+            formControlName="conditionSearch"
           />
 
           <ul class="node-list list-group styled-scrollbars">
@@ -113,9 +115,9 @@
               class="node-list-item list-group-item list-group-item-action"
               draggable="true"
               (dragstart)="dragStartCondition($event, condition)"
-              *ngFor="let condition of conditions"
+              *ngFor="let condition of filteredConditions$ | async"
             >
-              {{ condition }}
+              {{ condition.displayName }}
             </li>
           </ul>
         </div>

@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { SPEditorProjectConfig } from '../models/sp-editor-project-config.model';
 import { SPProject } from '../models/sp-project.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class EditorProjectConfigStoreService {
   static readonly EDITOR_PROJECT_CONFIG_STORE = 'project-config';
 
