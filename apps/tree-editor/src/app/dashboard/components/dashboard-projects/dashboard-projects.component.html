@@ -13,8 +13,24 @@
       fxLayoutAlign="start center"
       fxLayoutGap="20px"
     >
+      <input
+        #projectUpload
+        [accept]="'.json'"
+        type="file"
+        class="project-upload-file-input"
+        (change)="uploadProject($event)"
+      />
+
       <button type="button" class="btn btn-success" (click)="addProject()">
         Add New
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-upload"
+        title="upload project"
+        (click)="projectUpload.click()"
+      >
+        <i class="fa-solid fa-upload"></i>
       </button>
     </div>
   </div>
@@ -59,10 +75,3 @@
     </div>
   </div>
 </div>
-<a
-  id="downloadRef"
-  class="download-link"
-  title="Download Project"
-  [href]="urlSubject | async"
-  download="download.json"
-></a>

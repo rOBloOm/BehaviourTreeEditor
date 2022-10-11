@@ -21,6 +21,7 @@ import { SPProject } from '../../../data/models/sp-project.model';
 import { ProjectStoreService } from '../../../data/services/project-store.service';
 import { Destroy } from '../../../utils/components/destory';
 import { ProjectExportService } from '../../services/project-export.service';
+import { ProjectImportService } from '../../services/project-import.service';
 import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
@@ -45,8 +46,7 @@ export class DashboardProjectsComponent extends Destroy {
     private toastr: ToastrService,
     private router: Router,
     private projectExport: ProjectExportService,
-    private sanitizer: DomSanitizer,
-    private changeDection: ChangeDetectorRef
+    private projectImport: ProjectImportService
   ) {
     super();
 
@@ -130,20 +130,33 @@ export class DashboardProjectsComponent extends Destroy {
       .exportProject(project)
       .pipe(first())
       .subscribe((json) => {
-        const uri = this.sanitizer.bypassSecurityTrustUrl(
-          'data:text/json;charset=UTF-8,' + encodeURIComponent(json)
-        );
+        const file = new Blob([json], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(file);
+        link.download = 'sp-project.json';
+        link.click();
+        link.remove();
+      });
+  }
 
-        this.urlSubject.next(uri);
-
-        //Does not work without triggering change detection
-        this.changeDection.detectChanges();
-
-        let downloadRef = document.getElementById(
-          'downloadRef'
-        ) as HTMLLinkElement;
-
-        downloadRef.click();
+  async uploadProject(event: any) {
+    const file: File = event.target.files[0];
+    from(file.text())
+      .pipe(first())
+      .subscribe((json) => {
+        this.projectImport
+          .importProject(json)
+          .pipe(first())
+          .subscribe({
+            next: () => {
+              this.toastr.success('project importet successfully');
+              this.reloadSubject.next(true);
+            },
+            error: (err) => {
+              this.toastr.error('error importing project');
+              console.log(err);
+            },
+          });
       });
   }
 }

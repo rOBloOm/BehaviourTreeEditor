@@ -47,7 +47,7 @@ export class TreeImportService {
         return this.canvas.addCompositeNode(
           node.x,
           node.y,
-          CompositeType[node.displayName]
+          CompositeType[node.identifier]
         );
       case NodeGroupType[NodeGroupType.Condition]:
         return this.canvas.addConditionNode(
@@ -60,7 +60,7 @@ export class TreeImportService {
         return this.canvas.addDecorator(
           node.x,
           node.y,
-          DecoratorType[node.displayName]
+          DecoratorType[node.identifier]
         );
       case NodeGroupType[NodeGroupType.Tree]:
         //Look up the tree desplayname in case it has been updated

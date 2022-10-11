@@ -117,10 +117,6 @@ export class LeftPanelComponent
       });
   }
 
-  printTree(): void {
-    console.log(this.canvasManager.nodes);
-  }
-
   setActive(treeId: string): void {
     this.editorManager.setActiveTree(parseInt(treeId));
   }
@@ -297,7 +293,6 @@ export class LeftPanelComponent
     ]).pipe(
       takeUntil(this.destroy$),
       map(([conditions, search]) => {
-        console.log(conditions);
         return search.length > 0
           ? conditions.filter((action) =>
               action.displayName

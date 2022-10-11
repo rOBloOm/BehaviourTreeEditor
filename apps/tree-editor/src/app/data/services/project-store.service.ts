@@ -46,6 +46,15 @@ export class ProjectStoreService extends Destroy {
     return this.dbService.add(ProjectStoreService.PROJECT_STORE, project);
   }
 
+  addProjectWith(name: string, rootNodeId: number): Observable<SPProject> {
+    const project = <SPProject>{
+      name: name,
+      rootNodeId: rootNodeId,
+      isActive: false,
+    };
+    return this.dbService.add(ProjectStoreService.PROJECT_STORE, project);
+  }
+
   updateProject(project: SPProject): Observable<SPProject> {
     return this.dbService.update(ProjectStoreService.PROJECT_STORE, project);
   }

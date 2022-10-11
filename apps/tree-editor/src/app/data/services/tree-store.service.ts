@@ -20,6 +20,10 @@ export class TreeStoreService extends Destroy {
     return this.dbService.add(TreeStoreService.TREE_STORE, tree);
   }
 
+  addRange(trees: SPNode[]): Observable<number[]> {
+    return this.dbService.bulkAdd(TreeStoreService.TREE_STORE, trees);
+  }
+
   update(tree: SPNode): Observable<SPNode> {
     if (!tree.identifier) {
       throw Error('Trying to update an new tree');

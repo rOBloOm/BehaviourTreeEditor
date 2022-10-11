@@ -1,8 +1,6 @@
-import { JsonPipe } from '@angular/common';
 import { Injectable } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
 import { forEach } from 'lodash-es';
-import { first, map, Observable, switchMap } from 'rxjs';
+import { first, map, Observable } from 'rxjs';
 import { SPNode } from '../../data/models/sp-node.model';
 import { SPProject } from '../../data/models/sp-project.model';
 import { TreeStoreService } from '../../data/services/tree-store.service';
@@ -12,6 +10,22 @@ export class ProjectExportService {
   constructor(private treeStore: TreeStoreService) {}
 
   exportProject(project: SPProject): Observable<string> {
+    return this.treeStore.getAllByProjectId(project.id).pipe(
+      first(),
+      map((trees) => {
+        return JSON.stringify({
+          project: {
+            name: project.name,
+            rootNodeId: project.rootNodeId,
+          },
+          trees,
+        });
+      })
+    );
+  }
+
+  //Possibly is not gonna happen this way, delete all code bellow if not needed
+  exportProject_old(project: SPProject): Observable<string> {
     return this.treeStore.getAllByProjectId(project.id).pipe(
       first(),
       map((trees) => {
