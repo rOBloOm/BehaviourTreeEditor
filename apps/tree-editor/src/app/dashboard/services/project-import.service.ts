@@ -19,7 +19,7 @@ export class ProjectImportService {
     const trees = content.trees as SPNode[];
 
     return this.projectStore
-      .addProjectWith(project.name, project.rootNodeId)
+      .addProjectWith(project.name, project.rootNodeIdentifier)
       .pipe(
         first(),
         switchMap((project) => {

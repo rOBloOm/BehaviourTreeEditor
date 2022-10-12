@@ -65,7 +65,7 @@ export class EditorManagerService extends Destroy {
       .subscribe(([project, trees]) => {
         this.activeProjectTreesSubject.next(trees);
         this.activeProjectSubject.next(project);
-        this.setActiveTree(project.rootNodeId);
+        this.setActiveTree(project.rootNodeIdentifier);
       });
 
     //Reset selection if tree changes
@@ -80,16 +80,20 @@ export class EditorManagerService extends Destroy {
         filter((node) => node !== undefined),
         filter((node) => node.nodeType === NodeGroupType.Tree)
       )
-      .subscribe((node) => this.setActiveTree(parseInt(node.identifier)));
+      .subscribe((node) => this.setActiveTree(node.identifier));
   }
 
-  addTree(root: NodeGroup): Observable<number> {
+  addTree(root: NodeGroup): Observable<string> {
     const node = this.exportService.export(root);
+    const identifier = crypto.randomUUID();
     return this.activeProject$.pipe(
       first(),
-      tap((project) => (node.projectId = project.id)),
+      tap((project) => {
+        node.projectId = project.id;
+        node.identifier = identifier;
+      }),
       switchMap(() => this.treeStore.add(node)),
-      switchMap((node) => of(parseInt(node.identifier))),
+      switchMap((node) => of(node.identifier)),
       switchMap((identifier) =>
         combineLatest([of(identifier), this.reloadTrees()])
       ),
@@ -108,19 +112,19 @@ export class EditorManagerService extends Destroy {
     );
   }
 
-  deleteTree(id: number): Observable<boolean> {
-    return this.treeStore.delete(id).pipe(
+  deleteTree(identifier: string): Observable<boolean> {
+    return this.treeStore.deleteByIdentifier(identifier).pipe(
       switchMap(() => this.reloadTrees()),
-      switchMap(() => this.isActiveTree$(id).pipe(first())),
+      switchMap(() => this.isActiveTree$(identifier).pipe(first())),
       tap((isActive) => {
         if (isActive) this.canvas.clear();
-        this.setActiveTree(this.activeProjectSubject.value.rootNodeId);
+        this.setActiveTree(this.activeProjectSubject.value.rootNodeIdentifier);
       }),
       switchMap(() => of(true))
     );
   }
 
-  setActiveTree(id: number) {
+  setActiveTree(identifier: string) {
     combineLatest([this.activeProject$, this.activeProjectTrees$])
       .pipe(
         first(),
@@ -129,21 +133,21 @@ export class EditorManagerService extends Destroy {
       .subscribe(([, trees]) => {
         if (trees.length === 0) return;
 
-        const tree = trees.find((tree) => tree.identifier == id.toString());
+        const tree = trees.find((tree) => tree.identifier === identifier);
         this.importService.import(tree, trees);
         this.activeTreeSubject.next(tree);
       });
   }
 
-  isRootTree$(id: number): Observable<boolean> {
+  isRootTree$(identifier: string): Observable<boolean> {
     return this.activeProject$.pipe(
-      map((project) => project.rootNodeId === id)
+      map((project) => project.rootNodeIdentifier === identifier)
     );
   }
 
-  isActiveTree$(id: number): Observable<boolean> {
+  isActiveTree$(identifier: string): Observable<boolean> {
     return this.acitveTree$.pipe(
-      map((tree) => tree?.identifier == id.toString() ?? false)
+      map((tree) => tree?.identifier === identifier ?? false)
     );
   }
 

@@ -16,7 +16,7 @@ export class ProjectExportService {
         return JSON.stringify({
           project: {
             name: project.name,
-            rootNodeId: project.rootNodeId,
+            rootNodeId: project.rootNodeIdentifier,
           },
           trees,
         });
@@ -30,7 +30,7 @@ export class ProjectExportService {
       first(),
       map((trees) => {
         const root = trees.find(
-          (tree) => parseInt(tree.identifier) === project.rootNodeId
+          (tree) => tree.identifier === project.rootNodeIdentifier
         );
         this.traverseNode(root, trees);
         return JSON.stringify(root);

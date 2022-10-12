@@ -1,4 +1,6 @@
 export class SPNode {
+  id: number;
+
   displayName: string;
   //The project refernce
   projectId: number;

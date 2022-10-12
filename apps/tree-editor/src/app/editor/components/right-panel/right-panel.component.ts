@@ -52,7 +52,7 @@ export class RightPanelComponent extends Destroy {
       .pipe(
         takeUntil(this.destroy$),
         filter((tree) => tree !== undefined),
-        switchMap((tree) => this.editor.isRootTree$(parseInt(tree.identifier)))
+        switchMap((tree) => this.editor.isRootTree$(tree.identifier))
       )
       .subscribe((isRoot) =>
         isRoot

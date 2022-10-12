@@ -11,14 +11,15 @@ export class TreeExportSerive {
   }
 
   private convertNode(canvasNode: NodeGroup): SPNode {
-    const node = {
+    const node = <SPNode>{
+      id: -1,
       x: canvasNode.x,
       y: canvasNode.y,
       identifier: canvasNode.identifier,
       displayName: canvasNode.displayName,
       type: NodeGroupType[canvasNode.nodeType],
       children: [],
-    } as SPNode;
+    };
 
     forEach(
       canvasNode.connectionsOut.sort((l, r) => l.target.x - r.target.x),

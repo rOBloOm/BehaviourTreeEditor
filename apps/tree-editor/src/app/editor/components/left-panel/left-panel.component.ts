@@ -92,7 +92,6 @@ export class LeftPanelComponent
   constructor(
     private modalService: NgbModal,
     private toastr: ToastrService,
-    private canvasManager: CanvasManagerService,
     private command: CommandService,
     private editorManager: EditorManagerService,
     private leafNodeStore: LeafNodeStoreService
@@ -117,8 +116,8 @@ export class LeftPanelComponent
       });
   }
 
-  setActive(treeId: string): void {
-    this.editorManager.setActiveTree(parseInt(treeId));
+  setActive(identifier: string): void {
+    this.editorManager.setActiveTree(identifier);
   }
 
   addTree(): void {
@@ -136,9 +135,7 @@ export class LeftPanelComponent
       .pipe(
         first(),
         filter((result) => result && result.delete),
-        switchMap(() =>
-          this.editorManager.deleteTree(parseInt(tree.identifier))
-        )
+        switchMap(() => this.editorManager.deleteTree(tree.identifier))
       )
       .subscribe({
         error: () => this.toastr.error('Error deleting tree'),
@@ -147,15 +144,13 @@ export class LeftPanelComponent
   }
 
   isRootTree$(identifier: string): Observable<boolean> {
-    return this.editorManager
-      .isRootTree$(parseInt(identifier))
-      .pipe(shareReplay());
+    return this.editorManager.isRootTree$(identifier).pipe(shareReplay());
   }
 
   treeItemClass$(identifier: string): Observable<string> {
     return combineLatest([
-      this.editorManager.isRootTree$(parseInt(identifier)),
-      this.editorManager.isActiveTree$(parseInt(identifier)),
+      this.editorManager.isRootTree$(identifier),
+      this.editorManager.isActiveTree$(identifier),
     ]).pipe(
       map(([isRoot, isActive]) => {
         if (isActive && isRoot) return 'active-tree-item root-tree-item';

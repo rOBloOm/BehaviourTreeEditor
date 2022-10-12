@@ -27,7 +27,7 @@ export class ProjectFactoryService {
         ])
       ),
       switchMap(([project, tree]) => {
-        project.rootNodeId = parseInt(tree.identifier);
+        project.rootNodeIdentifier = tree.identifier;
         return this.projectStore.updateProject(project);
       })
     );

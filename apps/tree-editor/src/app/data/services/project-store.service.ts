@@ -41,15 +41,22 @@ export class ProjectStoreService extends Destroy {
   }
 
   addProject(name: string): Observable<SPProject> {
-    const project = <SPProject>{ name: name, rootNodeId: -1, isActive: false };
+    const project = <SPProject>{
+      name: name,
+      rootNodeIdentifier: undefined,
+      isActive: false,
+    };
 
     return this.dbService.add(ProjectStoreService.PROJECT_STORE, project);
   }
 
-  addProjectWith(name: string, rootNodeId: number): Observable<SPProject> {
+  addProjectWith(
+    name: string,
+    rootNodeIdentifier: string
+  ): Observable<SPProject> {
     const project = <SPProject>{
       name: name,
-      rootNodeId: rootNodeId,
+      rootNodeIdentifier: rootNodeIdentifier,
       isActive: false,
     };
     return this.dbService.add(ProjectStoreService.PROJECT_STORE, project);

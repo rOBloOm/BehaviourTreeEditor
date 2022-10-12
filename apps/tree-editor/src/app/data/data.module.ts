@@ -27,8 +27,13 @@ const dbConfig: DBConfig = {
   objectStoresMeta: [
     {
       store: TreeStoreService.TREE_STORE,
-      storeConfig: { keyPath: 'identifier', autoIncrement: true },
+      storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
+        {
+          name: 'identifier',
+          keypath: 'identifier',
+          options: { unique: true },
+        },
         {
           name: 'project',
           keypath: 'project',
@@ -71,8 +76,13 @@ const dbConfig: DBConfig = {
     },
     {
       store: LeafNodeStoreService.LEAF_NODE_STORE,
-      storeConfig: { keyPath: 'identifier', autoIncrement: false },
+      storeConfig: { keyPath: 'id', autoIncrement: true },
       storeSchema: [
+        {
+          name: 'identifier',
+          keypath: 'identifier',
+          options: { unique: false },
+        },
         { name: 'displayName', keypath: '', options: { unique: false } },
         { name: 'nodeType', keypath: 'nodeType', options: { unique: false } },
       ],
