@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, map, Observable, of, switchMap } from 'rxjs';
-import { SPNode } from '../../data/models/sp-node.model';
-import { SPProject } from '../../data/models/sp-project.model';
-import { ProjectStoreService } from '../../data/services/project-store.service';
-import { TreeStoreService } from '../../data/services/tree-store.service';
+import { combineLatest, Observable, of, switchMap } from 'rxjs';
+import { SPNode } from '../../store/models/sp-node.model';
+import { SPProject } from '../../store/models/sp-project.model';
+import { ProjectStoreService } from '../../store/services/project-store.service';
+import { TreeStoreService } from '../../store/services/tree-store.service';
 
 @Injectable()
 export class ProjectFactoryService {
@@ -18,6 +18,7 @@ export class ProjectFactoryService {
         combineLatest([
           of(project),
           this.treeStore.add(<SPNode>{
+            identifier: crypto.randomUUID(),
             type: 'Root',
             displayName: 'Root',
             projectId: project.id,

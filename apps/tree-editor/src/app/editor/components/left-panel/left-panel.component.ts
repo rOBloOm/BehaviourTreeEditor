@@ -19,6 +19,7 @@ import {
   startWith,
   switchMap,
   takeUntil,
+  tap,
 } from 'rxjs';
 import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
@@ -26,13 +27,13 @@ import { CanvasDropData } from '../../drawing/models/canvas-drop-data.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { DecoratorType } from '../../drawing/enums/decorator-type.enum';
 import { CompositeType } from '../../drawing/enums/composite-type.enum';
-import { SPNode } from '../../../data/models/sp-node.model';
 import { EditorManagerService } from '../../services/editor-manager.service';
 import { ToastrService } from 'ngx-toastr';
 import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dialog.component';
 import { FormControl, FormGroup } from '@angular/forms';
-import { SPLeafNode } from '../../../data/models/sp-leaf-node.model';
-import { LeafNodeStoreService } from '../../../data/services/leaf-node-store.service';
+import { SPLeafNode } from '../../../store/models/sp-leaf-node.model';
+import { SPNode } from '../../../store/models/sp-node.model';
+import { LeafNodeStoreService } from '../../../store/services/leaf-node-store.service';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -134,11 +135,12 @@ export class LeftPanelComponent
     from(dialog.result)
       .pipe(
         first(),
+        tap((res) => console.log(res)),
         filter((result) => result && result.delete),
         switchMap(() => this.editorManager.deleteTree(tree.identifier))
       )
       .subscribe({
-        error: () => this.toastr.error('Error deleting tree'),
+        error: () => {},
         next: () => this.toastr.success('Tree deleted'),
       });
   }

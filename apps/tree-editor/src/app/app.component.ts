@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ProjectStoreService } from './data/services/project-store.service';
 
 @Component({
   selector: 'sp-root',

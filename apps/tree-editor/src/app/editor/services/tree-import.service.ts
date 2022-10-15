@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
-import { SPNode } from '../../data/models/sp-node.model';
+import { SPNode } from '../../store/models/sp-node.model';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';

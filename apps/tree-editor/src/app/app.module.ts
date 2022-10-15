@@ -5,8 +5,8 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { DataModule } from './data/data.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from './store/store.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,7 +19,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
       positionClass: 'toast-bottom-right',
       preventDuplicates: true,
     }),
-    DataModule,
+    StoreModule,
     NgbModule,
   ],
   providers: [],

@@ -95,4 +95,4 @@ const dbConfig: DBConfig = {
   imports: [NgxIndexedDBModule.forRoot(dbConfig)],
   declarations: [],
 })
-export class DataModule {}
+export class StoreModule {}

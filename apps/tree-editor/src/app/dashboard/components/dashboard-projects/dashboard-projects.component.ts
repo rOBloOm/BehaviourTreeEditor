@@ -1,9 +1,5 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-} from '@angular/core';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { SafeUrl } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
@@ -17,11 +13,12 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { SPProject } from '../../../data/models/sp-project.model';
-import { ProjectStoreService } from '../../../data/services/project-store.service';
+import { ProjectExportService } from '../../../interface/services/project-export.service';
+import { ProjectImportService } from '../../../interface/services/project-import.service';
+import { SPProject } from '../../../store/models/sp-project.model';
+import { ProjectStoreService } from '../../../store/services/project-store.service';
+import { TreeStoreService } from '../../../store/services/tree-store.service';
 import { Destroy } from '../../../utils/components/destory';
-import { ProjectExportService } from '../../services/project-export.service';
-import { ProjectImportService } from '../../services/project-import.service';
 import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
@@ -43,6 +40,7 @@ export class DashboardProjectsComponent extends Destroy {
     private modalService: NgbModal,
     private projectFactory: ProjectFactoryService,
     private projectStore: ProjectStoreService,
+    private treeStore: TreeStoreService,
     private toastr: ToastrService,
     private router: Router,
     private projectExport: ProjectExportService,
@@ -109,10 +107,11 @@ export class DashboardProjectsComponent extends Destroy {
       .pipe(
         first(),
         filter((result) => result && result.delete),
-        switchMap(() => this.projectStore.deleteProject(project.id))
+        switchMap(() => this.projectStore.deleteProject(project.id)),
+        switchMap(() => this.treeStore.deleteByProjectId(project.id))
       )
       .subscribe({
-        error: () => this.toastr.error('error deleting project'),
+        error: () => {},
         next: () => {
           this.toastr.success('project deleted');
           this.reloadSubject.next(true);

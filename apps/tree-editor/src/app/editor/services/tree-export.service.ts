@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
-import { SPNode } from '../../data/models/sp-node.model';
+import { SPNode } from '../../store/models/sp-node.model';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
 
@@ -12,7 +12,6 @@ export class TreeExportSerive {
 
   private convertNode(canvasNode: NodeGroup): SPNode {
     const node = <SPNode>{
-      id: -1,
       x: canvasNode.x,
       y: canvasNode.y,
       identifier: canvasNode.identifier,

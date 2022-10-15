@@ -1,4 +1,3 @@
-import { ThisReceiver } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -8,16 +7,14 @@ import {
   map,
   Observable,
   of,
-  shareReplay,
-  Subject,
   switchMap,
   takeUntil,
   tap,
 } from 'rxjs';
-import { SPNode } from '../../data/models/sp-node.model';
-import { SPProject } from '../../data/models/sp-project.model';
-import { ProjectStoreService } from '../../data/services/project-store.service';
-import { TreeStoreService } from '../../data/services/tree-store.service';
+import { SPNode } from '../../store/models/sp-node.model';
+import { SPProject } from '../../store/models/sp-project.model';
+import { ProjectStoreService } from '../../store/services/project-store.service';
+import { TreeStoreService } from '../../store/services/tree-store.service';
 import { Destroy } from '../../utils/components/destory';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
@@ -103,6 +100,8 @@ export class EditorManagerService extends Destroy {
 
   updateTree(root: NodeGroup): Observable<boolean> {
     const node = this.exportService.export(root);
+    node.id = this.activeTreeSubject.value.id;
+
     return this.activeProject$.pipe(
       first(),
       tap((project) => (node.projectId = project.id)),
