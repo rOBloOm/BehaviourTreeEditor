@@ -1,0 +1,38 @@
+<div fxFLex fxLayout="column" fxLayoutAlign="start stretch">
+  <h5 fxFlex="row" fxLayoutAlign="start" fxLayoutGap="20px" class="subtitle">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <div>Parameters</div>
+      <i
+        class="parameter-add-button icon fa-solid fa-plus"
+        (click)="addParameter()"
+      ></i>
+    </div>
+  </h5>
+  <ul class="parameter-list">
+    <li *ngFor="let parameter of parameters$ | async; index as index">
+      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10">
+        <div
+          fxFlex="25px"
+          fxLayout="row"
+          fxLayoutAlign="space-between center"
+          class="delete-param-button"
+        >
+          <label for="param" class="editor-label"
+            >Parameter {{ index + 1 }}</label
+          >
+          <i
+            class="fa-solid fa-trash icon"
+            (click)="removeParameter(index)"
+          ></i>
+        </div>
+
+        <input
+          class="editor-input"
+          id="param"
+          (keyup)="parameterEdited($event, index)"
+          [value]="parameter"
+        />
+      </div>
+    </li>
+  </ul>
+</div>

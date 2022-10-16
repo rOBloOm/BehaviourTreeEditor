@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { first, map, Observable, switchMap } from 'rxjs';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../base/components/destory';
 import { SPNode } from '../models/sp-node.model';
 
 @Injectable({ providedIn: 'root' })

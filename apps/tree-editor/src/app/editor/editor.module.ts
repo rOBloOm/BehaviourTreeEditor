@@ -13,6 +13,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { KeyboardShortcutsModule } from 'ng-keyboard-shortcuts';
 import { NgbAccordionModule } from '@ng-bootstrap/ng-bootstrap';
 import { DeleteTreeDialogComponent } from './components/delete-tree-dialog/delete-tree-dialog.component';
+import { RightPanelParametersComponent } from './components/right-panel-parameters/right-panel-parameters.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { DeleteTreeDialogComponent } from './components/delete-tree-dialog/delet
     RightPanelComponent,
     EditorMenuBarComponent,
     DeleteTreeDialogComponent,
+    RightPanelParametersComponent,
   ],
   imports: [
     CommonModule,

@@ -15,7 +15,7 @@ import { SPNode } from '../../store/models/sp-node.model';
 import { SPProject } from '../../store/models/sp-project.model';
 import { ProjectStoreService } from '../../store/services/project-store.service';
 import { TreeStoreService } from '../../store/services/tree-store.service';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../base/components/destory';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
 import { CanvasManagerService } from '../drawing/systems/canvas-manager.service';

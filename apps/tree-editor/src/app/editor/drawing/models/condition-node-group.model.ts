@@ -3,12 +3,15 @@ import { Path } from 'two.js/src/path';
 import { Shape } from 'two.js/src/shape';
 import { Text } from 'two.js/src/text';
 import { NodeGroupType } from '../enums/node-group-type.enum';
+import { ILeafNodeGroup } from '../interfaces/parameters-interface.model';
 import { NodeGroup } from './node-group.model';
 
-export class ConditionNodeGroup extends NodeGroup {
+export class ConditionNodeGroup extends NodeGroup implements ILeafNodeGroup {
   get nodeType(): NodeGroupType {
     return NodeGroupType.Condition;
   }
+
+  parameters: string[] = [];
 
   constructor(
     group: Group,

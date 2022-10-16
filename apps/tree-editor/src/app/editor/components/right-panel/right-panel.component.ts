@@ -3,7 +3,7 @@ import { combineLatest, filter, Observable, switchMap, takeUntil } from 'rxjs';
 import { NodeGroup } from '../../drawing/models/node-group.model';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
@@ -18,8 +18,10 @@ export class RightPanelComponent extends Destroy {
   selected$: Observable<NodeGroup>;
   nodeType: string;
 
+  parameters: string[] = [];
+
   form = new FormGroup({
-    displayName: new FormControl(''),
+    displayName: new FormControl<string>(''),
   });
 
   constructor(

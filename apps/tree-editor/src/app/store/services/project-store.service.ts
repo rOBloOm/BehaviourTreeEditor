@@ -11,7 +11,7 @@ import {
   takeUntil,
   tap,
 } from 'rxjs';
-import { Destroy } from '../../utils/components/destory';
+import { Destroy } from '../../base/components/destory';
 import { SPProject } from '../models/sp-project.model';
 
 @Injectable({ providedIn: 'root' })

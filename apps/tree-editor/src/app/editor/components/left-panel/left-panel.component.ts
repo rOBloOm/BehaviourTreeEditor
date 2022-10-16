@@ -6,7 +6,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { CommandService } from '../../services/command.service';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import {
   BehaviorSubject,
   combineLatest,

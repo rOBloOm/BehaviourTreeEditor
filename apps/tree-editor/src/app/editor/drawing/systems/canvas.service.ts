@@ -13,7 +13,7 @@ import {
 } from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import { CommandService } from '../../services/command.service';
 import { CanvasDropData } from '../models/canvas-drop-data.model';
 import { CanvasMouseService } from './canvas-mouse.service';

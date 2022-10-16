@@ -6,8 +6,6 @@ import {
 } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { from, takeUntil } from 'rxjs';
-import { Destroy } from '../../../utils/components/destory';
 
 @Component({
   selector: 'sp-dashboard-projects-dialog',

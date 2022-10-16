@@ -17,5 +17,20 @@
         <input class="editor-input" formControlName="displayName" />
       </div>
     </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 3">
+      <h4 fxFlex="row" fxLayoutAlign="center" class="title">Action Node</h4>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="identifier" class="editor-label">Action Name</label>
+        <input class="editor-input" formControlName="displayName" />
+      </div>
+      <sp-right-panel-parameters></sp-right-panel-parameters>
+    </ng-template>
   </div>
 </div>

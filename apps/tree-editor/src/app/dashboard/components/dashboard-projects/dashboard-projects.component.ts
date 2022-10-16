@@ -18,7 +18,7 @@ import { ProjectImportService } from '../../../interface/services/project-import
 import { SPProject } from '../../../store/models/sp-project.model';
 import { ProjectStoreService } from '../../../store/services/project-store.service';
 import { TreeStoreService } from '../../../store/services/tree-store.service';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';

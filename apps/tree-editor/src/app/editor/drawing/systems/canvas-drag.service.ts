@@ -6,7 +6,7 @@ import { Shape } from 'two.js/src/shape';
 import { CanvasService } from './canvas.service';
 import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import { CanvasDrawingService } from './canvas-drawing.service';
 import { getHitNodeGroup } from '../drawing.utils';
 

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { forEach, map } from 'lodash-es';
 import { CanvasService } from './canvas.service';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import { CanvasDrawingService } from './canvas-drawing.service';
 import { CompositeType } from '../enums/composite-type.enum';
 import { DecoratorType } from '../enums/decorator-type.enum';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs';
-import { Destroy } from '../../../utils/components/destory';
+import { Destroy } from '../../../base/components/destory';
 import { CommandService } from '../../services/command.service';
 import { CompositeType } from '../enums/composite-type.enum';
 import { DecoratorType } from '../enums/decorator-type.enum';
