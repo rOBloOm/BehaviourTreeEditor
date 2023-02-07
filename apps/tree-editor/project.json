@@ -1,4 +1,5 @@
 {
+  "name": "tree-editor",
   "projectType": "application",
   "sourceRoot": "apps/tree-editor/src",
   "prefix": "sweet-potato",
@@ -85,7 +86,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/tree-editor"],
+      "outputs": ["{workspaceRoot}/coverage/apps/tree-editor"],
       "options": {
         "jestConfig": "apps/tree-editor/jest.config.ts",
         "passWithNoTests": true
