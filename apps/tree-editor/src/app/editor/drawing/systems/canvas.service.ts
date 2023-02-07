@@ -1,21 +1,14 @@
-import { ElementRef, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   combineLatest,
   filter,
-  map,
   Observable,
-  skip,
-  skipUntil,
-  startWith,
   takeUntil,
-  tap,
 } from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
 import { Destroy } from '../../../base/components/destory';
-import { CommandService } from '../../services/command.service';
-import { CanvasDropData } from '../models/canvas-drop-data.model';
 import { CanvasMouseService } from './canvas-mouse.service';
 
 @Injectable()
@@ -54,7 +47,7 @@ export class CanvasService extends Destroy {
       event.stopPropagation();
       event.preventDefault();
 
-      var dy = -event.deltaY / 500;
+      const dy = -event.deltaY / 500;
 
       this.zui.zoomBy(dy, event.clientX, event.clientY);
     });
@@ -62,7 +55,7 @@ export class CanvasService extends Destroy {
 
   private initPanBehaviour(): void {
     let panning = false;
-    var mouse = new Two.Vector();
+    const mouse = new Two.Vector();
 
     this.canvasMouse.mouseDown$
       .pipe(
@@ -89,8 +82,8 @@ export class CanvasService extends Destroy {
         takeUntil(this.destroy$)
       )
       .subscribe(([mouseMove]) => {
-        var dx = mouseMove.clientX - mouse.x;
-        var dy = mouseMove.clientY - mouse.y;
+        const dx = mouseMove.clientX - mouse.x;
+        const dy = mouseMove.clientY - mouse.y;
         this.zui.translateSurface(dx, dy);
         mouse.set(mouseMove.clientX, mouseMove.clientY);
       });

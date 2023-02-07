@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { LeafNodeImportService } from '../../services/leaf-node-import.service';
 
 @Component({
@@ -8,8 +8,4 @@ import { LeafNodeImportService } from '../../services/leaf-node-import.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [LeafNodeImportService],
 })
-export class DashboardComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class DashboardComponent {}

@@ -13,6 +13,8 @@ export abstract class NodeGroup {
   anchorIn: Shape = undefined;
   anchorOut: Shape = undefined;
 
+  parameters: string[] = [];
+
   get id(): string {
     return this.group.id;
   }

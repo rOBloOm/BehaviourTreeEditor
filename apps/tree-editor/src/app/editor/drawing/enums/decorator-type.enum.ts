@@ -8,6 +8,6 @@ export enum DecoratorType {
   Repeat,
   Succeeder,
   TimeLimit,
-  UnitlFailed,
-  UntilSucess,
+  UntilFailed,
+  UntilSuccess,
 }

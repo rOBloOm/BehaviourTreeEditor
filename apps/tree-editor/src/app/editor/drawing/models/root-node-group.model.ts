@@ -22,7 +22,7 @@ export class RootNodeGroup extends NodeGroup {
     this.anchorOut = anchorOut;
   }
 
-  acceptIncoming(sourceType: NodeGroupType) {
+  acceptIncoming() {
     return false;
   }
 

@@ -4,6 +4,7 @@ export interface INode {
   type: string;
   displayName: string;
   children: INode[];
+  parameters: string[];
   //Editor settings
   x: number;
   y: number;

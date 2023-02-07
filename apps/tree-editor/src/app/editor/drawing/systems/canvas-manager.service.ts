@@ -1,20 +1,15 @@
 import { Injectable } from '@angular/core';
-import { forEach, map } from 'lodash-es';
-import { CanvasService } from './canvas.service';
+import { forEach } from 'lodash-es';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
 import { Destroy } from '../../../base/components/destory';
-import { CanvasDrawingService } from './canvas-drawing.service';
 import { CompositeType } from '../enums/composite-type.enum';
 import { DecoratorType } from '../enums/decorator-type.enum';
-import { NodeGroupType } from '../enums/node-group-type.enum';
-import { ActionNodeGroup } from '../models/action-node-group.model';
-import { CompositeNodeGroup } from '../models/composite-node-group.model';
-import { ConditionNodeGroup } from '../models/condition-node-group.model';
-import { DecoratorNodeGroup } from '../models/decorator-node-group.model';
 import { NodeConnection } from '../models/node-connection.model';
 import { NodeGroup } from '../models/node-group.model';
 import { RootNodeGroup } from '../models/root-node-group.model';
 import { TreeNodeGroup } from '../models/tree-node-group.model';
+import { CanvasDrawingService } from './canvas-drawing.service';
+import { CanvasService } from './canvas.service';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {
@@ -84,9 +79,11 @@ export class CanvasManagerService extends Destroy {
     x: number,
     y: number,
     identifier: string,
-    text: string
+    text: string,
+    parameters: string[] = []
   ): NodeGroup {
     const node = this.drawing.createActionNode(x, y, identifier, text);
+    node.parameters = parameters;
     this.nodes[node.id] = node;
     return node;
   }
@@ -95,9 +92,11 @@ export class CanvasManagerService extends Destroy {
     x: number,
     y: number,
     identifier: string,
-    text: string
+    text: string,
+    parameters: string[] = []
   ): NodeGroup {
     const node = this.drawing.createConditionNode(x, y, identifier, text);
+    node.parameters = parameters;
     this.nodes[node.id] = node;
     return node;
   }

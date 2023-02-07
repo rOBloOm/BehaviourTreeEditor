@@ -1,12 +1,11 @@
-import { NodeGroup } from './node-group.model';
 import { Group } from 'two.js/src/group';
 import { Path } from 'two.js/src/path';
+import { Shape } from 'two.js/src/shape';
 import { Text } from 'two.js/src/text';
 import { NodeGroupType } from '../enums/node-group-type.enum';
-import { Shape } from 'two.js/src/shape';
-import { ILeafNodeGroup } from '../interfaces/parameters-interface.model';
+import { NodeGroup } from './node-group.model';
 
-export class ActionNodeGroup extends NodeGroup implements ILeafNodeGroup {
+export class ActionNodeGroup extends NodeGroup {
   get nodeType(): NodeGroupType {
     return NodeGroupType.Action;
   }
@@ -14,8 +13,6 @@ export class ActionNodeGroup extends NodeGroup implements ILeafNodeGroup {
   get displayName(): string {
     return this.text.value;
   }
-
-  parameters: string[] = [];
 
   constructor(
     group: Group,

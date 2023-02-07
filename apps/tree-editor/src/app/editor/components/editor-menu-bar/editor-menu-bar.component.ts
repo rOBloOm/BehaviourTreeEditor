@@ -1,5 +1,5 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { map, Observable } from 'rxjs';
 import { Destroy } from '../../../base/components/destory';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CommandService } from '../../services/command.service';
@@ -12,7 +12,7 @@ import { NodePanel } from '../left-panel/left-panel.component';
   styleUrls: ['./editor-menu-bar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class EditorMenuBarComponent extends Destroy implements OnInit {
+export class EditorMenuBarComponent extends Destroy {
   get projectName$(): Observable<string> {
     return this.editorManager.activeProject$.pipe(
       map((project) => project?.name ?? '')
@@ -30,8 +30,6 @@ export class EditorMenuBarComponent extends Destroy implements OnInit {
   ) {
     super();
   }
-
-  ngOnInit(): void {}
 
   addNewTree(): void {
     this.command.newTree();

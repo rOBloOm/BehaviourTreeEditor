@@ -18,6 +18,7 @@ export class TreeExportSerive {
       displayName: canvasNode.displayName,
       type: NodeGroupType[canvasNode.nodeType],
       children: [],
+      parameters: canvasNode.parameters,
     };
 
     forEach(

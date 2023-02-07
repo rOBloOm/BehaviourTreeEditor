@@ -15,7 +15,7 @@ import { CanvasService } from './canvas.service';
 
 @Injectable()
 export class CanvasDrawingService {
-  private get textStyle(): any {
+  private get textStyle() {
     return {
       size: 18,
       weight: 400,

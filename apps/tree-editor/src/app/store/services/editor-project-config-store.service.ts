@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import { Observable } from 'rxjs';
 import { SPEditorProjectConfig } from '../models/sp-editor-project-config.model';
-import { SPProject } from '../models/sp-project.model';
 
 @Injectable({ providedIn: 'root' })
 export class EditorProjectConfigStoreService {

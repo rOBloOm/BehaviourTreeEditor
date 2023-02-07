@@ -1,12 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import {
-  BehaviorSubject,
-  combineLatest,
-  first,
-  startWith,
-  Subject,
-  takeUntil,
-} from 'rxjs';
+import { BehaviorSubject, takeUntil } from 'rxjs';
 import { Destroy } from '../../../base/components/destory';
 import { ILeafNodeGroup } from '../../drawing/interfaces/parameters-interface.model';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
@@ -18,32 +11,37 @@ import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.s
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RightPanelParametersComponent extends Destroy {
-  parametersSubject = new BehaviorSubject<string[]>([]);
-  parameters$ = this.parametersSubject.asObservable();
+  private parameterCountSubject = new BehaviorSubject<number[]>([]);
+  parameterCount$ = this.parameterCountSubject.asObservable();
+
+  node: ILeafNodeGroup;
 
   constructor(private selection: CanvasSelectionService) {
     super();
 
-    selection.selected$
-      .pipe(first())
-      .subscribe((leaf) =>
-        this.parametersSubject.next(
-          (leaf as unknown as ILeafNodeGroup).parameters
-        )
-      );
+    selection.selected$.pipe(takeUntil(this.destroy$)).subscribe((leaf) => {
+      this.node = leaf as unknown as ILeafNodeGroup;
+      this.parameterCountSubject.next(Array(this.node.parameters.length));
+    });
   }
 
   addParameter(): void {
-    this.parametersSubject.value.push('');
+    this.node.parameters.push('');
+    this.parameterCountSubject.next(Array(this.node.parameters.length));
   }
 
   removeParameter(index: number): void {
-    this.parametersSubject.value.splice(index, 1);
+    this.node.parameters.splice(index, 1);
+    this.parameterCountSubject.next(Array(this.node.parameters.length));
   }
 
   parameterEdited($event: Event, index: number): void {
-    // const selected = this.selection
-    //   .currentSelected as unknown as ILeafNodeGroup;
-    // selected.parameters[index] = ($event.target as HTMLInputElement).value;
+    const selected = this.selection
+      .currentSelected as unknown as ILeafNodeGroup;
+    selected.parameters[index] = ($event.target as HTMLInputElement).value;
+  }
+
+  getParameterValue(index: number): string {
+    return this.node.parameters[index];
   }
 }

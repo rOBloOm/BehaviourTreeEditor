@@ -65,11 +65,11 @@ export class CanvasMouseService extends Destroy {
     this.wheelSubject.next(event);
   }
 
-  mouseEnter(event: MouseEvent): void {
+  mouseEnter(): void {
     this.mouseInsideCanvasSubject.next(true);
   }
 
-  mouseLeave(event: MouseEvent): void {
+  mouseLeave(): void {
     this.mouseInsideCanvasSubject.next(false);
   }
 
@@ -78,11 +78,11 @@ export class CanvasMouseService extends Destroy {
     this.dragSubject.next(event);
   }
 
-  dragEnter(event: DragEvent): void {
+  dragEnter(): void {
     this.mouseInsideCanvasSubject.next(true);
   }
 
-  dragLeave(event: DragEvent): void {
+  dragLeave(): void {
     this.mouseInsideCanvasSubject.next(false);
   }
 

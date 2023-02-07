@@ -1,15 +1,15 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { first } from 'rxjs';
 import { LeafNodeImportService } from '../../services/leaf-node-import.service';
 
 @Component({
-  selector: 'sweet-potato-dashboard-settings',
+  selector: 'sp-dashboard-settings',
   templateUrl: './dashboard-settings.component.html',
   styleUrls: ['./dashboard-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class DashboardSettingsComponent implements OnInit {
+export class DashboardSettingsComponent {
   canUpload: false;
 
   constructor(
@@ -17,14 +17,12 @@ export class DashboardSettingsComponent implements OnInit {
     private toastr: ToastrService
   ) {}
 
-  ngOnInit(): void {}
-
   fileSelected(target: EventTarget): void {
     const input = target as HTMLInputElement;
     const file = input.files[0];
 
-    let fileReader = new FileReader();
-    fileReader.onload = (e) => {
+    const fileReader = new FileReader();
+    fileReader.onload = () => {
       this.leafNodeImporter
         .importLeafNodes(fileReader.result as string)
         .pipe(first())

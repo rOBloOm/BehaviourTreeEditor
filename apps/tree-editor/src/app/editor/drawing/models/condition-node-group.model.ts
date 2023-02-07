@@ -11,8 +11,6 @@ export class ConditionNodeGroup extends NodeGroup implements ILeafNodeGroup {
     return NodeGroupType.Condition;
   }
 
-  parameters: string[] = [];
-
   constructor(
     group: Group,
     shape: Path,

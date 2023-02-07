@@ -2,28 +2,23 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  HostListener,
   OnInit,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { CanvasDrawingService } from '../../drawing/systems/canvas-drawing.service';
-import { CommandService } from '../../services/command.service';
+import { AllowIn, ShortcutInput } from 'ng-keyboard-shortcuts';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
-import {
-  AllowIn,
-  ShortcutEventOutput,
-  ShortcutInput,
-} from 'ng-keyboard-shortcuts';
-import { NodePanel } from '../left-panel/left-panel.component';
 import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
+import { CanvasDrawingService } from '../../drawing/systems/canvas-drawing.service';
+import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
-import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
+import { CommandService } from '../../services/command.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
 import { TreeExportSerive } from '../../services/tree-export.service';
 import { TreeImportService } from '../../services/tree-import.service';
+import { NodePanel } from '../left-panel/left-panel.component';
 
 @Component({
   selector: 'sp-editor',
@@ -45,7 +40,7 @@ import { TreeImportService } from '../../services/tree-import.service';
     TreeImportService,
   ],
 })
-export class EditorComponent implements AfterViewInit {
+export class EditorComponent implements AfterViewInit, OnInit {
   shortcuts: ShortcutInput[] = [];
 
   constructor(private titleService: Title, private command: CommandService) {}
@@ -54,7 +49,7 @@ export class EditorComponent implements AfterViewInit {
     this.shortcuts.push(
       {
         key: 'cmd + s',
-        command: (output: ShortcutEventOutput) => this.command.saveActiveTree(),
+        command: () => this.command.saveActiveTree(),
         preventDefault: true,
         allowIn: [
           AllowIn.Input,
@@ -65,7 +60,7 @@ export class EditorComponent implements AfterViewInit {
       },
       {
         key: 'shift + n',
-        command: (output: ShortcutEventOutput) => this.command.newTree(),
+        command: () => this.command.newTree(),
         preventDefault: true,
         allowIn: [
           AllowIn.Input,
@@ -76,37 +71,32 @@ export class EditorComponent implements AfterViewInit {
       },
       {
         key: 'a t',
-        command: (output: ShortcutEventOutput) =>
-          this.command.openPanel(NodePanel.AccTree),
+        command: () => this.command.openPanel(NodePanel.AccTree),
         preventDefault: true,
       },
       {
         key: 'a a',
-        command: (output: ShortcutEventOutput) =>
-          this.command.openPanel(NodePanel.AccAction),
+        command: () => this.command.openPanel(NodePanel.AccAction),
         preventDefault: true,
       },
       {
         key: 'a c',
-        command: (output: ShortcutEventOutput) =>
-          this.command.openPanel(NodePanel.AccCondition),
+        command: () => this.command.openPanel(NodePanel.AccCondition),
         preventDefault: true,
       },
       {
         key: 'a d',
-        command: (output: ShortcutEventOutput) =>
-          this.command.openPanel(NodePanel.AccDecorator),
+        command: () => this.command.openPanel(NodePanel.AccDecorator),
         preventDefault: true,
       },
       {
         key: 'a f',
-        command: (output: ShortcutEventOutput) =>
-          this.command.openPanel(NodePanel.AccComposite),
+        command: () => this.command.openPanel(NodePanel.AccComposite),
         preventDefault: true,
       },
       {
         key: ['x', 'del'],
-        command: (output: ShortcutEventOutput) => this.command.deleteSelected(),
+        command: () => this.command.deleteSelected(),
         preventDefault: true,
       }
     );

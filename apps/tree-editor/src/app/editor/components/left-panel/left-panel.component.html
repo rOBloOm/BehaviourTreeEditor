@@ -37,7 +37,7 @@
           <ul class="node-list list-group styled-scrollbars">
             <li
               class="node-list-item list-group-item"
-              [draggable]="!(isRootTree$(tree.identifier) | async)"
+              [draggable]="(isRootTree$(tree.identifier) | async) === false"
               (dragstart)="dragStartTree($event, tree)"
               *ngFor="let tree of filteredTrees$ | async"
             >
@@ -54,7 +54,7 @@
                   fxFlexLayout="row"
                   fxLayoutAlign="end center"
                   fxLayoutGap="5px"
-                  *ngIf="!(isRootTree$(tree.identifier) | async)"
+                  *ngIf="(isRootTree$(tree.identifier) | async) === false"
                 >
                   <i
                     (click)="deleteTree(tree)"

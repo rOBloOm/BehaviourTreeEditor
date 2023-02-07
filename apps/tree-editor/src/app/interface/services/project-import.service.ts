@@ -1,8 +1,6 @@
 import { Injectable } from '@angular/core';
-import { forEach } from 'lodash-es';
-import { Observable, first, switchMap } from 'rxjs';
+import { first, Observable, switchMap } from 'rxjs';
 import { SPNode } from '../../store/models/sp-node.model';
-import { SPProject } from '../../store/models/sp-project.model';
 import { ProjectStoreService } from '../../store/services/project-store.service';
 import { TreeStoreService } from '../../store/services/tree-store.service';
 import { INode } from '../models/inode.model';
@@ -39,6 +37,7 @@ export class ProjectImportService {
       type: node.type,
       identifier: node.identifier,
       children: node.children.map((child) => this.mapNode(child, projectId)),
+      parameters: node.parameters,
       x: node.x,
       y: node.y,
     };

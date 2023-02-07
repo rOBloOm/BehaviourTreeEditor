@@ -3,18 +3,15 @@ import {
   Component,
   ElementRef,
   HostListener,
-  OnInit,
   ViewChild,
 } from '@angular/core';
 import { Subject } from 'rxjs';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
 import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
+import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
 import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
-import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
-import { EditorManagerService } from '../../services/editor-manager.service';
-import { TreeExportSerive } from '../../services/tree-export.service';
 
 @Component({
   selector: 'sp-editor-nodes-panel',
@@ -22,7 +19,7 @@ import { TreeExportSerive } from '../../services/tree-export.service';
   styleUrls: ['./nodes-panel.component.scss'],
   providers: [],
 })
-export class NodesPanelComponent implements AfterViewInit, OnInit {
+export class NodesPanelComponent implements AfterViewInit {
   @ViewChild('canvas') domElement: ElementRef;
 
   destorySubject = Subject;
@@ -35,8 +32,6 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
     private canvasConnection: CanvasConnectionService,
     private canvasMouse: CanvasMouseService
   ) {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
     this.canvas.attach(this.domElement.nativeElement);
@@ -72,13 +67,13 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
   }
 
   @HostListener('mouseenter', ['$event'])
-  enter(event: MouseEvent) {
-    this.canvasMouse.mouseEnter(event);
+  enter() {
+    this.canvasMouse.mouseEnter();
   }
 
   @HostListener('mouseleave', ['$event'])
-  leave(event: MouseEvent) {
-    this.canvasMouse.mouseLeave(event);
+  leave() {
+    this.canvasMouse.mouseLeave();
   }
 
   @HostListener('dragover', ['$event'])
@@ -87,13 +82,13 @@ export class NodesPanelComponent implements AfterViewInit, OnInit {
   }
 
   @HostListener('dragenter', ['$event'])
-  dragEnter(event: DragEvent) {
-    this.canvasMouse.mouseEnter(event);
+  dragEnter() {
+    this.canvasMouse.mouseEnter();
   }
 
   @HostListener('dragleave', ['$event'])
-  dragLeave(event: DragEvent) {
-    this.canvasMouse.mouseLeave(event);
+  dragLeave() {
+    this.canvasMouse.mouseLeave();
   }
 
   @HostListener('drop', ['$event'])

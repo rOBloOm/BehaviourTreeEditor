@@ -12,6 +12,10 @@ export class SPNode {
   identifier: string;
 
   children: SPNode[];
+
+  //Maps to the Action and Condition parameters
+  parameters: string[];
+
   x: number;
   y: number;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, switchMap } from 'rxjs';
 import { SPLeafNode } from '../models/sp-leaf-node.model';
 
 @Injectable({ providedIn: 'root' })

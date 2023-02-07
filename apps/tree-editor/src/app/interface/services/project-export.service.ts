@@ -31,6 +31,7 @@ export class ProjectExportService {
       type: node.type,
       displayName: node.displayName,
       children: node.children.map((child) => this.mapNode(child)),
+      parameters: node.parameters,
       //Editor settings
       x: node.x,
       y: node.y,

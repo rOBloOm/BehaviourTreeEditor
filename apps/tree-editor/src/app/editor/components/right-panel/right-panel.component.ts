@@ -1,9 +1,16 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { combineLatest, filter, Observable, switchMap, takeUntil } from 'rxjs';
-import { NodeGroup } from '../../drawing/models/node-group.model';
-import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { FormControl, FormGroup } from '@angular/forms';
+import {
+  combineLatest,
+  filter,
+  Observable,
+  of,
+  switchMap,
+  takeUntil,
+} from 'rxjs';
 import { Destroy } from '../../../base/components/destory';
+import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
+import { NodeGroup } from '../../drawing/models/node-group.model';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
@@ -34,12 +41,32 @@ export class RightPanelComponent extends Destroy {
     this.selected$ = selection.selected$;
 
     //Update Values form selected Node
-    this.selected$.pipe(takeUntil(this.destroy$)).subscribe((selected) => {
-      if (selected) {
-        this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
-        this.form.controls.displayName.setValue(selected.displayName);
-      }
-    });
+    this.selected$
+      .pipe(
+        takeUntil(this.destroy$),
+        filter((selected) => selected !== undefined),
+        switchMap((selected) =>
+          combineLatest([
+            of(selected),
+            this.editor.acitveTree$.pipe(
+              switchMap((tree) => this.editor.isRootTree$(tree.identifier))
+            ),
+          ])
+        )
+      )
+      .subscribe(([selected, isRoot]) => {
+        console.log(selected);
+        if (selected) {
+          this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
+          this.form.controls.displayName.setValue(selected.displayName);
+
+          if (this.disableNode(selected.nodeType, isRoot)) {
+            this.form.controls.displayName.disable();
+          } else {
+            this.form.controls.displayName.enable();
+          }
+        }
+      });
 
     //Update Tree Name Observable
     combineLatest([this.form.valueChanges, this.selected$])
@@ -61,5 +88,20 @@ export class RightPanelComponent extends Destroy {
           ? this.form.controls.displayName.disable()
           : this.form.controls.displayName.enable()
       );
+  }
+
+  disableNode(nodeType: NodeGroupType, isRoot: boolean): boolean {
+    switch (nodeType) {
+      case NodeGroupType.Action:
+      case NodeGroupType.Condition:
+      case NodeGroupType.Composite:
+      case NodeGroupType.Decorator:
+      case NodeGroupType.Tree:
+        return true;
+      case NodeGroupType.Root:
+        return isRoot;
+      default:
+        return false;
+    }
   }
 }

@@ -24,7 +24,7 @@ import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-de
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
 
 @Component({
-  selector: 'sweet-potato-dashboard-projects',
+  selector: 'sp-dashboard-projects',
   templateUrl: './dashboard-projects.component.html',
   styleUrls: ['./dashboard-projects.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -82,7 +82,6 @@ export class DashboardProjectsComponent extends Destroy {
     from(dialog.result)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        error: () => {},
         next: (name: string) => {
           if (name) {
             project.name = name;
@@ -111,7 +110,6 @@ export class DashboardProjectsComponent extends Destroy {
         switchMap(() => this.treeStore.deleteByProjectId(project.id))
       )
       .subscribe({
-        error: () => {},
         next: () => {
           this.toastr.success('project deleted');
           this.reloadSubject.next(true);
@@ -138,7 +136,7 @@ export class DashboardProjectsComponent extends Destroy {
       });
   }
 
-  async uploadProject(event: any) {
+  async uploadProject(event) {
     const file: File = event.target.files[0];
     from(file.text())
       .pipe(first())

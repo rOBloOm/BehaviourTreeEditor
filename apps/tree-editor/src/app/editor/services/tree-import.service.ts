@@ -41,7 +41,8 @@ export class TreeImportService {
           node.x,
           node.y,
           node.identifier,
-          node.displayName
+          node.displayName,
+          node.parameters
         );
       case NodeGroupType[NodeGroupType.Composite]:
         return this.canvas.addCompositeNode(
@@ -54,7 +55,8 @@ export class TreeImportService {
           node.x,
           node.y,
           node.identifier,
-          node.displayName
+          node.displayName,
+          node.parameters
         );
       case NodeGroupType[NodeGroupType.Decorator]:
         return this.canvas.addDecorator(
@@ -62,7 +64,7 @@ export class TreeImportService {
           node.y,
           DecoratorType[node.identifier]
         );
-      case NodeGroupType[NodeGroupType.Tree]:
+      case NodeGroupType[NodeGroupType.Tree]: {
         //Look up the tree desplayname in case it has been updated
         const displayName =
           trees.find((tree) => tree.identifier === node.identifier)
@@ -74,6 +76,7 @@ export class TreeImportService {
           node.identifier,
           displayName
         );
+      }
       default:
         return {} as NodeGroup;
     }

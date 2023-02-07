@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
-import { first, Subject, switchMap, tap } from 'rxjs';
+import { first, Subject, tap } from 'rxjs';
 import { NodePanel } from '../components/left-panel/left-panel.component';
 import { CompositeType } from '../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../drawing/enums/decorator-type.enum';
@@ -35,7 +35,7 @@ export class CommandService {
         })
       )
       .subscribe({
-        error: (err) => this.toastr.error('Error saving tree'),
+        error: () => this.toastr.error('Error saving tree'),
         complete: () => this.toastr.success('Tree has been saved'),
       });
   }

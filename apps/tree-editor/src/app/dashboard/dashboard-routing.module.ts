@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 import { DashboardProjectsComponent } from './components/dashboard-projects/dashboard-projects.component';

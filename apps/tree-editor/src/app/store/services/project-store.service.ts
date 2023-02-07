@@ -1,6 +1,4 @@
-import { createInjectableType } from '@angular/compiler';
 import { Injectable } from '@angular/core';
-import { take } from 'lodash-es';
 import { NgxIndexedDBService } from 'ngx-indexed-db';
 import {
   BehaviorSubject,
@@ -9,7 +7,6 @@ import {
   Subject,
   switchMap,
   takeUntil,
-  tap,
 } from 'rxjs';
 import { Destroy } from '../../base/components/destory';
 import { SPProject } from '../models/sp-project.model';

@@ -9,7 +9,7 @@
     </div>
   </h5>
   <ul class="parameter-list">
-    <li *ngFor="let parameter of parameters$ | async; index as index">
+    <li *ngFor="let parameter of parameterCount$ | async; index as index">
       <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10">
         <div
           fxFlex="25px"
@@ -28,9 +28,8 @@
 
         <input
           class="editor-input"
-          id="param"
           (keyup)="parameterEdited($event, index)"
-          [value]="parameter"
+          [value]="getParameterValue(index)"
         />
       </div>
     </li>

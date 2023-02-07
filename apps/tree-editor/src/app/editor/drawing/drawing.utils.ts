@@ -8,13 +8,13 @@ export function getHitNodeGroup(
   nodes: { [name: string]: NodeGroup },
   exclude: NodeGroup[] = []
 ): Shape | undefined {
-  var mouse = new Two.Vector();
+  const mouse = new Two.Vector();
   mouse.x = e.clientX;
   mouse.y = e.clientY;
 
-  let result = two.scene.children.find((child: any) => {
+  const result = two.scene.children.find((child) => {
     if (nodes[child.id] && exclude.every((node) => node.id != child.id)) {
-      let bounds = child.getBoundingClientRect();
+      const bounds = child.getBoundingClientRect();
       if (
         mouse.x > bounds.left &&
         mouse.x < bounds.right &&

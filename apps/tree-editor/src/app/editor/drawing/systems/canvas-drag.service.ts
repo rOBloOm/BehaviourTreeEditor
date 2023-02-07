@@ -23,7 +23,7 @@ export class CanvasDragService extends Destroy {
 
   init(): void {
     const draggingNodeGroup = new BehaviorSubject<Shape | undefined>(undefined);
-    var mouse = new Two.Vector();
+    const mouse = new Two.Vector();
 
     //Detect if left click on a shape
     combineLatest([this.input.mouseDown$, this.canvas.pannig$])
@@ -35,7 +35,7 @@ export class CanvasDragService extends Destroy {
         )
       )
       .subscribe(([mouseDown]) => {
-        var shape = getHitNodeGroup(
+        const shape = getHitNodeGroup(
           this.canvas.two,
           mouseDown,
           this.manager.nodes
@@ -59,8 +59,8 @@ export class CanvasDragService extends Destroy {
         filter(([, nodeGroup]) => nodeGroup !== undefined)
       )
       .subscribe(([mouseMove, nodeGroup]) => {
-        var dx = mouseMove.clientX - mouse.x;
-        var dy = mouseMove.clientY - mouse.y;
+        const dx = mouseMove.clientX - mouse.x;
+        const dy = mouseMove.clientY - mouse.y;
         nodeGroup.position.x += dx / this.canvas.zui.scale;
         nodeGroup.position.y += dy / this.canvas.zui.scale;
         mouse.set(mouseMove.clientX, mouseMove.clientY);
