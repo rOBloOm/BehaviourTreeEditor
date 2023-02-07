@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { first, Observable, switchMap } from 'rxjs';
+import { first, from, Observable, switchMap } from 'rxjs';
 import { SPNode } from '../../store/models/sp-node.model';
 import { ProjectStoreService } from '../../store/services/project-store.service';
 import { TreeStoreService } from '../../store/services/tree-store.service';
@@ -17,6 +17,10 @@ export class ProjectImportService {
     const content = JSON.parse(json);
     const project = content.project as IProject;
     const trees = content.trees as INode[];
+
+    if (project === undefined || trees === undefined) {
+      return from([]);
+    }
 
     return this.projectStore
       .addProjectWith(project.name, project.rootNodeIdentifier)

@@ -21,6 +21,7 @@ export class RightPanelParametersComponent extends Destroy {
 
     selection.selected$.pipe(takeUntil(this.destroy$)).subscribe((leaf) => {
       this.node = leaf as unknown as ILeafNodeGroup;
+      if (!this.node) return;
       this.parameterCountSubject.next(Array(this.node.parameters.length));
     });
   }

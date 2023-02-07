@@ -5,6 +5,7 @@
     fxLayoutAlign="start"
   >
     <ng-template [ngIf]="selected.nodeType === 0">
+      <!-- Root Node -->
       <h4 fxFlex="row" fxLayoutAlign="center" class="title">Root Node</h4>
       <div
         class="form-container"
@@ -19,6 +20,7 @@
     </ng-template>
 
     <ng-template [ngIf]="selected.nodeType === 3">
+      <!-- Action Node -->
       <h4 fxFlex="row" fxLayoutAlign="center" class="title">Action Node</h4>
       <div
         class="form-container"
@@ -34,6 +36,7 @@
     </ng-template>
 
     <ng-template [ngIf]="selected.nodeType === 4">
+      <!-- Condition Node -->
       <h4 fxFlex="row" fxLayoutAlign="center" class="title">Condition Node</h4>
       <div
         class="form-container"

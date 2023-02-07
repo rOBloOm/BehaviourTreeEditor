@@ -150,7 +150,7 @@ export class DashboardProjectsComponent extends Destroy {
               this.reloadSubject.next(true);
             },
             error: (err) => {
-              this.toastr.error('error importing project');
+              this.toastr.error('project file invalid');
               console.log(err);
             },
           });

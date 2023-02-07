@@ -48,7 +48,7 @@ export class RightPanelComponent extends Destroy {
         switchMap((selected) =>
           combineLatest([
             of(selected),
-            this.editor.acitveTree$.pipe(
+            this.editor.activeTree$.pipe(
               switchMap((tree) => this.editor.isRootTree$(tree.identifier))
             ),
           ])
@@ -77,7 +77,7 @@ export class RightPanelComponent extends Destroy {
         }
       });
 
-    this.editor.acitveTree$
+    this.editor.activeTree$
       .pipe(
         takeUntil(this.destroy$),
         filter((tree) => tree !== undefined),

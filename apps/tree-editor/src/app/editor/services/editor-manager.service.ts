@@ -36,7 +36,7 @@ export class EditorManagerService extends Destroy {
   private activeTreeSubject = new BehaviorSubject<SPNode | undefined>(
     undefined
   );
-  acitveTree$ = this.activeTreeSubject.asObservable();
+  activeTree$ = this.activeTreeSubject.asObservable();
 
   constructor(
     private projectStore: ProjectStoreService,
@@ -66,7 +66,7 @@ export class EditorManagerService extends Destroy {
       });
 
     //Reset selection if tree changes
-    this.acitveTree$
+    this.activeTree$
       .pipe(takeUntil(this.destroy$))
       .subscribe(() => selection.deselectAll());
 
@@ -145,7 +145,7 @@ export class EditorManagerService extends Destroy {
   }
 
   isActiveTree$(identifier: string): Observable<boolean> {
-    return this.acitveTree$.pipe(
+    return this.activeTree$.pipe(
       map((tree) => tree?.identifier === identifier ?? false)
     );
   }
