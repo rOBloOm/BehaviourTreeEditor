@@ -22,12 +22,16 @@ import { Destroy } from '../../../base/components/destory';
 import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
+import { AsyncPipe, NgFor } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-dashboard-projects',
   templateUrl: './dashboard-projects.component.html',
   styleUrls: ['./dashboard-projects.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgFor, AsyncPipe, FlexModule],
   providers: [ProjectFactoryService],
 })
 export class DashboardProjectsComponent extends Destroy {

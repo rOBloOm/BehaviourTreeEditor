@@ -1,11 +1,10 @@
-import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { Routes } from '@angular/router';
 import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
 import { DashboardProjectsComponent } from './components/dashboard-projects/dashboard-projects.component';
 import { DashboardSettingsComponent } from './components/dashboard-settings/dashboard-settings.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 
-const routes: Routes = [
+export const DASHBOARD_ROUTES: Routes = [
   {
     path: '',
     redirectTo: 'home',
@@ -30,9 +29,3 @@ const routes: Routes = [
     ],
   },
 ];
-
-@NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
-})
-export class DashboardRoutingModule {}
