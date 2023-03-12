@@ -1,0 +1,28 @@
+.parameter-list {
+    margin: 10px;
+}
+.parameter-add-button {
+    font-size: 1rem;
+    margin-right: 10px;
+}
+
+ul {
+    list-style: none outside none;
+    padding: 0;
+}
+
+li {
+    margin-top: 5px;
+}
+
+.subtitle {
+    margin-top: 10px;
+    padding-left: 10px;
+    background-color: var(--title-bg-color)
+}
+
+.icon {
+    padding-right: 5px;
+    cursor: pointer; 
+    color: var(--color-light3);    
+}

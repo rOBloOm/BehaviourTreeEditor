@@ -1,0 +1,22 @@
+.RightPanel {
+    z-index: 20;
+    background-color: var(--accent-gb-color);
+    box-shadow: 0 0 16px 0 #0b0b0b; 
+}
+
+.form-container {
+    margin: 10px;
+}
+
+.title {
+    margin-top: 10px;
+    background-color: var(--title-bg-color)
+}
+
+p {
+    background-color: var(--title-bg-color);
+}
+
+label {
+    color: var(--color-light3);
+}

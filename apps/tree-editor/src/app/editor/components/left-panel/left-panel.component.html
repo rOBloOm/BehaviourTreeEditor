@@ -1,0 +1,182 @@
+<div
+  class="LeftPanel"
+  fxFlex="300px"
+  fxLayout="column"
+  fxLayoutAlign="start center"
+  fxLayoutGap="10"
+  [formGroup]="form"
+>
+  <ngb-accordion
+    #accordion
+    #acc="ngbAccordion"
+    [closeOthers]="true"
+    activeIds="ac-trees"
+    fxFlexFill
+  >
+    <ngb-panel id="acc-trees" title="Trees">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+            <input
+              fxFlex
+              class="editor-input"
+              placeholder="search trees"
+              formControlName="treeSearch"
+              type="search"
+            />
+            <div fxFlex="25px" class="add-tree-button" (click)="addTree()">
+              <i class="fa-solid fa-plus"></i>
+            </div>
+          </div>
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item"
+              [draggable]="(isRootTree$(tree.identifier) | async) === false"
+              (dragstart)="dragStartTree($event, tree)"
+              *ngFor="let tree of filteredTrees$ | async"
+            >
+              <div fxFlexLayout="row" fxLayoutAlign="space-between center">
+                <div
+                  fxFlex
+                  [ngClass]="treeItemClass$(tree.identifier) | async"
+                  (click)="setActive(tree.identifier)"
+                >
+                  {{ tree.displayName }}
+                </div>
+                <div
+                  class="tree-item-actions"
+                  fxFlexLayout="row"
+                  fxLayoutAlign="end center"
+                  fxLayoutGap="5px"
+                  *ngIf="(isRootTree$(tree.identifier) | async) === false"
+                >
+                  <i
+                    (click)="deleteTree(tree)"
+                    class="fa-solid fa-trash tree-item-delete"
+                  ></i>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="acc-actions" title="Actions">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search actions"
+            formControlName="actionSearch"
+          />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartAction($event, action)"
+              *ngFor="let action of filteredActions$ | async"
+            >
+              {{ action.displayName }}
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="acc-conditions" title="Conditions">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search conditions"
+            formControlName="conditionSearch"
+          />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartCondition($event, condition)"
+              *ngFor="let condition of filteredConditions$ | async"
+            >
+              {{ condition.displayName }}
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="acc-decorators" title="Decorators">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search decorators"
+            formControlName="decoratorSearch"
+          />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartDecorator($event, decorator)"
+              *ngFor="let decorator of filteredDecorators$ | async"
+            >
+              {{ decorator }}
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+    <ngb-panel id="acc-composites" title="Composites">
+      <ng-template ngbPanelContent>
+        <div
+          class="accPanel"
+          fxLayout="column"
+          fxLayoutAlign="start stretch"
+          fxLayoutGap="10px"
+        >
+          <input
+            type="search"
+            class="editor-input"
+            placeholder="search composites"
+          />
+
+          <ul class="node-list list-group styled-scrollbars">
+            <li
+              class="node-list-item list-group-item list-group-item-action"
+              draggable="true"
+              (dragstart)="dragStartComposite($event, composite)"
+              *ngFor="let composite of composites"
+            >
+              {{ composite }}
+            </li>
+          </ul>
+        </div>
+      </ng-template>
+    </ngb-panel>
+  </ngb-accordion>
+</div>

@@ -1,0 +1,50 @@
+.LeftPanel {
+    z-index: 20;
+    padding-top: 10px;
+    background-color: var(--accent-gb-color);
+    box-shadow: 0 0 16px 0 #0b0b0b
+}
+
+.accHeader {
+    height: 20px;
+}
+
+.accPanel {
+    height: calc(100vh - 185px);
+}
+
+.node-list-item {
+    padding: 2px !important;
+    padding-left: 5px !important;
+    background-color: var(--color-light2);
+}
+
+.root-tree-item {
+    font-weight: 800;
+    cursor: pointer;
+}
+
+.active-tree-item {
+    font-style: oblique;
+    color: var(--color-light4);    
+}
+
+.tree-item {
+    cursor: pointer;
+}
+
+.tree-item-actions {
+    margin: 0px 5px;
+}
+
+.tree-item-delete {
+    cursor: pointer;
+}
+
+.add-tree-button {
+    cursor: pointer;
+}
+
+.drag-ancor {
+    border: solid black 1px;
+}

@@ -1,0 +1,77 @@
+<div fxFlex fxLayout="column">
+  <div
+    class="header"
+    fxLayout="row"
+    fxLayoutAlgin="start center"
+    fxLayoutGap="10px"
+  >
+    <h1 fxFlex="400px">Projects</h1>
+    <div
+      class="toolbar"
+      fxFlex
+      fxLayout="row"
+      fxLayoutAlign="start center"
+      fxLayoutGap="20px"
+    >
+      <input
+        #projectUpload
+        [accept]="'.json'"
+        type="file"
+        class="project-upload-file-input"
+        (change)="uploadProject($event)"
+      />
+
+      <button type="button" class="btn btn-success" (click)="addProject()">
+        Add New
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-dark btn-upload"
+        title="upload project"
+        (click)="projectUpload.click()"
+      >
+        <i class="fa-solid fa-upload"></i>
+      </button>
+    </div>
+  </div>
+  <div class="divider"></div>
+  <div *ngFor="let project of projects$ | async">
+    <div fxFlex fxLayout="row" fxLayoutGap="10px" class="projectItem">
+      <div class="projectname" fxLayout="row" fxLayoutAlign="start center">
+        <div>{{ project.name }}</div>
+      </div>
+      <button
+        type="button"
+        class="btn btn-outline-dark"
+        title="open editor"
+        (click)="openEditor(project)"
+      >
+        Open <i class="fa-solid fa-right-long"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-primary"
+        title="rename project"
+        (click)="renameProject(project)"
+      >
+        <i class="fa-solid fa-pen-to-square"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn-outline-danger"
+        title="delete project"
+        (click)="deleteProject(project)"
+      >
+        <i class="fa-solid fa-trash"></i>
+      </button>
+      <button
+        type="button"
+        class="btn btn btn-outline-dark btn-download"
+        title="download project"
+        (click)="downloadProject(project)"
+      >
+        <i class="fa-solid fa-download"></i>
+      </button>
+    </div>
+  </div>
+</div>

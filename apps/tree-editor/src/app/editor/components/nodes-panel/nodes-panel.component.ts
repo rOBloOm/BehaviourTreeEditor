@@ -1,61 +1,98 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
-import Two from 'two.js';
-import { makeRect2 } from '../../drawing/shapes';
-import { CameraService } from '../../services/camera.service';
-import { DragService } from '../../services/drag.service';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  ViewChild,
+} from '@angular/core';
+import { Subject } from 'rxjs';
+import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
+import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
+import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
+import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
+import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
+import { CanvasService } from '../../drawing/systems/canvas.service';
 
 @Component({
-  selector: 'sweet-potato-node-panel-two',
+  selector: 'sp-editor-nodes-panel',
   templateUrl: './nodes-panel.component.html',
   styleUrls: ['./nodes-panel.component.scss'],
+  providers: [],
 })
-export class NodesPanelComponent implements OnInit {
+export class NodesPanelComponent implements AfterViewInit {
+  @ViewChild('canvas') domElement: ElementRef;
+
+  destorySubject = Subject;
+
   constructor(
-    camera: CameraService,
-    drag: DragService,
-    domElement: ElementRef
-  ) {
-    const two = new Two({
-      type: Two.Types.canvas,
-      fullscreen: true,
-      autostart: true,
-    }).appendTo(domElement.nativeElement);
+    private canvas: CanvasService,
+    private canvasDrag: CanvasDragService,
+    private canvasDrop: CanvasDropService,
+    private canvasSelection: CanvasSelectionService,
+    private canvasConnection: CanvasConnectionService,
+    private canvasMouse: CanvasMouseService
+  ) {}
 
-    camera.attach(two);
-
-    const x = two.width * 0.5;
-    const y = two.height * 0.5;
-    const width = 50;
-    const height = 50;
-
-    var rect1 = makeRect2(two, x, y, width, height, 10);
-    rect1.on('mousedown', mouseDownR1);
-
-    var rect2 = makeRect2(two, x + 100, y, width, height, 10);
-    rect2.on('mousedown', mouseDownR2);
-
-    function mouseDownR1(e) {
-      console.log('r1');
-    }
-
-    function mouseDownR2(e) {
-      console.log('r2');
-    }
-
-    two.makeCircle(100, 40, 10);
-
-    //two.makeGroup(two.makeCircle(100, 200, 10));
-
-    drag.attach(two);
-
-    // const rect = two.makeRectangle(x, y, width, height);
-
-    // two.bind('update', rotate);
-
-    // function rotate() {
-    //   rect.rotation += 0.1;
-    // }
+  ngAfterViewInit(): void {
+    this.canvas.attach(this.domElement.nativeElement);
+    this.canvasDrag.init();
+    this.canvasDrop.init();
+    this.canvasSelection.init();
+    this.canvasConnection.init();
   }
 
-  ngOnInit(): void {}
+  @HostListener('mouseup', ['$event'])
+  mouseUp(event: MouseEvent) {
+    this.canvasMouse.mouseUp(event);
+  }
+
+  @HostListener('mousemove', ['$event'])
+  mouseMove(event: MouseEvent) {
+    this.canvasMouse.mouseMove(event);
+  }
+
+  @HostListener('mousedown', ['$event'])
+  mouseDown(event: MouseEvent) {
+    this.canvasMouse.mouseDown(event);
+  }
+
+  @HostListener('dblclick', ['$event'])
+  doubleClick(event: MouseEvent) {
+    this.canvasMouse.doubleClick(event);
+  }
+
+  @HostListener('wheel', ['$event'])
+  wheel(event: WheelEvent) {
+    this.canvasMouse.wheel(event);
+  }
+
+  @HostListener('mouseenter', ['$event'])
+  enter() {
+    this.canvasMouse.mouseEnter();
+  }
+
+  @HostListener('mouseleave', ['$event'])
+  leave() {
+    this.canvasMouse.mouseLeave();
+  }
+
+  @HostListener('dragover', ['$event'])
+  dragover(event: DragEvent) {
+    this.canvasMouse.dragOver(event);
+  }
+
+  @HostListener('dragenter', ['$event'])
+  dragEnter() {
+    this.canvasMouse.mouseEnter();
+  }
+
+  @HostListener('dragleave', ['$event'])
+  dragLeave() {
+    this.canvasMouse.mouseLeave();
+  }
+
+  @HostListener('drop', ['$event'])
+  drop(event: DragEvent) {
+    this.canvasMouse.drop(event);
+  }
 }

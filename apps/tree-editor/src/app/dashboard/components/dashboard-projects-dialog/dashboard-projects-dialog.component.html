@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">{{ title }}</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-label="Close"
+    (click)="activeModal.dismiss()"
+  ></button>
+</div>
+<div class="modal-body">
+  <div class="form-group" [formGroup]="form">
+    <label for="name">Project Name</label>
+    <input
+      id="name"
+      class="form-control"
+      tabindex="0"
+      formControlName="name"
+      ngbAutofocus
+    />
+  </div>
+</div>
+<div class="modal-footer">
+  <button
+    type="button"
+    class="btn btn-outline-dark"
+    (click)="activeModal.close()"
+  >
+    Cancel
+  </button>
+  <button type="button" class="btn btn-success" (click)="onAdd()">
+    {{ confirmButtonText }}
+  </button>
+</div>

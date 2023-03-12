@@ -1,4 +1,5 @@
 {
+  "name": "tree-editor",
   "projectType": "application",
   "sourceRoot": "apps/tree-editor/src",
   "prefix": "sweet-potato",
@@ -17,7 +18,10 @@
           "apps/tree-editor/src/favicon.ico",
           "apps/tree-editor/src/assets"
         ],
-        "styles": ["apps/tree-editor/src/styles.scss"],
+        "styles": [
+          "apps/tree-editor/src/styles.scss",
+          "node_modules/ngx-toastr/toastr.css"
+        ],
         "scripts": []
       },
       "configurations": {
@@ -82,7 +86,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/tree-editor"],
+      "outputs": ["{workspaceRoot}/coverage/apps/tree-editor"],
       "options": {
         "jestConfig": "apps/tree-editor/jest.config.ts",
         "passWithNoTests": true

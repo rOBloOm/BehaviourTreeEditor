@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { NodesPanelComponent as NodesPanelComponent } from './components/nodes-panel/nodes-panel.component';
+import { EditorComponent } from './components/editor/editor.component';
 
 const routes: Routes = [
   {
     path: '',
-    component: NodesPanelComponent,
+    component: EditorComponent,
   },
 ];
 

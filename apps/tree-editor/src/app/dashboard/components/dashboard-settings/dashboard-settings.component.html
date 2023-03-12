@@ -1,0 +1,21 @@
+<diV fxFlex fxLayout="column" fxLayoutGap="20px">
+  <h1>Settings</h1>
+  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
+    <div fxFlex="0 0 300px">Import Actions and Conditions:</div>
+    <button
+      fxFlex="100px"
+      type="button"
+      class="btn btn-outline-secondary"
+      (click)="fileUpload.click()"
+    >
+      <i class="fa-solid fa-file-import"></i>
+    </button>
+  </div>
+</diV>
+<input
+  #fileUpload
+  type="file"
+  id="leafNodesFile"
+  class="file-input"
+  (change)="fileSelected($event.target)"
+/>

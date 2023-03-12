@@ -1,10 +1,138 @@
+/* Importing Bootstrap SCSS file. */
+@import 'bootstrap/scss/bootstrap';
 
 :root{
+
+    --color-dark1: #0B0B0B;
+    --color-dark2: #333333;
+    --color-dark3: #2F2F2F;
+    --color-dark4: #454545;
+
+    --color-light1       : #FFFFFF;
+    --color-light2       : #CECECE;
+    --color-light3       : #999999;
+    --color-light4       : #545454;
+    --color-blue         : #5bc0de;
+    --color-red          : #D9534F;
+    --color-yellow       : #D58512;
+    --color-green        : #398439;    
+    
     --base-bg-color: #171717;
+    --accent-gb-color: var(--color-dark3);
+    --light-bg-color : var(--color-light2);
+    
+    --menubar-bg-color: var(--color-dark4);
+
+    --node-decorator-fill-color: #A4CCFB;
+    --node-condition-fill-color: #cfc511;
+    --node-composite-fill-color: #A4CCFB;
+    --node-action-fill-color: #A3C83F;
+    --node-tree-fill-color:#F7CB45;
+    
+    --node-border-color:#6D6D6D;
+    --node-border-selected-color:#007bbe;
+    --node_symbol_color: #333333;
+
+    --title-bg-color: #555;
 }
 
 html, body {
     box-sizing: border-box;
     height: 100%;
     margin: 0;
+
+    font-family: 'Raleway', sans-serif;
+    font-weight: 400;
 }
+
+html {
+    -webkit-text-size-adjust: 100%
+}
+
+.editor-input {
+    box-sizing: border-box;
+    margin: 0;
+    height: 34px;    
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 5px;
+
+    font-size: 14px;
+    font-weight: 800;
+    line-height: 1.42857143;
+    color: #555;
+    display: block;
+}
+
+.editor-input::placeholder {
+    color: var(--color-dark4);
+    opacity: 0.3;
+}
+
+.editor-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: var(--color-dark4);
+    opacity: 0.3;
+}
+
+.editor-input::-ms-input-placeholder { /* Microsoft Edge */
+    color: var(--color-dark4);
+    opacity: 0.3;
+}
+
+.editor-label {
+    font-size: 16px;
+    font-weight: 400;
+    color: var(--color-light3);
+}
+
+.styled-scrollbars {
+    overflow-y: scroll;
+    /* Foreground, Background */
+    scrollbar-color:var(--color-light3) var(--color-dark3);
+}
+
+.styled-scrollbars::-webkit-scrollbar {
+    width: 4px; /* Mostly for vertical scrollbars */
+    height: 1px; /* Mostly for horizontal scrollbars */
+}
+.styled-scrollbars::-webkit-scrollbar-thumb { /* Foreground */
+    background: #999;
+}
+.styled-scrollbars::-webkit-scrollbar-track { /* Background */
+    background: #333;
+}
+
+//Boostrap overrides
+.accordion-button {
+    padding: 0;
+    padding-left: 10px;
+    padding-right: 10px;
+    background-color: var(--color-dark4);
+    color: var(--color-light1)
+}
+
+.accordion-item {
+    border-color: var(--color-dark1);
+}
+
+.accordion {
+    color: var(--color-light1);
+    --bs-accordion-bg: var(--color-dark3);
+    --bs-accordion-border-color: var(--color-dark1)
+    --bs-accordion-btn-focus-border-color: var(--color-dark1);
+    --bs-accordion-active-color: var(--color-light3);
+    --bs-accordion-btn-focus-border-color:var(--color-light3);
+    --bs-accordion-btn-focus-box-shadow: none;
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' %3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+}
+
+.accordion-body {
+    color: var(--color-light2);
+    padding: 10px 10px;
+}
+
+.accordion-button:not(.collapsed) { 
+    background-color: var(--color-light3);
+    color: var(--color-dark1);    
+}
+

@@ -1,0 +1,42 @@
+[
+  {
+    "nodeType": "Action",
+    "identifier": "SweetPotato.BehaviourTree.Sandbox.Ai.Actions.BuildHouse",
+    "displayName": "BuildHouse"
+  },
+  {
+    "nodeType": "Action",
+    "identifier": "SweetPotato.BehaviourTree.Sandbox.Ai.Actions.EatFoodFromInventory",
+    "displayName": "EatFoodFromInventory"
+  },
+  {
+    "nodeType": "Action",
+    "identifier": "SweetPotato.BehaviourTree.Sandbox.Ai.Actions.MoveToTargetEntity",
+    "displayName": "MoveToTargetEntity"
+  },
+  {
+    "nodeType": "Action",
+    "identifier": "SweetPotato.BehaviourTree.Sandbox.Ai.Actions.PickupTarget",
+    "displayName": "PickupTarget"
+  },
+  {
+    "nodeType": "Action",
+    "identifier": "SweetPotato.BehaviourTree.Sandbox.Ai.Actions.SetItemAsTarget",
+    "displayName": "SetItemAsTarget"
+  },
+  {
+    "nodeType": "Condition",
+    "identifier": "BehaviourTree.Demo.Ai.Conditions.HasItem",
+    "displayName": "HasItem"
+  },
+  {
+    "nodeType": "Condition",
+    "identifier": "BehaviourTree.Demo.Ai.Conditions.IsHealthLow",
+    "displayName": "IsHealthLow"
+  },
+  {
+    "nodeType": "Condition",
+    "identifier": "BehaviourTree.Demo.Ai.Conditions.IsStaminaLow",
+    "displayName": "IsStaminaLow"
+  }
+]

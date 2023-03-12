@@ -1,0 +1,54 @@
+<div class="RightPanel" fxLayout="column" fxFlex="300px" fxLayoutAlign="start">
+  <div
+    *ngIf="selected$ | async; let selected"
+    fxLayout="column"
+    fxLayoutAlign="start"
+  >
+    <ng-template [ngIf]="selected.nodeType === 0">
+      <!-- Root Node -->
+      <h4 fxFlex="row" fxLayoutAlign="center" class="title">Root Node</h4>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="identifier" class="label">Tree Name</label>
+        <input class="editor-input" formControlName="displayName" />
+      </div>
+    </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 3">
+      <!-- Action Node -->
+      <h4 fxFlex="row" fxLayoutAlign="center" class="title">Action Node</h4>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="identifier" class="editor-label">Action Name</label>
+        <input class="editor-input" formControlName="displayName" />
+      </div>
+      <sp-right-panel-parameters></sp-right-panel-parameters>
+    </ng-template>
+
+    <ng-template [ngIf]="selected.nodeType === 4">
+      <!-- Condition Node -->
+      <h4 fxFlex="row" fxLayoutAlign="center" class="title">Condition Node</h4>
+      <div
+        class="form-container"
+        fxLayout="column"
+        fxLayoutAlign="start"
+        fxLayoutGap="10"
+        [formGroup]="form"
+      >
+        <label for="identifier" class="editor-label">Condition Name</label>
+        <input class="editor-input" formControlName="displayName" />
+      </div>
+      <sp-right-panel-parameters></sp-right-panel-parameters>
+    </ng-template>
+  </div>
+</div>
