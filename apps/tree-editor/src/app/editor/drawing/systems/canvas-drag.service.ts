@@ -6,9 +6,9 @@ import { Shape } from 'two.js/src/shape';
 import { CanvasService } from './canvas.service';
 import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
-import { Destroy } from '../../../base/components/destory';
 import { CanvasDrawingService } from './canvas-drawing.service';
 import { getHitNodeGroup } from '../drawing.utils';
+import { Destroy } from '@sweet-potato/core';
 
 @Injectable()
 export class CanvasDragService extends Destroy {

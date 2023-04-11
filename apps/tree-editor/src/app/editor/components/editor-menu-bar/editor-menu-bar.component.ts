@@ -1,10 +1,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { map, Observable } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CommandService } from '../../services/command.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
 import { NodePanel } from '../left-panel/left-panel.component';
+import { Destroy } from '@sweet-potato/core';
 
 @Component({
   selector: 'sp-editor-menu-bar',

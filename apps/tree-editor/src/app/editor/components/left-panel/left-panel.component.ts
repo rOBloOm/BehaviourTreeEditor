@@ -20,12 +20,7 @@ import {
   startWith,
   switchMap,
   takeUntil,
-  tap,
 } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
-import { SPLeafNode } from '../../../store/models/sp-leaf-node.model';
-import { SPNode } from '../../../store/models/sp-node.model';
-import { LeafNodeStoreService } from '../../../store/services/leaf-node-store.service';
 import { CompositeType } from '../../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../../drawing/enums/decorator-type.enum';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
@@ -33,6 +28,8 @@ import { CanvasDropData } from '../../drawing/models/canvas-drop-data.model';
 import { CommandService } from '../../services/command.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
 import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dialog.component';
+import { Destroy } from '@sweet-potato/core';
+import { SPNode, SPLeafNode, LeafNodeStoreService } from '@sweet-potato/store';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -134,7 +131,6 @@ export class LeftPanelComponent
     from(dialog.result)
       .pipe(
         first(),
-        tap((res) => console.log(res)),
         filter((result) => result && result.delete),
         switchMap(() => this.editorManager.deleteTree(tree.identifier))
       )

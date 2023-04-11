@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { takeUntil } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { CommandService } from '../../services/command.service';
 import { CompositeType } from '../enums/composite-type.enum';
 import { DecoratorType } from '../enums/decorator-type.enum';
 import { NodeGroupType } from '../enums/node-group-type.enum';
 import { CanvasDropData } from '../models/canvas-drop-data.model';
 import { CanvasMouseService } from './canvas-mouse.service';
+import { Destroy } from '@sweet-potato/core';
 
 @Injectable()
 export class CanvasDropService extends Destroy {

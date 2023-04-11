@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
+import {
+  ProjectStoreService,
+  TreeStoreService,
+  SPProject,
+  SPNode,
+} from '@sweet-potato/store';
 import { combineLatest, Observable, of, switchMap } from 'rxjs';
-import { SPNode } from '../../store/models/sp-node.model';
-import { SPProject } from '../../store/models/sp-project.model';
-import { ProjectStoreService } from '../../store/services/project-store.service';
-import { TreeStoreService } from '../../store/services/tree-store.service';
 
 @Injectable()
 export class ProjectFactoryService {

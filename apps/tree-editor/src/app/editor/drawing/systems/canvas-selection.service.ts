@@ -4,9 +4,9 @@ import { BehaviorSubject, filter, takeUntil } from 'rxjs';
 import { CanvasService } from './canvas.service';
 import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
-import { Destroy } from '../../../base/components/destory';
 import { getHitNodeGroup } from '../drawing.utils';
 import { NodeGroup } from '../models/node-group.model';
+import { Destroy } from '@sweet-potato/core';
 
 @Injectable()
 export class CanvasSelectionService extends Destroy {

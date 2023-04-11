@@ -1,10 +1,12 @@
 import { Injectable } from '@angular/core';
 import { first, from, Observable, switchMap } from 'rxjs';
-import { SPNode } from '../../store/models/sp-node.model';
-import { ProjectStoreService } from '../../store/services/project-store.service';
-import { TreeStoreService } from '../../store/services/tree-store.service';
 import { INode } from '../models/inode.model';
 import { IProject } from '../models/iproject.model';
+import {
+  ProjectStoreService,
+  SPNode,
+  TreeStoreService,
+} from '@sweet-potato/store';
 
 @Injectable({ providedIn: 'root' })
 export class ProjectImportService {

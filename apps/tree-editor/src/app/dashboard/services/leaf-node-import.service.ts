@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
+import { LeafNodeStoreService, SPLeafNode } from '@sweet-potato/store';
 import { map, Observable } from 'rxjs';
-import { SPLeafNode } from '../../store/models/sp-leaf-node.model';
-import { LeafNodeStoreService } from '../../store/services/leaf-node-store.service';
 
 @Injectable()
 export class LeafNodeImportService {

@@ -8,8 +8,8 @@ import {
 } from 'rxjs';
 import Two from 'two.js';
 import { ZUI } from 'two.js/extras/jsm/zui';
-import { Destroy } from '../../../base/components/destory';
 import { CanvasMouseService } from './canvas-mouse.service';
+import { Destroy } from '@sweet-potato/core';
 
 @Injectable()
 export class CanvasService extends Destroy {

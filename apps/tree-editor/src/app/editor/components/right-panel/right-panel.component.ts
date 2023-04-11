@@ -8,12 +8,12 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../../drawing/models/node-group.model';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
+import { Destroy } from '@sweet-potato/core';
 
 @Component({
   selector: 'sp-editor-right-panel',
@@ -55,7 +55,6 @@ export class RightPanelComponent extends Destroy {
         )
       )
       .subscribe(([selected, isRoot]) => {
-        console.log(selected);
         if (selected) {
           this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
           this.form.controls.displayName.setValue(selected.displayName);

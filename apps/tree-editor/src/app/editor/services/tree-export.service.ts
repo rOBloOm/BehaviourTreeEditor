@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
-import { SPNode } from '../../store/models/sp-node.model';
 import { NodeGroupType } from '../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../drawing/models/node-group.model';
+import { SPNode } from '@sweet-potato/store';
 
 @Injectable()
 export class TreeExportSerive {

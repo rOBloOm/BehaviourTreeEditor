@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Destroy } from '@sweet-potato/core';
 import { BehaviorSubject, Subject, takeUntil } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 
 @Injectable()
 export class CanvasMouseService extends Destroy {

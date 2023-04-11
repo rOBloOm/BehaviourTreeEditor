@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, takeUntil } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { ILeafNodeGroup } from '../../drawing/interfaces/parameters-interface.model';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
+import { Destroy } from '@sweet-potato/core';
 
 @Component({
   selector: 'sp-right-panel-parameters',

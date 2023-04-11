@@ -1,8 +1,4 @@
 import { Routes } from '@angular/router';
-import { DashboardHomeComponent } from './components/dashboard-home/dashboard-home.component';
-import { DashboardProjectsComponent } from './components/dashboard-projects/dashboard-projects.component';
-import { DashboardSettingsComponent } from './components/dashboard-settings/dashboard-settings.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 export const DASHBOARD_ROUTES: Routes = [
   {
@@ -12,19 +8,31 @@ export const DASHBOARD_ROUTES: Routes = [
   },
   {
     path: '',
-    component: DashboardComponent,
+    loadComponent: () =>
+      import('./components/dashboard/dashboard.component').then(
+        (m) => m.DashboardComponent
+      ),
     children: [
       {
         path: 'home',
-        component: DashboardHomeComponent,
+        loadComponent: () =>
+          import('./components/dashboard-home/dashboard-home.component').then(
+            (m) => m.DashboardHomeComponent
+          ),
       },
       {
         path: 'projects',
-        component: DashboardProjectsComponent,
+        loadComponent: () =>
+          import(
+            './components/dashboard-projects/dashboard-projects.component'
+          ).then((m) => m.DashboardProjectsComponent),
       },
       {
         path: 'settings',
-        component: DashboardSettingsComponent,
+        loadComponent: () =>
+          import(
+            './components/dashboard-settings/dashboard-settings.component'
+          ).then((m) => m.DashboardSettingsComponent),
       },
     ],
   },
