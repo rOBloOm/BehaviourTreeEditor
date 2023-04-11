@@ -5,12 +5,16 @@ import { CommandService } from '../../services/command.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
 import { NodePanel } from '../left-panel/left-panel.component';
 import { Destroy } from '@sweet-potato/core';
+import { AsyncPipe } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-menu-bar',
   templateUrl: './editor-menu-bar.component.html',
   styleUrls: ['./editor-menu-bar.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [AsyncPipe, FlexModule],
 })
 export class EditorMenuBarComponent extends Destroy {
   get projectName$(): Observable<string> {

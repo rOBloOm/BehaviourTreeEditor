@@ -4,7 +4,7 @@ export const APP_ROUTES: Routes = [
   {
     path: 'editor',
     loadChildren: () =>
-      import('./editor/editor.module').then((m) => m.EditorModule),
+      import('./editor/editor.routes').then((m) => m.EDITOR_ROUTES),
   },
   {
     path: 'dashboard',

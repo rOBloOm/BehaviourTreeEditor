@@ -5,8 +5,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  NgbAccordion,
+  NgbAccordionModule,
+  NgbModal,
+  NgbPanel,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {
   BehaviorSubject,
@@ -30,12 +35,25 @@ import { EditorManagerService } from '../../services/editor-manager.service';
 import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dialog.component';
 import { Destroy } from '@sweet-potato/core';
 import { SPNode, SPLeafNode, LeafNodeStoreService } from '@sweet-potato/store';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-left-panel',
   templateUrl: './left-panel.component.html',
   styleUrls: ['./left-panel.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ReactiveFormsModule,
+    NgClass,
+    NgIf,
+    NgFor,
+    AsyncPipe,
+    FlexModule,
+    NgbAccordionModule,
+    NgbPanel,
+  ],
 })
 export class LeftPanelComponent
   extends Destroy
