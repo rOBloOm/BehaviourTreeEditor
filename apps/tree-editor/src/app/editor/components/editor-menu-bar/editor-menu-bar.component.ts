@@ -7,6 +7,7 @@ import { NodePanel } from '../left-panel/left-panel.component';
 import { Destroy } from '@sweet-potato/core';
 import { AsyncPipe } from '@angular/common';
 import { FlexModule } from '@angular/flex-layout';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'sp-editor-menu-bar',
@@ -14,7 +15,7 @@ import { FlexModule } from '@angular/flex-layout';
   styleUrls: ['./editor-menu-bar.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [AsyncPipe, FlexModule],
+  imports: [AsyncPipe, FlexModule, RouterLink],
 })
 export class EditorMenuBarComponent extends Destroy {
   get projectName$(): Observable<string> {
