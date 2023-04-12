@@ -8,7 +8,7 @@ import { CanvasService } from './canvas.service';
 import { CanvasMouseService } from './canvas-mouse.service';
 import { CanvasManagerService } from './canvas-manager.service';
 import Two from 'two.js';
-import { Destroy } from '../../../base/components/destory';
+import { Destroy } from '@sweet-potato/core';
 
 @Injectable()
 export class CanvasConnectionService extends Destroy {

@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { forEach } from 'lodash-es';
 import { BehaviorSubject, filter, takeUntil } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { CompositeType } from '../enums/composite-type.enum';
 import { DecoratorType } from '../enums/decorator-type.enum';
 import { NodeConnection } from '../models/node-connection.model';
@@ -10,6 +9,7 @@ import { RootNodeGroup } from '../models/root-node-group.model';
 import { TreeNodeGroup } from '../models/tree-node-group.model';
 import { CanvasDrawingService } from './canvas-drawing.service';
 import { CanvasService } from './canvas.service';
+import { Destroy } from '@sweet-potato/core';
 
 @Injectable()
 export class CanvasManagerService extends Destroy {

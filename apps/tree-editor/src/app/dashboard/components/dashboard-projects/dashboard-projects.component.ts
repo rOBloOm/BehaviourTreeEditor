@@ -15,19 +15,25 @@ import {
 } from 'rxjs';
 import { ProjectExportService } from '../../../interface/services/project-export.service';
 import { ProjectImportService } from '../../../interface/services/project-import.service';
-import { SPProject } from '../../../store/models/sp-project.model';
-import { ProjectStoreService } from '../../../store/services/project-store.service';
-import { TreeStoreService } from '../../../store/services/tree-store.service';
-import { Destroy } from '../../../base/components/destory';
 import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
+import { AsyncPipe, NgFor } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
+import { Destroy } from '@sweet-potato/core';
+import {
+  SPProject,
+  ProjectStoreService,
+  TreeStoreService,
+} from '@sweet-potato/store';
 
 @Component({
   selector: 'sp-dashboard-projects',
   templateUrl: './dashboard-projects.component.html',
   styleUrls: ['./dashboard-projects.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgFor, AsyncPipe, FlexModule],
   providers: [ProjectFactoryService],
 })
 export class DashboardProjectsComponent extends Destroy {
@@ -151,7 +157,6 @@ export class DashboardProjectsComponent extends Destroy {
             },
             error: (err) => {
               this.toastr.error('project file invalid');
-              console.log(err);
             },
           });
       });

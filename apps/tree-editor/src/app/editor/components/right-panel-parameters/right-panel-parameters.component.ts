@@ -1,14 +1,18 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { BehaviorSubject, takeUntil } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { ILeafNodeGroup } from '../../drawing/interfaces/parameters-interface.model';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
+import { Destroy } from '@sweet-potato/core';
+import { AsyncPipe, NgFor } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-right-panel-parameters',
   templateUrl: './right-panel-parameters.component.html',
   styleUrls: ['./right-panel-parameters.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [NgFor, AsyncPipe, FlexModule],
 })
 export class RightPanelParametersComponent extends Destroy {
   private parameterCountSubject = new BehaviorSubject<number[]>([]);

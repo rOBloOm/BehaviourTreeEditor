@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   selector: 'sp-delete-tree-dialog',
   templateUrl: './delete-tree-dialog.component.html',
   styleUrls: ['./delete-tree-dialog.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DeleteTreeDialogComponent {

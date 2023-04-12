@@ -4,14 +4,16 @@ import {
   Input,
   OnInit,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'sp-dashboard-projects-dialog',
   templateUrl: './dashboard-projects-dialog.component.html',
   styleUrls: ['./dashboard-projects-dialog.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ReactiveFormsModule],
 })
 export class DashboardProjectsDialogComponent implements OnInit {
   @Input()

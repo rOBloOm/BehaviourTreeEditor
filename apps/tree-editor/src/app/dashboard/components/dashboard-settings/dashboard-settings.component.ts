@@ -7,6 +7,7 @@ import { LeafNodeImportService } from '../../services/leaf-node-import.service';
   selector: 'sp-dashboard-settings',
   templateUrl: './dashboard-settings.component.html',
   styleUrls: ['./dashboard-settings.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardSettingsComponent {

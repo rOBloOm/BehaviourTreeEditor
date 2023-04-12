@@ -1,5 +1,5 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import {
   combineLatest,
   filter,
@@ -8,18 +8,29 @@ import {
   switchMap,
   takeUntil,
 } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
 import { NodeGroup } from '../../drawing/models/node-group.model';
 import { CanvasManagerService } from '../../drawing/systems/canvas-manager.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
+import { Destroy } from '@sweet-potato/core';
+import { RightPanelParametersComponent } from '../right-panel-parameters/right-panel-parameters.component';
+import { AsyncPipe, NgIf } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-right-panel',
   templateUrl: './right-panel.component.html',
   styleUrls: ['./right-panel.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ReactiveFormsModule,
+    RightPanelParametersComponent,
+    NgIf,
+    AsyncPipe,
+    FlexModule,
+  ],
 })
 export class RightPanelComponent extends Destroy {
   selected$: Observable<NodeGroup>;
@@ -55,7 +66,6 @@ export class RightPanelComponent extends Destroy {
         )
       )
       .subscribe(([selected, isRoot]) => {
-        console.log(selected);
         if (selected) {
           this.nodeType = selected ? NodeGroupType[selected.nodeType] : '';
           this.form.controls.displayName.setValue(selected.displayName);

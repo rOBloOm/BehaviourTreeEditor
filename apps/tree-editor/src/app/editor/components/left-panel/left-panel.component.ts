@@ -5,8 +5,13 @@ import {
   OnInit,
   ViewChild,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
-import { NgbAccordion, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import {
+  NgbAccordion,
+  NgbAccordionModule,
+  NgbModal,
+  NgbPanel,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import {
   BehaviorSubject,
@@ -20,12 +25,7 @@ import {
   startWith,
   switchMap,
   takeUntil,
-  tap,
 } from 'rxjs';
-import { Destroy } from '../../../base/components/destory';
-import { SPLeafNode } from '../../../store/models/sp-leaf-node.model';
-import { SPNode } from '../../../store/models/sp-node.model';
-import { LeafNodeStoreService } from '../../../store/services/leaf-node-store.service';
 import { CompositeType } from '../../drawing/enums/composite-type.enum';
 import { DecoratorType } from '../../drawing/enums/decorator-type.enum';
 import { NodeGroupType } from '../../drawing/enums/node-group-type.enum';
@@ -33,12 +33,27 @@ import { CanvasDropData } from '../../drawing/models/canvas-drop-data.model';
 import { CommandService } from '../../services/command.service';
 import { EditorManagerService } from '../../services/editor-manager.service';
 import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dialog.component';
+import { Destroy } from '@sweet-potato/core';
+import { SPNode, SPLeafNode, LeafNodeStoreService } from '@sweet-potato/store';
+import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
+import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-left-panel',
   templateUrl: './left-panel.component.html',
   styleUrls: ['./left-panel.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [
+    ReactiveFormsModule,
+    NgClass,
+    NgIf,
+    NgFor,
+    AsyncPipe,
+    FlexModule,
+    NgbAccordionModule,
+    NgbPanel,
+  ],
 })
 export class LeftPanelComponent
   extends Destroy
@@ -134,7 +149,6 @@ export class LeftPanelComponent
     from(dialog.result)
       .pipe(
         first(),
-        tap((res) => console.log(res)),
         filter((result) => result && result.delete),
         switchMap(() => this.editorManager.deleteTree(tree.identifier))
       )

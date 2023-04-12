@@ -5,7 +5,11 @@ import {
   OnInit,
 } from '@angular/core';
 import { Title } from '@angular/platform-browser';
-import { AllowIn, ShortcutInput } from 'ng-keyboard-shortcuts';
+import {
+  AllowIn,
+  KeyboardShortcutsModule,
+  ShortcutInput,
+} from 'ng-keyboard-shortcuts';
 import { CanvasConnectionService } from '../../drawing/systems/canvas-connection.service';
 import { CanvasDragService } from '../../drawing/systems/canvas-drag.service';
 import { CanvasDrawingService } from '../../drawing/systems/canvas-drawing.service';
@@ -19,11 +23,16 @@ import { EditorManagerService } from '../../services/editor-manager.service';
 import { TreeExportSerive } from '../../services/tree-export.service';
 import { TreeImportService } from '../../services/tree-import.service';
 import { NodePanel } from '../left-panel/left-panel.component';
-
+import { EditorMenuBarComponent } from '../editor-menu-bar/editor-menu-bar.component';
+import { LeftPanelComponent } from '../left-panel/left-panel.component';
+import { NodesPanelComponent } from '../nodes-panel/nodes-panel.component';
+import { RightPanelComponent } from '../right-panel/right-panel.component';
+import { FlexModule } from '@angular/flex-layout';
 @Component({
   selector: 'sp-editor',
   templateUrl: './editor.component.html',
   styleUrls: ['./editor.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     CanvasService,
@@ -38,6 +47,14 @@ import { NodePanel } from '../left-panel/left-panel.component';
     EditorManagerService,
     TreeExportSerive,
     TreeImportService,
+  ],
+  imports: [
+    EditorMenuBarComponent,
+    LeftPanelComponent,
+    NodesPanelComponent,
+    RightPanelComponent,
+    KeyboardShortcutsModule,
+    FlexModule,
   ],
 })
 export class EditorComponent implements AfterViewInit, OnInit {

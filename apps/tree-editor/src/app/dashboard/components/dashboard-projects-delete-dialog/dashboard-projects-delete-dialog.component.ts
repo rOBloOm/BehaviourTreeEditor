@@ -5,6 +5,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   selector: 'sp-dashboard-projects-delete-dialog',
   templateUrl: './dashboard-projects-delete-dialog.component.html',
   styleUrls: ['./dashboard-projects-delete-dialog.component.scss'],
+  standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DashboardProjectsDeleteDialogComponent {
