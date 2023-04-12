@@ -1,14 +1,55 @@
+.content {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+
+.header {
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    column-gap: 10px;    
+
+    .projects-title {
+        width: 400px;
+        margin-bottom: 0px;
+    }
+}
+
+.toolbar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 20px;    
+}
+
+
+
 .divider {
     border: thin solid black;
     margin-bottom: 20px;
 }
 
-.projectItem {
-    margin-bottom: 5px;
+.project-items {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+
+    .project-item {
+        display: flex;
+        flex-direction: row;
+        column-gap: 10px;    
+        width: 100%;
+        margin-bottom: 5px;
+    }
 }
 
 .projectname {
     width: 400px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
 }
 
 .btn-download {

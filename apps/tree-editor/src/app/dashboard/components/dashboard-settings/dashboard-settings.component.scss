@@ -1,3 +1,28 @@
+.settings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+.settings h1 {
+    margin: 0;
+}
+
+.import-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.import-actions-label {
+    flex: 0 0 300px;
+}
+
+.import-actions-button {
+    flex: 0 0 100px;
+}
+
 .file-input {
     display: none;
 }
+  
