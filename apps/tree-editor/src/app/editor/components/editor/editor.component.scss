@@ -1,26 +1,26 @@
 .editor-container {
-    display: grid;
-    grid-template-columns: 300px auto 300px;
-    grid-template-rows: auto auto;
-    grid-template-areas:
-    "toolbar toolbar toolbar"
-    "leftpanel nodes rightpanel"
-  }
-  
-  .editor-menubar {
-    z-index: 30;
-    grid-area: toolbar;
-  }
-  
-  .editor-left-panel {
-    grid-area: leftpanel;
-  }
-  
-  .editor-nodes-panel {
-    grid-area: nodes;
-  }
-  
-  .editor-right-panel {
-    grid-area: rightpanel;
-  }
-  
+  height: 100%;
+  display: grid;
+  grid-template-columns: 300px auto 300px;
+  grid-template-rows: 34px auto;
+  grid-template-areas:
+    'toolbar toolbar toolbar'
+    'leftpanel nodes rightpanel';
+}
+
+.editor-menubar {
+  z-index: 30;
+  grid-area: toolbar;
+}
+
+.editor-left-panel {
+  grid-area: leftpanel;
+}
+
+.editor-nodes-panel {
+  grid-area: nodes;
+}
+
+.editor-right-panel {
+  grid-area: rightpanel;
+}

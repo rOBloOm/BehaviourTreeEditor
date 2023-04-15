@@ -1,35 +1,22 @@
-<div
-  class="LeftPanel"
-  fxFlex="300px"
-  fxLayout="column"
-  fxLayoutAlign="start center"
-  fxLayoutGap="10"
-  [formGroup]="form"
->
+<div class="left-panel" [formGroup]="form">
   <ngb-accordion
     #accordion
     #acc="ngbAccordion"
     [closeOthers]="true"
     activeIds="ac-trees"
-    fxFlexFill
+    class="accordion"
   >
     <ngb-panel id="acc-trees" title="Trees">
       <ng-template ngbPanelContent>
-        <div
-          class="accPanel"
-          fxLayout="column"
-          fxLayoutAlign="start stretch"
-          fxLayoutGap="10px"
-        >
-          <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="10px">
+        <div class="accPanel">
+          <div class="acc-header">
             <input
-              fxFlex
-              class="editor-input"
+              class="editor-input search-box"
               placeholder="search trees"
               formControlName="treeSearch"
               type="search"
             />
-            <div fxFlex="25px" class="add-tree-button" (click)="addTree()">
+            <div class="add-button" (click)="addTree()">
               <i class="fa-solid fa-plus"></i>
             </div>
           </div>
@@ -41,9 +28,8 @@
               (dragstart)="dragStartTree($event, tree)"
               *ngFor="let tree of filteredTrees$ | async"
             >
-              <div fxFlexLayout="row" fxLayoutAlign="space-between center">
+              <div class="tree-item">
                 <div
-                  fxFlex
                   [ngClass]="treeItemClass$(tree.identifier) | async"
                   (click)="setActive(tree.identifier)"
                 >
@@ -51,9 +37,6 @@
                 </div>
                 <div
                   class="tree-item-actions"
-                  fxFlexLayout="row"
-                  fxLayoutAlign="end center"
-                  fxLayoutGap="5px"
                   *ngIf="(isRootTree$(tree.identifier) | async) === false"
                 >
                   <i
@@ -69,12 +52,7 @@
     </ngb-panel>
     <ngb-panel id="acc-actions" title="Actions">
       <ng-template ngbPanelContent>
-        <div
-          class="accPanel"
-          fxLayout="column"
-          fxLayoutAlign="start stretch"
-          fxLayoutGap="10px"
-        >
+        <div class="accPanel">
           <input
             type="search"
             class="editor-input"
@@ -97,12 +75,7 @@
     </ngb-panel>
     <ngb-panel id="acc-conditions" title="Conditions">
       <ng-template ngbPanelContent>
-        <div
-          class="accPanel"
-          fxLayout="column"
-          fxLayoutAlign="start stretch"
-          fxLayoutGap="10px"
-        >
+        <div class="accPanel">
           <input
             type="search"
             class="editor-input"
@@ -125,12 +98,7 @@
     </ngb-panel>
     <ngb-panel id="acc-decorators" title="Decorators">
       <ng-template ngbPanelContent>
-        <div
-          class="accPanel"
-          fxLayout="column"
-          fxLayoutAlign="start stretch"
-          fxLayoutGap="10px"
-        >
+        <div class="accPanel">
           <input
             type="search"
             class="editor-input"
@@ -153,12 +121,7 @@
     </ngb-panel>
     <ngb-panel id="acc-composites" title="Composites">
       <ng-template ngbPanelContent>
-        <div
-          class="accPanel"
-          fxLayout="column"
-          fxLayoutAlign="start stretch"
-          fxLayoutGap="10px"
-        >
+        <div class="accPanel">
           <input
             type="search"
             class="editor-input"

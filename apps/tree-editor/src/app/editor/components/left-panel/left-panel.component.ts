@@ -36,7 +36,6 @@ import { DeleteTreeDialogComponent } from '../delete-tree-dialog/delete-tree-dia
 import { Destroy } from '@sweet-potato/core';
 import { SPNode, SPLeafNode, LeafNodeStoreService } from '@sweet-potato/store';
 import { AsyncPipe, NgClass, NgFor, NgIf } from '@angular/common';
-import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-left-panel',
@@ -50,7 +49,6 @@ import { FlexModule } from '@angular/flex-layout';
     NgIf,
     NgFor,
     AsyncPipe,
-    FlexModule,
     NgbAccordionModule,
     NgbPanel,
   ],

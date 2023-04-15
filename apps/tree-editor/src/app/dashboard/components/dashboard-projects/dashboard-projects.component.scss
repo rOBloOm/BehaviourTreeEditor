@@ -1,65 +1,63 @@
 .content {
-    display: flex;
-    flex-direction: column;
-    row-gap: 5px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
 }
 
 .header {
-    display: flex;
-    flex-direction: row;
-    justify-content: start;
-    align-items: center;
-    column-gap: 10px;    
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  column-gap: 10px;
 
-    .projects-title {
-        width: 400px;
-        margin-bottom: 0px;
-    }
+  .projects-title {
+    width: 400px;
+    margin-bottom: 0px;
+  }
 }
 
 .toolbar {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    column-gap: 20px;    
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  column-gap: 20px;
 }
 
-
-
 .divider {
-    border: thin solid black;
-    margin-bottom: 20px;
+  border: thin solid black;
+  margin-bottom: 20px;
 }
 
 .project-items {
-    display: flex;
-    flex-direction: column;
-    justify-content: start;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 
-    .project-item {
-        display: flex;
-        flex-direction: row;
-        column-gap: 10px;    
-        width: 100%;
-        margin-bottom: 5px;
-    }
+  .project-item {
+    display: flex;
+    flex-direction: row;
+    column-gap: 10px;
+    width: 100%;
+    margin-bottom: 5px;
+  }
 }
 
 .projectname {
-    width: 400px;
-    display: flex;
-    justify-content: start;
-    align-items: center;
+  width: 400px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
 }
 
 .btn-download {
-    margin-left: 50px;
+  margin-left: 50px;
 }
 
 .btn-upload {
-    margin-left: 135px;
+  margin-left: 135px;
 }
 
 .project-upload-file-input {
-    display: none;
+  display: none;
 }
