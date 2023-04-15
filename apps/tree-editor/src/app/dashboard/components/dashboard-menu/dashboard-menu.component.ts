@@ -1,5 +1,4 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FlexModule } from '@angular/flex-layout';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -8,6 +7,6 @@ import { RouterLink } from '@angular/router';
   styleUrls: ['./dashboard-menu.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [FlexModule, RouterLink],
+  imports: [RouterLink],
 })
 export class DashboardMenuComponent {}

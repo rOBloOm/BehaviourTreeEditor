@@ -12,14 +12,12 @@ import { CanvasDropService } from '../../drawing/systems/canvas-drop.service';
 import { CanvasMouseService } from '../../drawing/systems/canvas-mouse.service';
 import { CanvasSelectionService } from '../../drawing/systems/canvas-selection.service';
 import { CanvasService } from '../../drawing/systems/canvas.service';
-import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-nodes-panel',
   templateUrl: './nodes-panel.component.html',
   styleUrls: ['./nodes-panel.component.scss'],
   standalone: true,
-  imports: [FlexModule],
 })
 export class NodesPanelComponent implements AfterViewInit {
   @ViewChild('canvas') domElement: ElementRef;

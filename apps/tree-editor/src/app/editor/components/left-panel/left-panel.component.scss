@@ -1,50 +1,82 @@
-.LeftPanel {
-    z-index: 20;
-    padding-top: 10px;
-    background-color: var(--accent-gb-color);
-    box-shadow: 0 0 16px 0 #0b0b0b
+.left-panel {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  z-index: 20;
+  padding-top: 10px;
+  background-color: var(--accent-gb-color);
+  box-shadow: 0 0 16px 0 #0b0b0b;
 }
 
-.accHeader {
-    height: 20px;
+.accordion {
+  width: 100%;
+}
+
+.acc-header {
+  display: flex;
+  align-items: center;
+  column-gap: 10px;
+
+  .search-box {
+    width: 100%;
+  }
+
+  .add-button {
+    width: 25px;
+    cursor: pointer;
+  }
 }
 
 .accPanel {
-    height: calc(100vh - 185px);
-}
-
-.node-list-item {
-    padding: 2px !important;
-    padding-left: 5px !important;
-    background-color: var(--color-light2);
-}
-
-.root-tree-item {
-    font-weight: 800;
-    cursor: pointer;
-}
-
-.active-tree-item {
-    font-style: oblique;
-    color: var(--color-light4);    
+  height: calc(100vh - 185px);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  row-gap: 10px;
 }
 
 .tree-item {
-    cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.node-list-item {
+  padding: 2px !important;
+  padding-left: 5px !important;
+  background-color: var(--color-light2);
+}
+
+.root-tree-item {
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.active-tree-item {
+  font-style: oblique;
+  color: var(--color-light4);
+}
+
+.tree-item {
+  cursor: pointer;
 }
 
 .tree-item-actions {
-    margin: 0px 5px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 5px;
+  margin: 0px 5px;
 }
 
 .tree-item-delete {
-    cursor: pointer;
-}
-
-.add-tree-button {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .drag-ancor {
-    border: solid black 1px;
+  border: solid black 1px;
 }

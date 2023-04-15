@@ -1,78 +1,50 @@
-<div class="topbar" fxFlex fxLayout="row" fxLayoutAlign="space-between">
-  <div class="menubar" fxFlex fxLayout="row" fxLayoutAlign="start">
-    <ul fxLayout="row" fxLayoutAlign="start">
-      <li fxLayout="row" fxLayoutAlign="center stretch">
-        <a
-          class="fastlink"
-          fxLayout="column"
-          fxlLayoutAlign="center center"
-          routerLink="/dashboard/projects"
-        >
+<div class="topbar">
+  <div class="menubar">
+    <ul>
+      <li>
+        <a class="fastlink" routerLink="/dashboard/projects">
           <i class="fa fa-fw fa-arrow-circle-o-left"></i>
         </a>
       </li>
-      <li fxLayout="row" fxLayoutAlign="center stretch">
-        <a
-          class="fastlink"
-          fxLayout="column"
-          fxlLayoutAlign="center center"
-          routerLink="/dashboard/settings"
-        >
+      <li>
+        <a class="fastlink" routerLink="/dashboard/settings">
           <i class="fa-solid fa-gear"></i>
         </a>
       </li>
     </ul>
 
-    <ul fxLayout="row" fxLayoutAlign="start stretch">
+    <ul class="node-menu">
       <li>
-        <a fxFill fxLayoutAlign="center center">Node</a>
+        <a class="node-menu-link">Node</a>
         <ul>
           <li>
-            <a
-              fxFlex
-              fxLayoutAlign="space-between center"
-              (click)="addNewTree()"
+            <a class="node-menu-item" (click)="addNewTree()"
               >New Tree <span class="shortcut">shift + n</span></a
             >
           </li>
           <li></li>
           <li>
-            <a
-              fxFlex
-              fxLayoutAlign="space-between center"
-              (click)="openTreePanel()"
+            <a class="node-menu-item" (click)="openTreePanel()"
               >Trees <span class="shortcut">a, t</span></a
             >
           </li>
           <li>
-            <a
-              fxFlex
-              fxLayoutAlign="space-between center"
-              (click)="openActionPanel()"
+            <a class="node-menu-item" (click)="openActionPanel()"
               >Actions <span class="shortcut">a, a</span></a
             >
           </li>
           <li>
-            <a
-              fxFlex
-              fxLayoutAlign="space-between center"
-              (click)="openConditionPanel()"
+            <a class="node-menu-item" (click)="openConditionPanel()"
               >Conditions <span class="shortcut">a, c</span></a
             >
           </li>
           <li>
-            <a
-              fxFlex
-              fxLayoutAlign="space-between center"
-              (click)="openDecoratorPanel()"
+            <a class="node-menu-item" (click)="openDecoratorPanel()"
               >Decorators <span class="shortcut">a, d</span></a
             >
           </li>
           <li>
-            <a
-              fxFlex
-              fxLayoutAlign="space-between center"
-              (click)="openCompositePanel()"
+            <a class="node-menu-item" (click)="openCompositePanel()"
               >Composites <span class="shortcut">a, f</span></a
             >
           </li>
@@ -80,16 +52,11 @@
       </li>
     </ul>
   </div>
-  <div fxFlex fxLayout="row" fxLayoutAlign="start center">
+  <div class="tree-name">
     {{ treeName$ | async }}
   </div>
-  <div fxLayout="row" fxFlexAlign="end center">
-    <div
-      class="treeTitle"
-      fxFlex="nogrow"
-      fxLayout="row"
-      fxLayoutAlign="start center"
-    >
+  <div class="tree-title-container">
+    <div class="treeTitle">
       {{ projectName$ | async }}
     </div>
   </div>

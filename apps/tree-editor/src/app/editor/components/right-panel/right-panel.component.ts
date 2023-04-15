@@ -16,7 +16,6 @@ import { EditorManagerService } from '../../services/editor-manager.service';
 import { Destroy } from '@sweet-potato/core';
 import { RightPanelParametersComponent } from '../right-panel-parameters/right-panel-parameters.component';
 import { AsyncPipe, NgIf } from '@angular/common';
-import { FlexModule } from '@angular/flex-layout';
 
 @Component({
   selector: 'sp-editor-right-panel',
@@ -29,7 +28,6 @@ import { FlexModule } from '@angular/flex-layout';
     RightPanelParametersComponent,
     NgIf,
     AsyncPipe,
-    FlexModule,
   ],
 })
 export class RightPanelComponent extends Destroy {

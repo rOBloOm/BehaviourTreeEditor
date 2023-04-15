@@ -1,18 +1,7 @@
-<div fxFlex fxLayout="column">
-  <div
-    class="header"
-    fxLayout="row"
-    fxLayoutAlgin="start center"
-    fxLayoutGap="10px"
-  >
-    <h1 fxFlex="400px">Projects</h1>
-    <div
-      class="toolbar"
-      fxFlex
-      fxLayout="row"
-      fxLayoutAlign="start center"
-      fxLayoutGap="20px"
-    >
+<div class="content">
+  <div class="header">
+    <h1 class="projects-title">Projects</h1>
+    <div class="toolbar">
       <input
         #projectUpload
         [accept]="'.json'"
@@ -35,11 +24,9 @@
     </div>
   </div>
   <div class="divider"></div>
-  <div *ngFor="let project of projects$ | async">
-    <div fxFlex fxLayout="row" fxLayoutGap="10px" class="projectItem">
-      <div class="projectname" fxLayout="row" fxLayoutAlign="start center">
-        <div>{{ project.name }}</div>
-      </div>
+  <div class="project-items">
+    <div *ngFor="let project of projects$ | async" class="project-item">
+      <div class="projectname">{{ project.name }}</div>
       <button
         type="button"
         class="btn btn-outline-dark"

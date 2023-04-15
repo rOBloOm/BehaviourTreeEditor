@@ -1,3 +1,10 @@
-.content {
+.sp-container {
+    display: grid;
+    height: 100%;
+    min-width: 100%;
+    grid-template-columns: auto 1fr
+}
+
+.sp-content {
     margin: 50px;
 }

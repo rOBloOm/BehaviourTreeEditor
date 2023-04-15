@@ -19,7 +19,6 @@ import { ProjectFactoryService } from '../../services/project.factory.service';
 import { DashboardProjectsDeleteDialogComponent } from '../dashboard-projects-delete-dialog/dashboard-projects-delete-dialog.component';
 import { DashboardProjectsDialogComponent } from '../dashboard-projects-dialog/dashboard-projects-dialog.component';
 import { AsyncPipe, NgFor } from '@angular/common';
-import { FlexModule } from '@angular/flex-layout';
 import { Destroy } from '@sweet-potato/core';
 import {
   SPProject,
@@ -33,7 +32,7 @@ import {
   styleUrls: ['./dashboard-projects.component.scss'],
   standalone: true,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgFor, AsyncPipe, FlexModule],
+  imports: [NgFor, AsyncPipe],
   providers: [ProjectFactoryService],
 })
 export class DashboardProjectsComponent extends Destroy {

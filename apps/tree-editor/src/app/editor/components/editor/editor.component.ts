@@ -27,7 +27,6 @@ import { EditorMenuBarComponent } from '../editor-menu-bar/editor-menu-bar.compo
 import { LeftPanelComponent } from '../left-panel/left-panel.component';
 import { NodesPanelComponent } from '../nodes-panel/nodes-panel.component';
 import { RightPanelComponent } from '../right-panel/right-panel.component';
-import { FlexModule } from '@angular/flex-layout';
 @Component({
   selector: 'sp-editor',
   templateUrl: './editor.component.html',
@@ -54,7 +53,6 @@ import { FlexModule } from '@angular/flex-layout';
     NodesPanelComponent,
     RightPanelComponent,
     KeyboardShortcutsModule,
-    FlexModule,
   ],
 })
 export class EditorComponent implements AfterViewInit, OnInit {

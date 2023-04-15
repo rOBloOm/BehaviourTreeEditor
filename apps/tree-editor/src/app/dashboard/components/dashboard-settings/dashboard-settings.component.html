@@ -1,11 +1,10 @@
-<diV fxFlex fxLayout="column" fxLayoutGap="20px">
+<diV class="settings">
   <h1>Settings</h1>
-  <div fxLayout="row" fxLayoutAlign="start center" fxLayoutGap="20px">
-    <div fxFlex="0 0 300px">Import Actions and Conditions:</div>
+  <div class="import-actions">
+    <div class="import-actions-label">Import Actions and Conditions:</div>
     <button
-      fxFlex="100px"
+      class="btn btn-outline-secondary import-actions-button"
       type="button"
-      class="btn btn-outline-secondary"
       (click)="fileUpload.click()"
     >
       <i class="fa-solid fa-file-import"></i>

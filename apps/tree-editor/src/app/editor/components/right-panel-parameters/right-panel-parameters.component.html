@@ -1,6 +1,6 @@
-<div fxFLex fxLayout="column" fxLayoutAlign="start stretch">
-  <h5 fxFlex="row" fxLayoutAlign="start" fxLayoutGap="20px" class="subtitle">
-    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+<div class="parameters-container">
+  <h5 class="subtitle">
+    <div class="subtitle-content">
       <div>Parameters</div>
       <i
         class="parameter-add-button icon fa-solid fa-plus"
@@ -10,13 +10,8 @@
   </h5>
   <ul class="parameter-list">
     <li *ngFor="let parameter of parameterCount$ | async; index as index">
-      <div fxLayout="column" fxLayoutAlign="start" fxLayoutGap="10">
-        <div
-          fxFlex="25px"
-          fxLayout="row"
-          fxLayoutAlign="space-between center"
-          class="delete-param-button"
-        >
+      <div class="parameter-list-item">
+        <div class="parameter-list-item-header">
           <label for="param" class="editor-label"
             >Parameter {{ index + 1 }}</label
           >
